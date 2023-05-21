@@ -15,7 +15,7 @@
         <VListItem class="list"
         to="/product"
         prepend-icon="mdi-warehouse" 
-        title="Warehouse"
+        title="Inventory"
         />
         
         <VListItem class="list"
