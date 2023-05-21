@@ -4,36 +4,50 @@
       <div class="content">
         
         <div class="details">
+
           <div class="title">Order Details</div>
+
           <div class="form">
+
             <div class="form-item">
               <label for="orderId">Order ID:</label>
               <input id="orderId" v-model="orderId" />
             </div>
+
             <div class="form-item">
               <label for="customerName">Customer Name:</label>
               <input id="customerName" v-model="customerName" />
             </div>
+
             <div class="form-item">
               <label for="customerAddress">Customer Address:</label>
               <input id="customerAddress" v-model="customerAddress" />
             </div>
+
             <div class="form-item">
               <label for="customerEmail">Customer Email:</label>
               <input id="customerEmail" v-model="customerEmail" />
             </div>
+
+            <div class="form-item">
+              <label for="customerContact">Customer Contact:</label>
+              <input id="customerContact" v-model="customerContact" />
+            </div>
+
             <div class="form-item">
               <label for="businessType">Business Type:</label>
               <select id="businessType" v-model="businessType">
                 <option value="B2B">B2B</option>
                 <option value="B2C">B2C</option>
               </select>
+              
               <label for="orderStatus">Order Status:</label>
               <select id="orderStatus" v-model="orderStatus">
                 <option value="Pending">Pending</option>
                 <option value="Cancelled">Cancelled</option>
               </select>
             </div>
+
             <div class="form-item">
               <label for="orderProduct">Order Product:</label>
               <select id="orderProduct" v-model="selectedProduct">
@@ -49,27 +63,30 @@
               <input id="unitPrice" v-model="unitPrice" />
               <label for="quantity">Quantity:</label>
               <input id="quantity" v-model="quantity" />
-              <button class="add-item" @click="addItem">Add Item</button>
+              <v-btn class="add-item" @click="addItem">Add Item</v-btn>
             </div>
   
             <div class="form-item">
               <label for="totalPrice">Total Price:</label>
               <input id="totalPrice" v-model="totalPrice" />
             </div>
+
             <div class="form-item">
               <label for="trackingNumber">Tracking Number:</label>
               <input id="trackingNumber" v-model="trackingNumber" />
             </div>
+
             <div class="form-item">
               <label for="remark">Remark:</label>
               <input id="remark" v-model="remark" />
             </div>
           </div>
+
           <div class="actions">
-            <button class="el-button" type="primary" @click="save">Save</button>
-            <button class="el-button" type="danger" @click="cancel">
+            <v-btn class="el-button" type="primary" @click="save">Save</v-btn>
+            <v-btn class="el-button" type="danger" @click="cancel">
               Cancel
-            </button>
+            </v-btn>
           </div>
         </div>
       </div>

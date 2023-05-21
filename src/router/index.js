@@ -24,6 +24,11 @@ const routes = [
     path: '/product',
     name: 'product',
     component: ProductsVue
+  },
+  {
+    path: '/addnew',
+    name: 'product',
+    component: ProductsVue
   }
 ]
 
