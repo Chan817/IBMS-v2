@@ -20,7 +20,7 @@ mongoose.connect(process.env.DB_URI, {
 }).then(() => console.log('Connected to the database')).catch((err) => console.log(err));
 
 //routes profix
-app.use("/api/post", require("./routes/routes"));
+app.use("/api/", require("./routes/routes"));
 
 // start server
 app.listen(port, () => console.log(`server running at http://localhost:${port}`));
