@@ -44,7 +44,7 @@
                 <option value="Tiktok">Tiktok</option>
               </select>
               
-              <label for="orderStatus">Order Status:</label>
+              <label class="space-left" for="orderStatus">Order Status:</label>
               <select id="orderStatus" v-model="orderStatus">
                 <option value="Pending">Pending</option>
                 <option value="Cancelled">Cancelled</option>
@@ -62,9 +62,9 @@
                   {{ product.name }}
                 </option>
               </select>
-              <label for="unitPrice">Unit Price:</label>
+              <label class="space-left" for="unitPrice">Unit Price:</label>
               <input id="unitPrice" v-model="unitPrice" />
-              <label for="quantity">Quantity:</label>
+              <label class="space-left" for="quantity">Quantity:</label>
               <input id="quantity" v-model="quantity" />
               <v-btn class="add-item" @click="addItem">Add Item</v-btn>
             </div>
@@ -232,6 +232,8 @@
   
   .add-item {
     margin-left: 10px;
+    background-color: #4C4D6C; 
+    color: #ffffff;
   }
   
   .actions {
@@ -242,5 +244,10 @@
   
   .el-button {
     margin-left: 10px;
+    background-color: #4C4D6C; 
+    color: #ffffff;
+  }
+  .space-left{
+    margin-left: 50px;
   }
   </style>

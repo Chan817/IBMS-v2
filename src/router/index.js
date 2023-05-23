@@ -3,6 +3,8 @@ import DashboardVue from '@/components/Dashboard.vue'
 import OfflineOrderFormVue from '@/components/OfflineOrderForm.vue'
 import OnlineOrderFormVue from '@/components/OnlineOrderForm.vue'
 import ProductsVue from '@/components/Products.vue'
+import ProspectFormVue from '@/components/ProspectForm.vue'
+import ReportVue from '@/components/Report.vue'
 
 const routes = [
   {
@@ -26,9 +28,14 @@ const routes = [
     component: ProductsVue
   },
   {
-    path: '/addnew',
-    name: 'product',
-    component: ProductsVue
+    path: '/prospect',
+    name: 'prospect',
+    component: ProspectFormVue
+  },
+  {
+    path: '/report',
+    name: 'report',
+    component: ReportVue
   }
 ]
 
