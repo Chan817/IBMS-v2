@@ -32,7 +32,7 @@
                     <option value="B2B">B2B</option>
                     <option value="B2C">B2C</option>
                   </select>
-                  <label for="order-status">Order Status:</label>
+                  <label class="space-left" for="order-status">Order Status:</label>
                   <select id="order-status" v-model="orderStatus">
                     <option value="Pending">Pending</option>
                     <option value="Cancelled">Cancelled</option>
@@ -50,9 +50,9 @@
                       {{ product.name }}
                     </option>
                   </select>
-                  <label for="unit-price">Unit Price:</label>
+                  <label class="space-left" for="unit-price">Unit Price:</label>
                   <input id="unit-price" v-model="unitPrice" />
-                  <label for="quantity">Quantity:</label>
+                  <label class="space-left" for="quantity">Quantity:</label>
                   <input id="quantity" v-model="quantity" />
                   <v-btn class="add-item" @click="addItem">Add Item</v-btn>
                 </div>
@@ -131,57 +131,7 @@
     align-items: center;
     padding: 20px;
   }
-  
-  .header {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-    margin-bottom: 20px;
-  }
-  
-  .user-info {
-    display: flex;
-    align-items: center;
-  }
-  
-  .time {
-    font-size: 16px;
-    margin-right: 20px;
-  }
-  
-  .user {
-    display: flex;
-    align-items: center;
-  }
-  
-  .name {
-    font-size: 16px;
-    margin-right: 10px;
-  }
-  
-  .avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
-  
-  .icon-bell {
-    font-size: 24px;
-  }
-  
-  .divider {
-    width: 100%;
-    height: 2px;
-    background-color: #ccc;
-    margin: 20px 0;
-  }
-  
-  .menu {
-    height: 50px;
-    background-color: #333;
-  }
-  
+    
   .order-details {
     margin-right: 50px;
     margin-left: 50px;
@@ -215,6 +165,8 @@
   
   .add-item {
     margin-left: 10px;
+    background-color: #4C4D6C; 
+    color: #ffffff;
   }
   
   .actions {
@@ -225,6 +177,11 @@
   
   .el-button {
     margin-left: 10px;
+    background-color: #4C4D6C; 
+    color: #ffffff;
+  }
+  .space-left{
+    margin-left: 50px;
   }
   </style>
   

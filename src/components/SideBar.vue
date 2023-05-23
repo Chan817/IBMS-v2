@@ -19,31 +19,29 @@
         />
         
         <VListItem class="list"
-        to="/"
+        to=""
         prepend-icon="mdi-note-text" 
         title="Orders"
         />
 
-        <VListItem class="list"
+        <VListItem class="sublist"
         to="/offline"
-        prepend-icon="mdi-note-text" 
         title="Offline"
         />
 
-        <VListItem class="list"
+        <VListItem class="sublist"
         to="/online"
-        prepend-icon="mdi-note-text" 
         title="Online"
         />
 
         <VListItem class="list"
-        to="/"
+        to="/prospect"
         prepend-icon="mdi-account" 
         title="Key In"
         />
 
         <VListItem class="list"
-        to="/"
+        to="/report"
         prepend-icon="mdi-chart-line" 
         title="Reports"
         />
@@ -77,5 +75,9 @@ export default {
 }
 .link.icon{
     padding: 50%;
+}
+.sublist{
+    margin-left: 50px;
+    color: #ffffff;
 }
 </style>
