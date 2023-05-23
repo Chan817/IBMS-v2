@@ -1,6 +1,6 @@
 <template>
     <div class="report">
-      <h1>Report</h1>
+      <h1>Sales Report</h1>
       <div class="controls">
         <div class="period-select">
           <label for="period">Period:</label>

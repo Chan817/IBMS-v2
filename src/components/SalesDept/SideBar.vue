@@ -34,6 +34,11 @@
         title="Online"
         />
 
+        <VListItem class="sublist"
+        to="/list"
+        title="Order List"
+        />
+
         <VListItem class="list"
         to="/prospect"
         prepend-icon="mdi-account" 
@@ -44,6 +49,26 @@
         to="/report"
         prepend-icon="mdi-chart-line" 
         title="Reports"
+        />
+
+        <VListItem class="sublist"
+        to="/report"
+        title="Sales"
+        />
+
+        <VListItem class="sublist"
+        to="/report_customer"
+        title="Customer"
+        />
+
+        <VListItem class="sublist"
+        to="/list"
+        title="Prospect"
+        />
+
+        <VListItem class="sublist"
+        to="/list"
+        title="Platform"
         />
     
     </VList>
