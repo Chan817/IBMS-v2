@@ -27,8 +27,9 @@ module.exports = class API {
     static async createOrder(req,res){
         const order = req.body;
         try{
-            await Order.create(order);
             await Customer.create(order);
+            await Order.create(order);
+            
             res.status(201).json({ message: "Order created successfully!"});
         } catch(err){
             res.status(400).json({message: err.message});
