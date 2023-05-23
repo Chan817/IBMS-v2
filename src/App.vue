@@ -1,7 +1,8 @@
 <script setup>
-import Dashboard from './components/Dashboard.vue';
-import SideBar from './components/SideBar.vue';
-import TopBar from './components/TopBar.vue';
+import Dashboard from './components/SalesDept/Dashboard.vue';
+import SideBar from './components/SalesDept/SideBar.vue';
+import TopBar from './components/SalesDept/TopBar.vue';
+
 import TestCard from './components/testCard.vue';
 
 </script>

@@ -1,10 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import DashboardVue from '@/components/Dashboard.vue'
-import OfflineOrderFormVue from '@/components/OfflineOrderForm.vue'
-import OnlineOrderFormVue from '@/components/OnlineOrderForm.vue'
-import ProductsVue from '@/components/Products.vue'
-import ProspectFormVue from '@/components/ProspectForm.vue'
-import ReportVue from '@/components/Report.vue'
+import DashboardVue from '@/components/SalesDept/Dashboard.vue'
+import OfflineOrderFormVue from '@/components/SalesDept/OfflineOrderForm.vue'
+import OnlineOrderFormVue from '@/components/SalesDept/OnlineOrderForm.vue'
+import ProductsVue from '@/components/SalesDept/Products.vue'
+import ProspectFormVue from '@/components/SalesDept/ProspectForm.vue'
+import ReportVue from '@/components/SalesDept/Report_Sale.vue'
+import OrderListTableVue from '@/components/SalesDept/OrderListTable.vue'
+import Report_CustomerVue from '@/components/SalesDept/Report_Customer.vue'
 
 const routes = [
   {
@@ -23,6 +25,11 @@ const routes = [
     component: OnlineOrderFormVue
   },
   {
+    path: '/list',
+    name: 'list',
+    component: OrderListTableVue
+  },
+  {
     path: '/product',
     name: 'product',
     component: ProductsVue
@@ -36,7 +43,13 @@ const routes = [
     path: '/report',
     name: 'report',
     component: ReportVue
+  },
+  {
+    path: '/report_customer',
+    name: 'report_customer',
+    component: Report_CustomerVue
   }
+  
 ]
 
 const router = createRouter({
