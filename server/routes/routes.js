@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const API = require('../controllers/api');
 const multer = require('multer');
-const order = require('../controllers/OnlineOrderCtrl');
+const order = require('../controllers/OrderCtrl');
 
 // multer middleware
 let storage = multer.diskStorage({
@@ -23,10 +23,6 @@ router.get("/customer/:id", API.fetchCustomerByID);
 router.post("/customer", upload, API.createCustomer);
 router.patch("/customer/:id", upload, API.updateCustomer);
 router.delete("/customer/:id", API.deleteCustomer);
-router.get("/order", order.fetchAllOrder);
-router.get("/order/:id", order.fetchOrderByID);
-router.post("/order", upload, order.createOrder);
-router.patch("/order/:id", upload, order.updateOrder);
-router.delete("/order/:id", order.deleteOrder);
+
 
 module.exports = router;
