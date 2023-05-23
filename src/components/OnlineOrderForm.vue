@@ -35,10 +35,13 @@
             </div>
 
             <div class="form-item">
-              <label for="businessType">Business Type:</label>
-              <select id="businessType" v-model="businessType">
-                <option value="B2B">B2B</option>
-                <option value="B2C">B2C</option>
+              <label for="orderPlatform">Order Platform:</label>
+              <select id="orderPlatform" v-model="orderPlatform">
+                <option value="Lazada">Lazada</option>
+                <option value="Shopee">Shopee</option>
+                <option value="Shopee">Instagram</option>
+                <option value="Facebook">Facebook</option>
+                <option value="Tiktok">Tiktok</option>
               </select>
               
               <label class="space-left" for="orderStatus">Order Status:</label>
@@ -104,7 +107,8 @@
         customerName: "",
         customerAddress: "",
         customerEmail: "",
-        businessType: "B2B",
+        customerContact: "",
+        orderPlatform: "Lazada",
         orderStatus: "Pending",
         selectedProduct: "",
         unitPrice: "",
