@@ -44,13 +44,7 @@
           <!-- Platform Analytics  -->
         </div>
 
-        <template>
-          <Bar
-            id="my-chart-id"
-            :options="chartOptions"
-            :data="chartData"
-          />
-        </template>
+        
       </section>
   
       <!-- Recent Activities -->
@@ -84,48 +78,34 @@
   
   
   <script>
-  import { Bar } from 'vue-chartjs'
-  import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
-  
-  ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
-  
   export default {
-    name: 'BarChart',
-    components: { Bar },
     data() {
-      return {
-
-        period: 'Monthly',
-        user: {
-          name: 'John Doe',
-          avatar: 'path_to_avatar',
-        },
-        insufficientStock: true, // notification
-        totalSale: 0,
-        totalOrder: 0, 
-        totalCustomer: 0, 
-        totalProspects: 0, 
-        recentActivities: [
-          {
-            id: 1,
-            date: '2023-05-18',
-            time: '10:00 AM',
-            doneBy: 'John Doe',
-            action: 'Product added',
-            orderId: 'ORD001',
-          },
-          // add database
-        ],
-        chartData: {
-          labels: [ 'January', 'February', 'March' ],
-          datasets: [ { data: [40, 20, 12] } ]
-        },
-        chartOptions: {
-          responsive: true
-        }
-      };
+        return {
+            period: "Monthly",
+            user: {
+                name: "John Doe",
+                avatar: "path_to_avatar",
+            },
+            insufficientStock: true,
+            totalSale: 0,
+            totalOrder: 0,
+            totalCustomer: 0,
+            totalProspects: 0,
+            recentActivities: [
+                {
+                    id: 1,
+                    date: "2023-05-18",
+                    time: "10:00 AM",
+                    doneBy: "John Doe",
+                    action: "Product added",
+                    orderId: "ORD001",
+                },
+                // add database
+            ],
+        };
     },
-  };
+    
+};
   </script>
   
   <style scoped>
