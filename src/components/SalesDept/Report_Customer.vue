@@ -29,7 +29,7 @@
             
         </div>
         
-        <table class="table table-bordered">
+        <table class="table table-bordered" id="customer-table">
             <thead>
             <tr>
                 <th>Customer Name</th>
@@ -49,32 +49,53 @@
               </tr>
             </tbody>
         </table>
+        <button @click="downloadReport">Download Report</button>
     </div>
 </template>
 
 <script>
+import axios from 'axios';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
-    export default {
-        name: 'customerReport',
-        components: {
-            
-        },
-        props: ['customerReport'],
-        data: () => ({
-            loaded: false,
-            loading: false,
-        }),
-        methods: {
-            onClick () {
-            this.loading = true
-
-            setTimeout(() => {
-            this.loading = false
-            this.loaded = true
-            }, 2000)
-      },
-        }
-     }
+export default {
+  name: 'customerReport',
+  data: () => ({
+    selectedPeriod: '',
+    customerList: [],
+    loaded: false,
+    loading: false,
+  }),
+  mounted() {
+    this.fetchCustomers();
+  },
+  methods: {
+    fetchCustomers() {
+      axios
+        .get('/api/customer') // Adjust the route path if necessary
+        .then((response) => {
+          this.customerList = response.data;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
+    onClick() {
+  this.loading = true;
+  setTimeout(() => {
+    this.loading = false;
+    this.loaded = true;
+    this.downloadReport(); // Call the method to generate and download the report
+  }, 2000);
+},
+    downloadReport() {
+  const doc = new jsPDF();
+  doc.autoTable({ html: '#customer-table' });
+  doc.save('report.pdf');
+}
+,
+  },
+};
 </script>
 
 <style>

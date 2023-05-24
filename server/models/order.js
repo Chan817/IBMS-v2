@@ -11,9 +11,13 @@ const OrderSchema = mongoose.Schema({
     order_type: String,
     order_status: String,
     order_remark: String,
-    business_type:String,
+    business_type: String,
     order_platform: String,
     order_trackingNum: String,
-    customer_ID: String,
+    customer_ID: {
+        type: String,
+        required: true,
+        ref: "Customer"
+    },
 });
 module.exports = mongoose.model("Order", OrderSchema)

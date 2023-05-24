@@ -20,10 +20,15 @@ mongoose.connect(process.env.DB_URI, {
 }).then(() => console.log('Connected to the database')).catch((err) => console.log(err));
 
 //routes prefix
-app.use("/api/", require("./routes/routes"));
+//app.use("/api/", require("./routes/CustomerRoute"));
 
 //sales
 app.use("/api/order", require("./routes/OrderRoute"));
+app.use("/api/customer", require("./routes/CustomerRoute"));
+app.use("/api/inventoryitem", require("./routes/InventoryItemRoute"));
+app.use("/api/orderedproduct", require("./routes/OrderedProductRoute"));
+app.use("/api/prospect", require("./routes/ProspectRoute"));
+app.use("/api/customer", require("./routes/CustomerReportRoute"));
 
 // start server
 app.listen(port, () => console.log(`server running at http://localhost:${port}`));

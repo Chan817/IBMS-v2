@@ -46,17 +46,17 @@
             </select>
           </div>
 
-          <div class="form-item">
+          <div class="form-item" v-for="(item, index) in items" :key="index">
             <label for="order-product">Order Product:</label>
-            <select id="order-product" v-model="selectedProduct">
+            <select id="order-product" v-model="item.selectedProduct">
               <option v-for="product in products" :key="product.id" :value="product.name">
                 {{ product.name }}
               </option>
             </select>
             <label class="space-left" for="unit-price">Unit Price:</label>
-            <input id="unit-price" v-model="unitPrice" />
+            <input id="unit-price" v-model="item.unitPrice" />
             <label class="space-left" for="quantity">Quantity:</label>
-            <input id="quantity" v-model="quantity" />
+            <input id="quantity" v-model="item.quantity" />
             <v-btn class="add-item" @click="addItem">Add Item</v-btn>
           </div>
 
@@ -100,6 +100,7 @@ export default {
         { id: 2, name: "Product B" },
         { id: 3, name: "Product C" },
       ],
+      items: [{}],
       selectedProduct: "",
       unitPrice: "",
       quantity: "",
@@ -111,6 +112,8 @@ export default {
   methods: {
     save() {
       const orderData = {
+        order_type: "Offline",
+        customer_ID: "0",
         order_ID: this.orderId,
         customer_name: this.customerName,
         customer_address: this.customerAddress,
@@ -121,7 +124,7 @@ export default {
         order_remark: this.remark,
       };
 
-      axios.post('https://6108-119-40-120-147.ngrok-free.app/api/order', orderData)
+      axios.post('https://5a97-119-40-120-68.ngrok-free.app/api/order', orderData)
         .then(
           res => {
             console.log(res)
@@ -131,13 +134,38 @@ export default {
             console.log(err)
           }
         )
+        this.resetForm();
     },
     cancel() {
+      this.resetForm();
 
     },
     addItem() {
+      // Create a new item object with empty values
+    const newItem = {
+      product: "",
+      unitPrice: "",
+      quantity: ""
+    };
 
+    // Push the new item to the products array
+    this.items.push(newItem);
     },
+    resetForm() {
+    this.orderId = "";
+    this.customerName = "";
+    this.customerAddress = "";
+    this.customerEmail = "";
+    this.customerContact = "";
+    this.businessType = "";
+    this.orderStatus = "";
+    this.items = [{}], 
+    this.selectedProduct = "";
+    this.unitPrice = "";
+    this.quantity = "";
+    this.totalPrice = "";
+    this.remark = "";
+  },
     
   },
   computed: {

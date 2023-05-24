@@ -51,6 +51,12 @@ module.exports = class API {
 
     //delete a post
     static async deleteCustomer(req,res){
-        res.send("delete Customer");
+        const id = req.params.id;
+        try {
+          await Customer.findByIdAndDelete(id);
+          res.status(200).json({ message: "Customer deleted successfully!" });
+        } catch (err) {
+          res.status(404).json({ message: err.message });
+        }
     }
 }
