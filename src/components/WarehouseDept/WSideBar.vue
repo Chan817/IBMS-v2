@@ -1,84 +1,193 @@
 <template>
-    <v-app>
-      <v-navigation-drawer app dark class="primary" v-model="drawer">
-        <v-list>
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title class="title">
-                <span class="font-weight-bold">Al-Mehmood</span>
-              </v-list-item-title>
-              <v-list-item-subtitle>Transport Company</v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-          <v-divider></v-divider>
-          <v-list-group no-action v-for="navLink in navLinks" :key="navLink.text">
-            <template v-slot:activator>
-              <v-list-item :to="navLink.route">
-                <v-list-item-icon>
-                  <v-icon>{{ navLink.icon }}</v-icon>
-                </v-list-item-icon>
-                <v-list-item-title>{{ navLink.text }}</v-list-item-title>
-              </v-list-item>
-            </template>
-            <v-list-item v-for="sub in navLink.subLinks" :key="sub.text" :to="sub.route">
-              <v-list-item-title>{{ sub.text }}</v-list-item-title>
-            </v-list-item>
+  <v-navigation-drawer
+      class="drawer"
+      rail
+      style="background-color: #4C4D6C;"
+      :style="{ width: drawerWidth}"
+      @mouseout="collapseDrawer"
+      @mouseover="expandDrawer"
+  >
+      <v-list v-model:opened="open">
+          <v-list>
+              <v-list-item
+                  class="listNav"
+                  v-bind="props"
+                  prepend-icon="mdi-home"
+                  title="Home"
+                  :to="'/'"
+                  link
+              ></v-list-item>
+          </v-list>
+          <v-list-group class="listNav" value="Management">
+              <template v-slot:activator="{ props }">
+                  <v-list-item
+                      v-bind="props"
+                      prepend-icon="mdi-briefcase-account"
+                      title="Management"
+                      link
+                  ></v-list-item>
+              </template>
+
+              <v-list-item
+                  v-for="([title, icon, links], i) in Home"
+                  :key="i"
+                  :title="title"
+                  :prepend-icon="icon"
+                  :to="links"
+                  :value="title"
+                  link
+              ></v-list-item>
           </v-list-group>
-        </v-list>
-      </v-navigation-drawer>
-    </v-app>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        drawer: true,
-        navLinks: [
-          { icon: "dashboard", text: "Dashboard", route: "/" },
-          { icon: "star", text: "Ratings", route: "/ratings" },
-          {
-            icon: "people",
-            text: "Drivers",
-            route: "/drivers",
-            subLinks: [
-              { text: "Add Driver", route: "/drivers/add" },
-              { text: "Add Driver", route: "/drivers/add" }
-            ]
-          },
-          {
-            icon: "person_outline",
-            text: "Manager",
-            route: "/managers",
-            subLinks: [
-              { text: "Add Manager", route: "/managers/add" },
-              { text: "Managers", route: "/managers" }
-            ]
-          },
-          { icon: "person", text: "Manage Users", route: "/users" }
-        ]
-      };
-    }
-  };
-  </script>
-  
-  <style>
-  .primary {
-    background-color: #1976d2 !important;
+          <v-list-group class="listNav" value="Finance">
+              <template v-slot:activator="{ props }">
+                  <v-list-item
+                      v-bind="props"
+                      prepend-icon="mdi-finance"
+                      title="Finance"
+                  ></v-list-item>
+              </template>
+
+              <v-list-item
+                  v-for="([title, icon, links], i) in Finance"
+                  :key="i"
+                  :title="title"
+                  :prepend-icon="icon"
+                  :to="links"
+                  :value="title"
+                  link
+              ></v-list-item>
+              <v-list-group class="listNav" value="Transaction">
+              <template v-slot:activator="{ props }">
+                  <v-list-item
+                      v-bind="props"
+                      prepend-icon="mdi-swap-horizontal"
+                      title="Transaction"
+                  ></v-list-item>
+              </template>
+
+              <v-list-item
+                  v-for="([title, icon, links], i) in Transaction"
+                  :key="i"
+                  :title="title"
+                  :prepend-icon="icon"
+                  :to="links"
+                  :value="title"
+                  link
+              ></v-list-item>
+          </v-list-group>
+          </v-list-group>
+          <v-list-group class="listNav" value="Production">
+              <template v-slot:activator="{ props }">
+                  <v-list-item
+                      v-bind="props"
+                      prepend-icon="mdi-factory"
+                      title="Production"
+                  ></v-list-item>
+              </template>
+
+              <v-list-item
+                  v-for="([title, icon, links], i) in Production"
+                  :key="i"
+                  :title="title"
+                  :prepend-icon="icon"
+                  :to="links"
+                  :value="title"
+                  link
+              ></v-list-item>
+          </v-list-group>
+          <v-list-group class="listNav" value="salesMarketing">
+              <template v-slot:activator="{ props }">
+                  <v-list-item
+                      v-bind="props"
+                      prepend-icon="mdi-cash-register"
+                      title="Sales & Marketing"
+                  ></v-list-item>
+              </template>
+
+              <v-list-item
+                  v-for="([title, icon, links], i) in salesMarketing"
+                  :key="i"
+                  :title="title"
+                  :prepend-icon="icon"
+                  :to="links"
+                  :value="title"
+                  link
+              ></v-list-item>
+          </v-list-group>
+          <v-list-group class="listNav" value="warehouse">
+              <template v-slot:activator="{ props }">
+                  <v-list-item
+                      v-bind="props"
+                      prepend-icon="mdi-warehouse"
+                      title="Warehouse"
+                  ></v-list-item>
+              </template>
+
+              <v-list-item
+                  v-for="([title, icon, links], i) in warehouse"
+                  :key="i"
+                  :title="title"
+                  :prepend-icon="icon"
+                  :to="links"
+                  :value="title"
+                  link
+              ></v-list-item>
+          </v-list-group>
+      </v-list>
+  </v-navigation-drawer>
+</template>
+
+<script>
+export default {
+  data: () => ({
+      drawerWidth: 64,
+      open: [],
+      Home: [
+          ['Company Profile', 'mdi-domain', '/companyProfile'],
+          ['Employee', 'mdi-account', '/employee'],
+      ],
+      Management: [
+          ['Company Profile', 'mdi-domain', '/companyProfile'],
+          ['Employee', 'mdi-account', '/employee'],
+      ],
+      Finance: [
+          ['Quote', 'mdi-account-multiple-outline', '/quoteList'],
+          ['Invoice', 'mdi-receipt', '/invoiceList'],
+          ['Customer', 'mdi-account-group', '/customerList'],
+          ['Vendor', 'mdi-account-supervisor', '/vendorList'],
+          ['Purchase Order', 'mdi-cart-arrow-down', '/POList'],
+          ['Sales Order', 'mdi-cart-arrow-up', '/SOList'],
+          ['Bill', 'mdi-file-document', '/billList'],
+          ['Chart of Account', 'mdi-chart-areaspline', '/accList'],
+      ],
+      Transaction: [
+          ['Income', 'mdi-currency-usd', '/addIncome'],
+          ['Expense', 'mdi-currency-usd-off', '/addExpense'],
+      ],
+      Production: [
+          ['Product List', 'mdi-package-variant', '/productList'],
+          ['Schedule', 'mdi-calendar-clock', '/scheduleList'],
+      ],
+      salesMarketing: [],
+      warehouse: [],
+  }),
+  methods: {
+      expandDrawer() {
+      this.drawerWidth = '330px'; // Set the expanded width of the drawer
+      },
+
+      collapseDrawer() {
+      this.drawerWidth = '64px'; // Set the collapsed width of the drawer
+      },
+  },
+}
+</script>
+
+<style>
+  .listNav{
+      color: #ffffff;
   }
-  
-  .title {
-    color: #ffffff !important;
-  }
-  
-  .title span {
-    font-size: 24px;
-  }
-  
-  .v-list-item--active {
-    background-color: #e3f2fd !important;
-  }
-  </style>
+</style>
   
 
   
