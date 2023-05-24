@@ -16,6 +16,7 @@ import TestCard from './components/testCard.vue';
         <!--<SideBar_Warehouse/>-->
         
         <SideBar/>
+        
         <RouterView/>
       </v-main>
   </v-app>
