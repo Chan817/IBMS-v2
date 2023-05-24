@@ -2,7 +2,7 @@
   <v-card class="card">
     <v-toolbar color="primary">
       <v-tabs v-model="tab" align-tabs="title">
-        <v-tab v-for="item in items" :key="item" :value="item">
+        <v-tab v-for="item in items" :key="item" :value="item" @click="navigate(item)">
           {{ item }}
         </v-tab>
       </v-tabs>
@@ -22,6 +22,15 @@ export default {
       items: ['Offline Form', 'Online Form'],
     };
   },
+  methods: {
+    navigate(item) {
+      if (item === 'Offline Form') {
+        this.$router.push('/offline');
+      } else if (item === 'Online Form') {
+        this.$router.push('/online');
+      }
+    },
+  },
 };
 </script>
 
@@ -30,7 +39,6 @@ export default {
   margin: 20px;
 }
 </style>
-
   
   
 

@@ -26,7 +26,8 @@
             <div class="more-info">More Info -></div>
           </div>
         </div>
-  
+        
+
         <div class="widget">
           <div class="widget-header">Total Prospects</div>
           <div class="widget-content">
@@ -35,13 +36,21 @@
           </div>
         </div>
       </section>
-  
+      
       <!-- Chart -->
       <section class="section">
         <div class="chart">
           <!-- Sales Performance  -->
           <!-- Platform Analytics  -->
         </div>
+
+        <template>
+          <Bar
+            id="my-chart-id"
+            :options="chartOptions"
+            :data="chartData"
+          />
+        </template>
       </section>
   
       <!-- Recent Activities -->
@@ -69,12 +78,23 @@
         </table>
       </section>
     </div>
+    
   </template>
+
+  
   
   <script>
+  import { Bar } from 'vue-chartjs'
+  import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
+  
+  ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+  
   export default {
+    name: 'BarChart',
+    components: { Bar },
     data() {
       return {
+
         period: 'Monthly',
         user: {
           name: 'John Doe',
@@ -96,6 +116,13 @@
           },
           // add database
         ],
+        chartData: {
+          labels: [ 'January', 'February', 'March' ],
+          datasets: [ { data: [40, 20, 12] } ]
+        },
+        chartOptions: {
+          responsive: true
+        }
       };
     },
   };

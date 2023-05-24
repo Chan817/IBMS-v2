@@ -1,7 +1,17 @@
 <template>
-    <header>Add New Product</header>
+  <div class="container">
+    <h2>Add New Product</h2>
     <form @submit.prevent="submitForm">
-        <div class="form-group">
+        
+      <div class="form-group">
+        <label for="category">Category:</label>
+        <select class="select" id="category" v-model="form.category" required>
+          <option value="raw">Raw Material</option>
+          <option value="neksom">Neksom Product</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
             <label for="sku">SKU Number:</label>
             <input type="text" id="sku" v-model="form.sku" required>
         </div>
@@ -12,7 +22,7 @@
     </div>
     
     <div class="form-group">
-      <label for="image">Upload Image:</label>
+      <label class="img" for="image">Upload Image:</label>
       <input type="file" id="image" accept="image/*" @change="handleImageUpload" required>
     </div>
     
@@ -36,6 +46,8 @@
       <button type="button" class="cancel-button" @click="cancelForm">Cancel</button>
     </div>
     </form>
+  </div>
+    
   </template>
   
   <style scoped>
@@ -115,3 +127,18 @@ button:hover {
     },
   };
   </script>
+  <style>
+    .container{
+      padding: 30px;
+    }
+    h2{
+      margin-bottom: 30px;
+    }
+    .select{
+      width: 100%;
+      height: 40px;
+    }
+    .img{
+      margin-right: 15px;
+    }
+</style>

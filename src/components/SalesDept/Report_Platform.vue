@@ -1,17 +1,10 @@
 <template>
     <div class="container">
-        <h2>Customer Report</h2>
+        <h2>Platform Report</h2>
 
         <div class="container">
-            <label class="label" for="period">Period:</label>
-            <select class="select" v-model="selectedPeriod" id="period">
-                <option value="weekly">Weekly</option>
-                <option value="monthly">Monthly</option>
-                <option value="yearly">Yearly</option>
-                <option value="custom">Customize</option>
-            </select>
             
-            <div class="search-wrapper">
+            <div class="wrapper">
                <v-text-field
                 class="searchbar"
                 :loading="loading"
@@ -24,28 +17,21 @@
                 @click:append-inner="onClick"
             ></v-text-field> 
             </div>
-            
-            
-            
+   
         </div>
         
         <table class="table table-bordered">
             <thead>
             <tr>
-                <th>Customer Name</th>
-                <th>Customer Email</th>
-                <th>Customer Address</th>
-                <th>Customer Contact</th>
-                <th>History</th>
+                <th>Platform</th>
+                <th>Total Sales</th>
             </tr>
             </thead>
             <tbody>
-              <tr v-for="customer in customerList" :key="customer.name">
-                  <td>{{ customer.name }}</td>
-                  <td>{{ customer.email }}</td>
-                  <td>{{ customer.address }}</td>
-                  <td>{{ customer.contact }}</td>
-                  <td>{{ customer.history }}</td>
+              <tr v-for="platform in platformList" :key="platform.name">
+                  <td>{{ platform.name }}</td>
+                  <td>{{ platform.sales }}</td>
+
               </tr>
             </tbody>
         </table>
@@ -55,11 +41,11 @@
 <script>
 
     export default {
-        name: 'customerReport',
+        name: 'platformReport',
         components: {
             
         },
-        props: ['customerReport'],
+        props: ['platformReport'],
         data: () => ({
             loaded: false,
             loading: false,
@@ -81,21 +67,12 @@
 .container{
     padding-left: 50px;
     padding-right: 50px;
-
 }
 h2{
-    margin-bottom: 10px;
+    margin-bottom: 30px;
+    margin-top: 20px;
 }
-.select{
-    border: 2px solid #6b6b6b;
-    border-radius: 5px;
-    width: 100px;
-   
-    margin-bottom: 20px;
-}
-.label{
-    margin-right: 10px;
-}
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -103,7 +80,7 @@ table {
 }
 table th, table td {
     padding: 8px;
-    text-align: left;
+    text-align:center;
     border: 2px solid #6b6b6b;
   }
 .search{
@@ -114,8 +91,7 @@ table th, table td {
     height: 20px;
     margin-left: 200px;
 }
-.search-wrapper {
-    display: inline-block;
-    margin-left: 700px;
+.wrapper{
+    margin-left: 900px;
 }
 </style>
