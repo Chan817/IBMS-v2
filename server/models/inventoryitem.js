@@ -1,18 +1,15 @@
 const mongoose = require("mongoose");
 
 const InventoryItemSchema = mongoose.Schema({
-    InvID: {
-        type: Number,
-        required: true,
-        unique: true
-    },
     Inv_Name: {
         type: String,
         required: true
     },
     Inv_SKU_Num: {
         type: Number,
-        unique: true
+        index: true,
+        unique: true,
+        required: true
     },
     Inv_Catg: {
         type: String,
@@ -22,10 +19,7 @@ const InventoryItemSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    InvImg: {
-        type: String,
-        required: false
-    },
+    InvImg: String,
     Inv_MinStockLevel: {
         type: Number,
         required: true
@@ -39,21 +33,6 @@ const InventoryItemSchema = mongoose.Schema({
         required: true
     },
     Inv_Desc: String
-});
-
-// InvID and Inv_SKU_Num are generated before saving
-InventoryItemSchema.pre("save", function (next) {
-    const doc = this;
-    // Generate a unique InvID
-    if (!doc.InvID) {
-        generateUniqueID("InventoryItem", "InvID", function (err, id) {
-            if (err) return next(err);
-            doc.InvID = id;
-            next();
-        });
-    } else {
-        next();
-    }
 });
 
 // A unique Inv_SKU_Num is generated before saving

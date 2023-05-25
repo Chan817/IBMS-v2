@@ -8,8 +8,14 @@ const OrderSchema = mongoose.Schema({
         unique: true
     },
     order_Date: { type: Date, default: Date.now },
-    order_type: String,
-    order_status: String,
+    order_type: {
+        type: String,
+        required: true
+    },
+    order_status: {
+        type: String,
+        required: true
+    },
     order_remark: String,
     business_type: String,
     order_platform: String,

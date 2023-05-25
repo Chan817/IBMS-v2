@@ -53,10 +53,10 @@
                 {{ product.name }}
               </option>
             </select>
-            <label class="space-left" for="unit-price">Unit Price:</label>
-            <input id="unit-price" v-model="item.unitPrice" />
             <label class="space-left" for="quantity">Quantity:</label>
-            <input id="quantity" v-model="item.quantity" />
+            <input id="quantity" v-model="item.quantity" @input="calculateTotalPrice"/>
+            <label class="space-left" for="unit-price">Unit Price:</label>
+            <input id="unit-price" v-model="item.unitPrice" @input="calculateTotalPrice"/>
             <v-btn class="add-item" @click="addItem">Add Item</v-btn>
           </div>
 
@@ -104,7 +104,7 @@ export default {
       selectedProduct: "",
       unitPrice: "",
       quantity: "",
-      totalPrice: "",
+      totalPrice: 0,
       remark: "",
 
     };
@@ -121,6 +121,7 @@ export default {
         customer_contact: this.customerContact,
         business_type: this.businessType,
         order_status: this.orderStatus,
+        items: this.items,
         order_remark: this.remark,
       };
 
@@ -136,6 +137,17 @@ export default {
         )
         this.resetForm();
     },
+
+    calculateTotalPrice() {
+      // Calculate the total price
+      let totalPrice = 0;
+      for (const item of this.items) {
+        if (item.unitPrice && item.quantity) {
+          totalPrice += parseFloat(item.unitPrice) * parseInt(item.quantity);
+        }
+      }
+      this.totalPrice = totalPrice.toFixed(2); // Set the total price with 2 decimal places
+    },
     cancel() {
       this.resetForm();
 
@@ -143,7 +155,7 @@ export default {
     addItem() {
       // Create a new item object with empty values
     const newItem = {
-      product: "",
+      selectedProduct: "",
       unitPrice: "",
       quantity: ""
     };
@@ -163,7 +175,7 @@ export default {
     this.selectedProduct = "";
     this.unitPrice = "";
     this.quantity = "";
-    this.totalPrice = "";
+    this.totalPrice = 0;
     this.remark = "";
   },
     
@@ -177,12 +189,7 @@ export default {
         !this.customerEmail ||
         !this.customerContact ||
         !this.businessType ||
-        !this.orderStatus ||
-        !this.selectedProduct ||
-        !this.unitPrice ||
-        !this.quantity ||
-        !this.totalPrice ||
-        !this.remark
+        !this.orderStatus 
       );
     },
   },

@@ -4,11 +4,13 @@ const OrderedProductSchema = mongoose.Schema({
     Inventory_ID: {
         type: String,
         required: true,
+        index: true,
         ref: "InventoryItem"
     },
     Order_ID: {
         type: String,
         required: true,
+        index: true,
         ref: "Order"
     },
     Op_Qty: {

@@ -27,8 +27,14 @@ module.exports = class API {
     static async createOrder(req, res) {
         const order = req.body;
         try {
-            const customer = await Customer.create(order); // Create the customer and get the created instance
+            // Check if the customer already exists in the database
+            const existingCustomer = await Customer.findOne({ customer_email: order.customer_email });
+            if (existingCustomer) {
+                order.customer_ID = existingCustomer._id;
+            } else{
+                const customer = await Customer.create(order); // Create the customer and get the created instance
             order.customer_ID = customer._id; // Assign the CustomerID attribute from the customer instance
+            }
             await Order.create(order);
 
             res.status(201).json({ message: "Order created successfully!" });

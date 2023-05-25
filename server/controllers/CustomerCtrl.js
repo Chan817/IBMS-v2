@@ -23,17 +23,22 @@ module.exports = class API {
     }
 
     //create a post
-    static async createCustomer(req,res){
+    static async createCustomer(req, res) {
         const customer = req.body;
-        // const imagename = req.file.filename;
-        // customer.image = imagename;
-        try{
+        try {
+            // Check if the customer already exists in the database
+            const existingCustomer = await Customer.findOne({ email: customer.email });
+            if (existingCustomer) {
+                return res.status(409).json({ message: "Customer already exists!" });
+            }
+    
             await Customer.create(customer);
-            res.status(201).json({ message: "Customer created successfully!"});
-        } catch(err){
-            res.status(400).json({message: err.message});
+            res.status(201).json({ message: "Customer created successfully!" });
+        } catch (err) {
+            res.status(400).json({ message: err.message });
         }
     }
+    
 
     //update a post
     static async updateCustomer(req,res){
