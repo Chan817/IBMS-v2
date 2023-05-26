@@ -1,5 +1,6 @@
 const Customer = require("../models/customer");
 const Order = require("../models/order");
+const OrderedProduct = require('../models/orderedproduct');
 
 module.exports = class API {
     //fetch all Order
@@ -18,7 +19,7 @@ module.exports = class API {
         try {
             const order = await Order.findById(id);
             res.status(200).json(order);
-        } catch {
+        } catch (err) {
             res.status(404).json({ message: err.message });
         }
     }
@@ -31,11 +32,26 @@ module.exports = class API {
             const existingCustomer = await Customer.findOne({ customer_email: order.customer_email });
             if (existingCustomer) {
                 order.customer_ID = existingCustomer._id;
-            } else{
+            } else {
                 const customer = await Customer.create(order); // Create the customer and get the created instance
-            order.customer_ID = customer._id; // Assign the CustomerID attribute from the customer instance
+                order.customer_ID = customer._id; // Assign the CustomerID attribute from the customer instance
             }
             await Order.create(order);
+
+            // Create the ordered products
+            const orderedProducts = await Promise.all(order.items.map(async (product) => {
+                const orderedProduct = new OrderedProduct({
+                    Inventory_ID: product.selectedProduct,
+                    Order_ID: order.order_ID,
+                    Op_Qty: product.quantity,
+                    Op_UnitPrice: product.unitPrice
+                });
+
+                await orderedProduct.save();
+                return orderedProduct;
+            }));
+
+            await Promise.all(orderedProducts);
 
             res.status(201).json({ message: "Order created successfully!" });
         } catch (err) {
@@ -60,11 +76,11 @@ module.exports = class API {
     //delete a Order
     static async deleteOrder(req, res) {
         const id = req.params.id;
-    try {
-      await Order.findByIdAndDelete(id);
-      res.status(200).json({ message: "Order deleted successfully!" });
-    } catch (err) {
-      res.status(404).json({ message: err.message });
-    }
+        try {
+            await Order.findByIdAndDelete(id);
+            res.status(200).json({ message: "Order deleted successfully!" });
+        } catch (err) {
+            res.status(404).json({ message: err.message });
+        }
     }
 }

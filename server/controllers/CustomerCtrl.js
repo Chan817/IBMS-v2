@@ -17,7 +17,7 @@ module.exports = class API {
         try{
             const customer = await Customer.findById(id);
             res.status(200).json(customer);
-        } catch{
+        } catch (err){
             res.status(404).json({ message: err.message });
         }
     }

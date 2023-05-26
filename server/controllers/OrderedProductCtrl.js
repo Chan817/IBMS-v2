@@ -17,7 +17,7 @@ module.exports = class OrderedProductController {
     try {
       const orderedProduct = await OrderedProduct.findById(id);
       res.status(200).json(orderedProduct);
-    } catch {
+    } catch (err) {
       res.status(404).json({ message: err.message });
     }
   }
