@@ -6,26 +6,26 @@
         <div class="form">
             <div class="form-item">
                 <label for="name">Name:</label>
-                <input id="name" v-model="customerName" required>
+                <input id="name" v-model="prospect.name" required>
             </div>
 
             <div class="form-item">
                 <label for="address">Address:</label>
-                <input id="address" v-model="customerAddress" required>
+                <input id="address" v-model="prospect.address" required>
             </div>
 
             <div class="form-item">
                 <label for="email">Email:</label>
-                <input id="email" v-model="customerEmail" required>
+                <input id="email" v-model="prospect.email" required>
             </div>
 
             <div class="form-item">
                 <label for="contact">Contact:</label>
-                <input id="contact" v-model="customerContact" required>
+                <input id="contact" v-model="prospect.contact" required>
             </div>
 
             <div class="text-right">
-                <v-btn class="button" type="submit" @click="submitForm">Submit</v-btn>
+                <v-btn class="button" type="submit" @click="submitForm" :disabled="isSaveDisabled">Submit</v-btn>
                 <v-btn class="button" type="button" @click="cancelForm">Cancel</v-btn>
             </div>
         </div>
@@ -35,10 +35,13 @@
   </template>
   
   <script>
+  import axios from 'axios'
+
   export default {
+    name: 'offlineOrderUI',
     data() {
       return {
-        customer: {
+        prospect: {
           name: '',
           address: '',
           email: '',
@@ -48,10 +51,29 @@
     },
     methods: {
       submitForm() {
-        // Perform any desired logic with the form data
-        console.log(this.customer);
+        const prospectData = {
+          prospect_name:this.prospect.name,
+          prospect_address: this.prospect.address,
+          prospect_email: this.prospect.email,
+          prospect_contact: this.prospect.contact,
+        };
+        console.log(this.prospect);
+        axios.post('https://d61f-119-40-118-218.ngrok-free.app/api/prospect', prospectData)
+        .then(
+          res => {
+            console.log(res)
+          }
+        ).catch(
+          err => {
+            console.log(err)
+          }
+        )
+        this.resetForm();
+        
+      },
+      resetForm(){
         // Reset the form
-        this.customer = {
+        this.prospect = {
           name: '',
           address: '',
           email: '',
@@ -59,9 +81,19 @@
         };
       },
       cancelForm(){
-        
+        this.resetForm();
       }
-    }
+    },
+    computed: {
+    isSaveDisabled() {
+      return (
+        !this.prospect.address ||
+        !this.prospect.email ||
+        !this.prospect.name ||
+        !this.prospect.contact 
+      );
+    },
+  },
   };
   </script>
   
