@@ -9,7 +9,6 @@ import OrderListTableVue from '@/components/SalesDept/OrderListTable.vue'
 import Report_CustomerVue from '@/components/SalesDept/Report_Customer.vue'
 import Report_ProspectVue from '@/components/SalesDept/Report_Prospect.vue'
 import Report_PlatformVue from '@/components/SalesDept/Report_Platform.vue'
-import barChartVue from '@/components/SalesDept/barChart.vue'
 import testCardVue from '@/components/testCard.vue'
 import RawMaterialTableVue from '@/components/WarehouseDept/RawMaterialTable.vue'
 import NeksomTableVue from '@/components/WarehouseDept/NeksomTable.vue'
@@ -22,18 +21,13 @@ import table_completeVue from '@/components/WarehouseDept/table_complete.vue'
 import table_cancelVue from '@/components/WarehouseDept/table_cancel.vue'
 import table_allOrdersVue from '@/components/WarehouseDept/table_allOrders'
 import report_warehouseVue from '@/components/WarehouseDept/report_warehouse.vue'
-import ChartWareView from '@/views/ChartWareView.vue'
+
 
 const routes = [
   {
     path: '/',
     name: 'dashboard',
     component: DashboardVue
-  },
-  {
-    path: '/bar',
-    name: 'bar',
-    component: barChartVue
   },
   {
     path: '/offline',
@@ -139,36 +133,6 @@ const routes = [
     path: '/reportWarehouse',
     name: 'reportWarehouse',
     component: report_warehouseVue
-  },
-  {
-    path: '/chart',
-      name: 'Chart',
-      component: ChartWareView,
-      props: {
-        chartData: {
-          labels: ['Unpaid', 'To Ship', 'Shipping', 'Completed', 'Cancellation'],
-          datasets: [
-            {
-              label: 'Order Status',
-              backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#FF9F40'],
-              data: [/* Pass your data values here */]
-            }
-          ]
-        },
-        chartOptions: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            yAxes: [
-              {
-                ticks: {
-                  beginAtZero: true
-                }
-              }
-            ]
-          }
-        }
-      }
   }
   
 ]

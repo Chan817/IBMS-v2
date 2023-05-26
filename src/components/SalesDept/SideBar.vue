@@ -19,14 +19,6 @@
         
         <VList>
             <VListItem class="listNav"
-            to="/chart"
-            prepend-icon="mdi-view-dashboard" 
-            title="Bar chart test"
-            />
-        </VList>
-        
-        <VList>
-            <VListItem class="listNav"
             to="/product"
             prepend-icon="mdi-warehouse" 
             title="Inventory"

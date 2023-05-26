@@ -40,11 +40,17 @@
       <!-- Chart -->
       <section class="section">
         <div class="chart">
-          <!-- Sales Performance  -->
-          <!-- Platform Analytics  -->
-        </div>
+          <!-- 添加图表的功能的地方 -->
+          <!-- Sales Performance -->
+          <div class="sales-chart">
+            <canvas ref="salesChart"></canvas>
+          </div>
 
-        
+          <!-- Platform Analytics -->
+          <div class="analytics-chart">
+            <canvas ref="analyticsChart"></canvas>
+          </div>
+        </div>
       </section>
   
       <!-- Recent Activities -->
@@ -78,6 +84,12 @@
   
   
   <script>
+  import { Chart, registerables } from 'chart.js';
+
+  // Register the required chart types
+  Chart.register(...registerables);
+
+
   export default {
     data() {
         return {
@@ -104,6 +116,58 @@
             ],
         };
     },
+
+    mounted() {
+    this.renderChart();
+  },
+  methods: {
+    renderChart() {
+      const salesData = {
+        labels: ["Product A", "Product B", "Product C", "Product D"],
+        datasets: [
+          {
+            label: "Sales",
+            backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"],
+            data: [120, 150, 180, 90],
+          },
+        ],
+      };
+
+      const analyticsData = {
+        labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September","October", "November", "December"],
+        datasets: [
+          {
+            label: "Analytics",
+            borderColor: "#FF6384",
+            data: [100, 200, 150, 300, 250],
+          },
+        ],
+      };
+
+      this.renderPieChart(salesData, "salesChart");
+      this.renderLineChart(analyticsData, "analyticsChart");
+    },
+    renderPieChart(data, element) {
+    this.$refs[element]._chart = new Chart(this.$refs[element].getContext('2d'), {
+        type: 'pie',
+        data,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+        },
+      });
+    },
+    renderLineChart(data, element) {
+      this.$refs[element]._chart = new Chart(this.$refs[element].getContext('2d'), {
+      type: 'line',
+      data,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+      },
+    });
+    },
+  },
     
 };
   </script>
@@ -111,48 +175,6 @@
   <style scoped>
   .dashboard {
     margin: 50px;
-  }
-  
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .period {
-    font-size: 24px;
-  }
-  
-  .user-profile {
-    display: flex;
-    align-items: center;
-  }
-  
-  .avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
-  
-  .user-name {
-    font-weight: bold;
-  }
-  
-  .message-icon {
-    position: relative;
-  }
-  
-  .notification {
-    display: block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: #ccc;
-  }
-  
-  .red-notification {
-    background-color: red;
   }
   
   .section {
@@ -207,5 +229,15 @@
     padding: 8px;
     text-align: left;
     border-bottom: 1px solid #ddd;
+  }
+  .analytics-chart{
+    width:70%;
+    height: 320px;
+    margin: 30px;
+  }
+  .sales-chart{
+    margin: 30px;
+    width: 50%;
+    height: 50%;
   }
   </style>
