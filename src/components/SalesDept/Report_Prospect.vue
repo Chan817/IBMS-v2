@@ -37,10 +37,14 @@
               </tr>
             </tbody>
         </table>
+        <v-btn @click="downloadReport">Download Report</v-btn>
     </div>
 </template>
 
 <script>
+import axios from 'axios';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
     export default {
         name: 'prospectReport',
@@ -52,15 +56,34 @@
             loaded: false,
             loading: false,
         }),
+        mounted() {
+            this.fetchProspect();
+        },
         methods: {
+            fetchProspect() {
+            axios
+                .get('/api/prospect') // Adjust the route path if necessary
+                .then((response) => {
+                this.prospectList = response.data;
+                })
+                .catch((error) => {
+                console.error(error);
+                });
+            },
             onClick () {
             this.loading = true
 
             setTimeout(() => {
             this.loading = false
-            this.loaded = true
+            this.loaded = true;
+            this.downloadReport();
             }, 2000)
-      },
+            },
+            downloadReport() {
+            const doc = new jsPDF();
+            doc.autoTable({ html: '#prospect-table' });
+            doc.save('NeksomProspect_Report.pdf');
+            },
         }
      }
 </script>

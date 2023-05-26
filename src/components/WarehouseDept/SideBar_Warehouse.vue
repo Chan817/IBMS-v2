@@ -11,7 +11,7 @@
     <VList v-model:opened="open">
         <VList>
             <VListItem class="listNav"
-            to="/"
+            to="/ware_dashboard"
             prepend-icon="mdi-view-dashboard" 
             title="Dashboard"
             />
@@ -81,7 +81,7 @@
 
         <VList>
             <VListItem class="listNav"
-            to="/"
+            to="/allorder"
             prepend-icon="mdi-note-text" 
             title="Order"
             />
@@ -89,7 +89,7 @@
 
         <VList>
             <VListItem class="listNav"
-            to="/"
+            to="/reportWarehouse"
             prepend-icon="mdi-chart-line" 
             title="Report"
             />
