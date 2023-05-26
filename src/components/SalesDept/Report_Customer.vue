@@ -41,10 +41,10 @@
             </thead>
             <tbody>
               <tr v-for="customer in customerList" :key="customer.name">
-                  <td>{{ customer.name }}</td>
-                  <td>{{ customer.email }}</td>
-                  <td>{{ customer.address }}</td>
-                  <td>{{ customer.contact }}</td>
+                  <td>{{ customer.customer_name }}</td>
+                  <td>{{ customer.customer_email }}</td>
+                  <td>{{ customer.customer_address }}</td>
+                  <td>{{ customer.customer_contact }}</td>
                   <td>{{ customer.history }}</td>
               </tr>
             </tbody>
@@ -74,6 +74,7 @@ export default {
       axios
         .get('/api/customer') // Adjust the route path if necessary
         .then((response) => {
+          console.log(response.data);
           this.customerList = response.data;
         })
         .catch((error) => {

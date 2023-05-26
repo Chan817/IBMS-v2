@@ -29,11 +29,11 @@
             </tr>
             </thead>
             <tbody>
-              <tr v-for="prospect in prospectList" :key="prospect.name">
-                  <td>{{ prospect.name }}</td>
-                  <td>{{ prospect.email }}</td>
-                  <td>{{ prospect.address }}</td>
-                  <td>{{ prospect.contact }}</td>
+              <tr v-for="prospect in prospectList" :key="prospect._id">
+                  <td>{{ prospect.prospect_name }}</td>
+                  <td>{{ prospect.prospect_email }}</td>
+                  <td>{{ prospect.prospect_address }}</td>
+                  <td>{{ prospect.prospect_contact }}</td>
               </tr>
             </tbody>
         </table>
@@ -48,11 +48,11 @@ import 'jspdf-autotable';
 
     export default {
         name: 'prospectReport',
-        components: {
-            
-        },
-        props: ['prospectReport'],
         data: () => ({
+            selectedPeriod: '',
+    prospectList: [],
+    loaded: false,
+    loading: false,
             loaded: false,
             loading: false,
         }),
@@ -64,6 +64,7 @@ import 'jspdf-autotable';
             axios
                 .get('/api/prospect') // Adjust the route path if necessary
                 .then((response) => {
+                    console.log(response.data); 
                 this.prospectList = response.data;
                 })
                 .catch((error) => {

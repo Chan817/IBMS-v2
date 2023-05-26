@@ -35,10 +35,13 @@
   </template>
   
   <script>
+  import axios from 'axios'
+
   export default {
+    name: 'ProspectForm',
     data() {
       return {
-        customer: {
+        prospect: {
           name: '',
           address: '',
           email: '',
