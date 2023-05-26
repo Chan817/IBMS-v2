@@ -18,7 +18,7 @@ module.exports = class InventoryItemController {
     try {
       const inventoryItem = await InventoryItem.findById(id);
       res.status(200).json(inventoryItem);
-    } catch {
+    } catch (err) {
       res.status(404).json({ message: err.message });
     }
   }

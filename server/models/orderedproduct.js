@@ -21,10 +21,6 @@ const OrderedProductSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    OpTotal: {
-        type: Number,
-        required: true
-    }
 });
 
 module.exports = mongoose.model("OrderedProduct", OrderedProductSchema);
