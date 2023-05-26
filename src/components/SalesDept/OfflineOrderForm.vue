@@ -134,8 +134,9 @@ export default {
         order_remark: this.order.remark,
       };
 
-      axios.post('https://d61f-119-40-118-218.ngrok-free.app/api/order', orderData)
+      axios.post('http://localhost:5000/api/order', orderData)
         .then(
+          console.log(orderData.data),
           res => {
             console.log(res)
           }
