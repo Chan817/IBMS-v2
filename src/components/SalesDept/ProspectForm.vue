@@ -58,7 +58,7 @@
           prospect_contact: this.prospect.contact,
         };
         console.log(this.prospect);
-        axios.post('https://d61f-119-40-118-218.ngrok-free.app/api/prospect', prospectData)
+        axios.post('http://localhost:5000/api/prospect', prospectData)
         .then(
           res => {
             console.log(res)
