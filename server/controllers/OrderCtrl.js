@@ -26,6 +26,7 @@ module.exports = class API {
 
     //create a Order
     static async createOrder(req, res) {
+        console.log('Inside createOrder');
         const order = req.body;
         try {
             // Check if the customer already exists in the database
@@ -36,6 +37,7 @@ module.exports = class API {
                 const customer = await Customer.create(order); // Create the customer and get the created instance
                 order.customer_ID = customer._id; // Assign the CustomerID attribute from the customer instance
             }
+            console.log('New Order:', order);
             await Order.create(order);
 
             // Create the ordered products
@@ -52,6 +54,7 @@ module.exports = class API {
             }));
 
             await Promise.all(orderedProducts);
+            
 
             res.status(201).json({ message: "Order created successfully!" });
         } catch (err) {
