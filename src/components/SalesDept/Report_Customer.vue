@@ -49,7 +49,7 @@
               </tr>
             </tbody>
         </table>
-        <button @click="downloadReport">Download Report</button>
+        <v-btn @click="downloadReport">Download Report</v-btn>
     </div>
 </template>
 
@@ -81,19 +81,18 @@ export default {
         });
     },
     onClick() {
-  this.loading = true;
-  setTimeout(() => {
-    this.loading = false;
-    this.loaded = true;
-    this.downloadReport(); // Call the method to generate and download the report
-  }, 2000);
-},
+      this.loading = true;
+      setTimeout(() => {
+        this.loading = false;
+        this.loaded = true;
+        this.downloadReport(); // Call the method to generate and download the report
+      }, 2000);
+    },
     downloadReport() {
-  const doc = new jsPDF();
-  doc.autoTable({ html: '#customer-table' });
-  doc.save('report.pdf');
-}
-,
+      const doc = new jsPDF();
+      doc.autoTable({ html: '#customer-table' });
+      doc.save('NeksomCustomer_Report.pdf');
+    },
   },
 };
 </script>

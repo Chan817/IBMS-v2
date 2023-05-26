@@ -19,7 +19,7 @@
         
         <VList>
             <VListItem class="listNav"
-            to="/bar"
+            to="/chart"
             prepend-icon="mdi-view-dashboard" 
             title="Bar chart test"
             />
@@ -94,6 +94,7 @@ export default {
     orders:[
         ['Offline Order', '','/offline'],
         ['Online Order',  '','/online'],
+        ['Order List',  '','/list'],
     ],
     report:[
     ['Sales', '','/report'],

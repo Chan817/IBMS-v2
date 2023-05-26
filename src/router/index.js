@@ -14,6 +14,15 @@ import testCardVue from '@/components/testCard.vue'
 import RawMaterialTableVue from '@/components/WarehouseDept/RawMaterialTable.vue'
 import NeksomTableVue from '@/components/WarehouseDept/NeksomTable.vue'
 import AddNewVue from '@/components/WarehouseDept/AddNew.vue'
+import Dashboard_WarehouseVue from '@/components/WarehouseDept/Dashboard_Warehouse.vue'
+import table_unpaidVue from '@/components/WarehouseDept/table_unpaid.vue'
+import table_toshipVue from '@/components/WarehouseDept/table_toship.vue'
+import table_shippingVue from '@/components/WarehouseDept/table_shipping.vue'
+import table_completeVue from '@/components/WarehouseDept/table_complete.vue'
+import table_cancelVue from '@/components/WarehouseDept/table_cancel.vue'
+import table_allOrdersVue from '@/components/WarehouseDept/table_allOrders'
+import report_warehouseVue from '@/components/WarehouseDept/report_warehouse.vue'
+import ChartWareView from '@/views/ChartWareView.vue'
 
 const routes = [
   {
@@ -77,6 +86,11 @@ const routes = [
     component: Report_PlatformVue
   },
   {
+    path: '/ware_dashboard',
+    name: 'wareDash',
+    component: Dashboard_WarehouseVue
+  },
+  {
     path: '/raw',
     name: 'raw',
     component: RawMaterialTableVue
@@ -90,6 +104,71 @@ const routes = [
     path: '/add',
     name: 'add',
     component: AddNewVue
+  },
+  {
+    path: '/unpaid',
+    name: 'unpaid',
+    component: table_unpaidVue
+  },
+  {
+    path: '/toship',
+    name: 'toship',
+    component: table_toshipVue
+  },
+  {
+    path: '/shipping',
+    name: 'shipping',
+    component: table_shippingVue
+  },
+  {
+    path: '/completed',
+    name: 'completed',
+    component: table_completeVue
+  },
+  {
+    path: '/cancel',
+    name: 'cancel',
+    component: table_cancelVue
+  },
+  {
+    path: '/allorder',
+    name: 'allorder',
+    component: table_allOrdersVue
+  },
+  {
+    path: '/reportWarehouse',
+    name: 'reportWarehouse',
+    component: report_warehouseVue
+  },
+  {
+    path: '/chart',
+      name: 'Chart',
+      component: ChartWareView,
+      props: {
+        chartData: {
+          labels: ['Unpaid', 'To Ship', 'Shipping', 'Completed', 'Cancellation'],
+          datasets: [
+            {
+              label: 'Order Status',
+              backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#FF9F40'],
+              data: [/* Pass your data values here */]
+            }
+          ]
+        },
+        chartOptions: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            yAxes: [
+              {
+                ticks: {
+                  beginAtZero: true
+                }
+              }
+            ]
+          }
+        }
+      }
   }
   
 ]

@@ -10,7 +10,7 @@
                 <th>Customer Name</th>
                 <th>Product</th>
                 <th>Quantity</th>
-                <th>Price</th>
+                <th>Total Price</th>
                 <th>Status</th>
                 <th>Actions</th>
             </tr>

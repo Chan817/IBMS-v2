@@ -12,10 +12,10 @@ import TestCard from './components/testCard.vue';
   <v-app>
       <v-main>
         <TopBar/>
-        
-        <!--<SideBar_Warehouse/>-->
-        
         <SideBar/>
+        <!---->
+        <SideBar_Warehouse/>
+        
         
         <RouterView/>
       </v-main>

@@ -35,13 +35,10 @@
   </template>
   
   <script>
-  import axios from 'axios'
-
   export default {
-    name: 'offlineOrderUI',
     data() {
       return {
-        prospect: {
+        customer: {
           name: '',
           address: '',
           email: '',
