@@ -6,7 +6,7 @@ const InventoryItemSchema = mongoose.Schema({
         required: true
     },
     Inv_SKU_Num: {
-        type: Number,
+        type: String,
         index: true,
         unique: true
     },

@@ -135,6 +135,24 @@ export default {
     handleImageUpload(event) {
       const file = event.target.files[0];
       // Perform image upload logic here
+      const reader = new FileReader();
+
+// Set up the FileReader onload event handler
+reader.onload = () => {
+  // Access the image data from the FileReader result
+  const imageData = reader.result;
+
+  // Store the image data in the form data object
+  this.form.image = imageData;
+
+  // You can also display a preview of the uploaded image if needed
+  // For example, if you have an image preview element with id "imagePreview":
+  // const imagePreviewElement = document.getElementById("imagePreview");
+  // imagePreviewElement.src = imageData;
+};
+
+// Read the file as a data URL
+reader.readAsDataURL(file);
       console.log(file);
     }
   },

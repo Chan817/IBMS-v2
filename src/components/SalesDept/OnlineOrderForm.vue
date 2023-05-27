@@ -47,6 +47,7 @@
             <label class="space-left" for="orderStatus">Order Status: <span class="required-field">*</span></label>
             <select id="orderStatus" v-model="order.orderStatus">
               <option value="Pending">Pending</option>
+              <option value="Completed">Completed</option>
               <option value="Cancelled">Cancelled</option>
             </select>
           </div>
@@ -73,7 +74,7 @@
           </div>
 
           <div class="form-item">
-            <label for="trackingNumber">Tracking Number: <span class="required-field">*</span></label>
+            <label for="trackingNumber">Tracking Number: </label>
             <input id="trackingNumber" v-model="order.trackingNumber" />
           </div>
 
@@ -152,6 +153,9 @@ export default {
         order_platform: this.order.orderPlatform,
         order_trackingNum: this.order.trackingNumber
       };
+      if (this.order.trackingNumber) {
+        orderData.order_trackingNum = this.order.trackingNumber;
+      }
       if (this.customer.customerAddress) {
         orderData.customer_address = this.customer.customerAddress;
       }
@@ -243,7 +247,6 @@ export default {
         !this.customer.customerName ||
         !this.customer.customerContact ||
         !this.order.orderPlatform ||
-        !this.order.trackingNumber ||
         !this.order.orderStatus
       );
     },

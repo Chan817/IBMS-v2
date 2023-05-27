@@ -1,6 +1,7 @@
 const Customer = require("../models/customer");
 const Order = require("../models/order");
 const OrderedProduct = require('../models/orderedproduct');
+const InventoryItem = require('../models/inventoryitem');
 
 module.exports = class API {
     //fetch all Order
@@ -47,8 +48,9 @@ module.exports = class API {
 
             // Create the ordered products
             const orderedProducts = await Promise.all(order.items.map(async (product) => {
+                const invID = await InventoryItem.findOne({ Inv_Name: product.Inventory_ID });
                 const orderedProduct = new OrderedProduct({
-                    Inventory_ID: product.Inventory_ID,
+                    Inventory_ID: invID,
                     Order_ID: order.order_ID,
                     Op_Qty: product.Op_Qty,
                     Op_UnitPrice: product.Op_UnitPrice

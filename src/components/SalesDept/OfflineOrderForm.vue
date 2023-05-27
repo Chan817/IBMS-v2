@@ -41,6 +41,7 @@
             <label class="space-left" for="order-status">Order Status: <span class="required-field">*</span></label>
             <select id="order-status" v-model="order.orderStatus">
               <option value="Pending">Pending</option>
+              <option value="Completed">Completed</option>
               <option value="Cancelled">Cancelled</option>
             </select>
           </div>
