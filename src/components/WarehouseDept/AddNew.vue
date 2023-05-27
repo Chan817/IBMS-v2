@@ -2,9 +2,9 @@
   <div class="container">
     <h2>Add New Product</h2>
     <form @submit.prevent="submitForm">
-        
       <div class="form-group">
         <label for="category">Category:</label>
+        <span class="required-field">*</span>
         <select class="select" id="category" v-model="form.category" required>
           <option value="raw">Raw Material</option>
           <option value="neksom">Neksom Product</option>
@@ -12,53 +12,170 @@
       </div>
       
       <div class="form-group">
-            <label for="sku">SKU Number:</label>
-            <input type="text" id="sku" v-model="form.sku" required>
-        </div>
+        <label for="sku">SKU Number:</label>
+        <input type="text" id="sku" v-model="form.sku" >
+      </div>
       
-        <div class="form-group">
-      <label for="barcode">Barcode Number:</label>
-      <input type="text" id="barcode" v-model="form.barcode" required>
-    </div>
+      <div class="form-group">
+        <label for="barcode">Barcode Number:</label>
+        <input type="text" id="barcode" v-model="form.barcode" >
+      </div>
     
-    <div class="form-group">
-      <label class="img" for="image">Upload Image:</label>
-      <input type="file" id="image" accept="image/*" @change="handleImageUpload" required>
-    </div>
+      <div class="form-group">
+        <label class="img" for="image">Upload Image:</label>
+        <input type="file" id="image" accept="image/*" @change="handleImageUpload" >
+      </div>
     
-    <div class="form-group">
-      <label for="productName">Product Name:</label>
-      <input type="text" id="productName" v-model="form.productName" required>
-    </div>
+      <div class="form-group">
+        <label for="productName">Product Name:</label>
+        <span class="required-field">*</span>
+        <input type="text" id="productName" v-model="form.productName" required>
+      </div>
     
-    <div class="form-group">
-      <label for="description">Description:</label>
-      <textarea id="description" v-model="form.description" required></textarea>
-    </div>
+      <div class="form-group">
+        <label for="description">Description:</label>
+        <textarea id="description" v-model="form.description" ></textarea>
+      </div>
     
-    <div class="form-group">
-      <label for="price">Price:</label>
-      <input type="number" id="price" v-model="form.price" required>
-    </div>
+      <div class="form-group">
+        <label for="price">Price:</label>
+        <span class="required-field">*</span>
+        <input type="text" id="price" v-model="form.price" required>
+      </div>
+
+      <div class="form-group">
+        <label for="currentstock">Current stock:</label>
+        <span class="required-field">*</span>
+        <input type="number" id="currentstock" v-model="form.currentstock" required>
+      </div>
+
+      <div class="form-group">
+        <label for="minstock">Minimum stock level:</label>
+        <span class="required-field">*</span>
+        <input type="number" id="minstock" v-model="form.minstock" required>
+      </div>
     
-    <div class="button-group">
-      <button type="submit" class="save-button">Save</button>
-      <button type="button" class="cancel-button" @click="cancelForm">Cancel</button>
-    </div>
+      <div class="button-group">
+        <button type="submit" class="save-button" :disabled="isSaveDisabled">Save</button>
+        <button type="button" class="cancel-button" @click="cancelForm">Cancel</button>
+      </div>
     </form>
   </div>
-    
-  </template>
-  
-  <style scoped>
-.form-group {
-  margin-bottom: 20px;
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+  name: 'AddNewInventoryItem',
+  data() {
+    return {
+      form: {
+        category: '',
+        sku: '',
+        barcode: '',
+        image: null,
+        productName: '',
+        description: '',
+        price: null,
+        currentstock: null,
+        minstock: null
+      }
+    };
+  },
+  methods: {
+    submitForm() {
+      // Handle form submission here
+      const formData = {
+        Inv_Name: this.form.productName,
+        Inv_Catg: this.form.category,
+        Inv_MinStockLevel: this.form.minstock,
+        Inv_StockLevel: this.form.currentstock,
+        Inv_CostPrice: this.form.price,
+      };
+      // Include optional fields only if they have a value
+  if (this.form.sku) {
+    formData.Inv_SKU_Num = this.form.sku;
+  }
+  if (this.form.barcode) {
+    formData.Inv_BarcodeNum = this.form.barcode;
+  }
+  if (this.form.image) {
+    formData.InvImg = this.form.image;
+  }
+  if (this.form.description) {
+    formData.Inv_Desc = this.form.description;
+  }
+      console.log(formData);
+      axios.post('http://localhost:5000/api/inventoryitem', formData)
+        .then(res => {
+          console.log(res);
+          this.resetForm();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    resetForm() {
+      this.form = {
+        category: '',
+        sku: '',
+        barcode: '',
+        image: null,
+        productName: '',
+        description: '',
+        price: null,
+        currentstock: null,
+        minstock: null
+      };
+    },
+    cancelForm() {
+      this.resetForm();
+    },
+    handleImageUpload(event) {
+      const file = event.target.files[0];
+      // Perform image upload logic here
+      console.log(file);
+    }
+  },
+  computed: {
+    isSaveDisabled() {
+      return (
+        !this.form.productName ||
+        !this.form.category ||
+        !this.form.minstock ||
+        !this.form.currentstock ||
+        !this.form.price
+      );
+    }
+  }
+};
+</script>
+
+<style scoped>
+.container {
+  padding: 30px;
 }
 
-.label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
+h2 {
+  margin-bottom: 30px;
+}
+
+.select {
+  width: 100%;
+  height: 40px;
+}
+
+.img {
+  margin-right: 15px;
+}
+
+.required-field {
+  color: red;
+}
+
+.form-group {
+  margin-bottom: 20px;
 }
 
 input[type="text"],
@@ -96,49 +213,4 @@ button:hover {
 .cancel-button:hover {
   background-color: #c82333;
 }
-</style>
-
-
-  <script>
-  export default {
-    data() {
-      return {
-        form: {
-          sku: '',
-          barcode: '',
-          image: null,
-          productName: '',
-          description: '',
-          price: null,
-        },
-      };
-    },
-    methods: {
-      submitForm() {
-        // Handle form submission here
-        console.log(this.form);
-      },
-      handleImageUpload(event) {
-        const file = event.target.files[0];
-        // Perform image upload logic here
-        console.log(file);
-      },
-      
-    },
-  };
-  </script>
-  <style>
-    .container{
-      padding: 30px;
-    }
-    h2{
-      margin-bottom: 30px;
-    }
-    .select{
-      width: 100%;
-      height: 40px;
-    }
-    .img{
-      margin-right: 15px;
-    }
 </style>

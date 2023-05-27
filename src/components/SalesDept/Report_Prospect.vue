@@ -19,7 +19,7 @@
                
 
         
-        <table class="table table-bordered">
+        <table class="table table-bordered" id="prospect-table">
             <thead>
             <tr>
                 <th>Prospect Name</th>
@@ -81,9 +81,11 @@ import 'jspdf-autotable';
             }, 2000)
             },
             downloadReport() {
-            const doc = new jsPDF();
-            doc.autoTable({ html: '#prospect-table' });
-            doc.save('NeksomProspect_Report.pdf');
+                if (this.prospectList.length > 0) {
+    const doc = new jsPDF();
+    doc.autoTable({ html: '#prospect-table' });
+    doc.save('NeksomProspect_Report.pdf');
+  }
             },
         }
      }

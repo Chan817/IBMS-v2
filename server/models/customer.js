@@ -6,13 +6,9 @@ const CustomerSchema = mongoose.Schema({
         required: true,
         index: true
     },
-    customer_address: {
-        type: String,
-        required: true
-    },
+    customer_address: String,
     customer_email: {
         type: String,
-        required: true,
         index: true,
         unique: true
     },

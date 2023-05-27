@@ -43,10 +43,10 @@ module.exports = class API {
             // Create the ordered products
             const orderedProducts = await Promise.all(order.items.map(async (product) => {
                 const orderedProduct = new OrderedProduct({
-                    Inventory_ID: product.selectedProduct,
+                    Inventory_ID: product.Inventory_ID,
                     Order_ID: order.order_ID,
-                    Op_Qty: product.quantity,
-                    Op_UnitPrice: product.unitPrice
+                    Op_Qty: product.Op_Qty,
+                    Op_UnitPrice: product.Op_UnitPrice
                 });
 
                 await orderedProduct.save();
@@ -58,6 +58,7 @@ module.exports = class API {
 
             res.status(201).json({ message: "Order created successfully!" });
         } catch (err) {
+            console.error("Error creating inventory item:", err);
             res.status(400).json({ message: err.message });
         }
     }

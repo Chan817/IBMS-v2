@@ -3,6 +3,8 @@ const router = express.Router();
 const inventoryItemCtrl = require("../controllers/InventoryItemCtrl");
 
 router.get("/", inventoryItemCtrl.fetchAllInventoryItems);
+router.get("/raw", inventoryItemCtrl.fetchAllRaw);
+router.get("/product", inventoryItemCtrl.fetchAllProduct);
 router.get("/:id", inventoryItemCtrl.fetchInventoryItemByID);
 router.post("/", inventoryItemCtrl.createInventoryItem);
 router.patch("/:id", inventoryItemCtrl.updateInventoryItem);

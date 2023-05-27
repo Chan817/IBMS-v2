@@ -8,38 +8,38 @@
         <div class="form">
 
           <div class="form-item">
-            <label for="order-id">Order ID:</label>
+            <label for="order-id">Order ID: <span class="required-field">*</span></label>
             <input id="order-id" v-model="order.orderId" required />
 
           </div>
 
           <div class="form-item">
-            <label for="customer-name">Customer Name:</label>
+            <label for="customer-name">Customer Name: <span class="required-field">*</span></label>
             <input id="customer-name" v-model="customer.customerName" required />
           </div>
 
           <div class="form-item">
             <label for="customer-address">Customer Address:</label>
-            <input id="customer-address" v-model="customer.customerAddress" required />
+            <input id="customer-address" v-model="customer.customerAddress"  />
           </div>
 
           <div class="form-item">
             <label for="customer-email">Customer Email:</label>
-            <input id="customer-email" v-model="customer.customerEmail" required />
+            <input id="customer-email" v-model="customer.customerEmail"  />
           </div>
 
           <div class="form-item">
-            <label for="customerContact">Customer Contact:</label>
+            <label for="customerContact">Customer Contact: <span class="required-field">*</span></label>
             <input id="customerContact" v-model="customer.customerContact" required />
           </div>
 
           <div class="form-item">
-            <label for="business-type">Business Type:</label>
+            <label for="business-type">Business Type: <span class="required-field">*</span></label>
             <select id="business-type" v-model="order.businessType">
               <option value="B2B">B2B</option>
               <option value="B2C">B2C</option>
             </select>
-            <label class="space-left" for="order-status">Order Status:</label>
+            <label class="space-left" for="order-status">Order Status: <span class="required-field">*</span></label>
             <select id="order-status" v-model="order.orderStatus">
               <option value="Pending">Pending</option>
               <option value="Cancelled">Cancelled</option>
@@ -69,7 +69,7 @@
 
           <div class="form-item">
             <label for="remark">Remark:</label>
-            <input id="remark" v-model="order.remark" required />
+            <input id="remark" v-model="order.remark" />
           </div>
 
           <div class="actions">
@@ -102,37 +102,56 @@ export default {
         customerEmail: "",
         customerContact: "",
       },
-      products: [
-        { id: 1, name: "Product Abgfgy" },
-        { id: 2, name: "Product B" },
-        { id: 3, name: "Product C" },
-      ],
+      products: [],
       orderedproducts: [
         {
           Inventory_ID: "",
           Op_UnitPrice: "",
           Op_Qty: "",
           amount: 0,
-          totalPrice: 0,
         },
       ],
+      
+      totalPrice: 0,
     };
   },
+  created() {
+    this.fetchAvailableProducts();
+  },
   methods: {
+    async fetchAvailableProducts() {
+      try {
+        const response = await axios.get("/api/inventoryitem/product");
+        this.products = response.data.map((product) => ({
+          id: product._id,
+          name: product.Inv_Name,
+        }));
+        console.log(this.products);
+      } catch (error) {
+        console.error(error);
+      }
+    },
     save() {
       const orderData = {
         order_type: "Offline",
         customer_ID: "0",
         order_ID: this.order.orderId,
         customer_name: this.customer.customerName,
-        customer_address: this.customer.customerAddress,
-        customer_email: this.customer.customerEmail,
         customer_contact: this.customer.customerContact,
         business_type: this.order.businessType,
         order_status: this.order.orderStatus,
         items: this.orderedproducts,
-        order_remark: this.order.remark,
       };
+      if (this.customer.customerAddress) {
+        orderData.customer_address = this.customer.customerAddress;
+      }
+      if (this.customer.customerEmail) {
+        orderData.customer_email = this.customer.customerEmail;
+      }
+      if (this.order.order_remark) {
+        orderData.order_remark = this.order.order_remark;
+      }
+      console.log(orderData)
 
       axios.post('http://localhost:5000/api/order', orderData)
         .then(
@@ -215,8 +234,6 @@ export default {
       return (
         !this.order.orderId ||
         !this.customer.customerName ||
-        !this.customer.customerAddress ||
-        !this.customer.customerEmail ||
         !this.customer.customerContact ||
         !this.order.businessType ||
         !this.order.orderStatus
@@ -226,6 +243,10 @@ export default {
 };
 </script>
 <style>
+.required-field {
+  color: red;
+}
+
 .content {
   display: flex;
   flex-direction: column;
