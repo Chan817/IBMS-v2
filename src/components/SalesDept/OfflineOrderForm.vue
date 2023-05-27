@@ -10,7 +10,6 @@
           <div class="form-item">
             <label for="order-id">Order ID: <span class="required-field">*</span></label>
             <input id="order-id" v-model="order.orderId" required />
-
           </div>
 
           <div class="form-item">

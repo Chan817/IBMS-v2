@@ -32,7 +32,12 @@ module.exports = class API {
             // Check if the customer already exists in the database
             const existingCustomer = await Customer.findOne({ customer_email: order.customer_email });
             if (existingCustomer) {
-                order.customer_ID = existingCustomer._id;
+                if (existingCustomer.customer_name === order.customer_name && existingCustomer.customer_contact === order.customer_contact) {
+                    order.customer_ID = existingCustomer._id;
+                } else {
+                    const customer = await Customer.create(order); // Create the customer and get the created instance
+                    order.customer_ID = customer._id; // Assign the CustomerID attribute from the customer instance
+                }
             } else {
                 const customer = await Customer.create(order); // Create the customer and get the created instance
                 order.customer_ID = customer._id; // Assign the CustomerID attribute from the customer instance
