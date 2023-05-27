@@ -1,11 +1,10 @@
 <template>
     <div class="container">
-        <h2>To Ship</h2>
 
-        <div class="container">
-            
-            <div class="wrapper">
-               <v-text-field
+        <div class="container2">
+            <h2>To Ship</h2>
+            <div >
+                <v-text-field
                 class="searchbar"
                 :loading="loading"
                 density="compact"
@@ -17,7 +16,7 @@
                 @click:append-inner="onClick"
             ></v-text-field> 
             </div>
-   
+               
         </div>
         
         <table class="table table-bordered">
@@ -82,9 +81,14 @@
     padding-left: 50px;
     padding-right: 50px;
 }
+.container2{
+    display: flex;
+    justify-content: space-between;
+}
 h2{
     margin-bottom: 30px;
     margin-top: 20px;
+    
 }
 
 table {
@@ -97,15 +101,8 @@ table th, table td {
     text-align:center;
     border: 2px solid #6b6b6b;
   }
-.search{
-    margin-left: 400px;
-}
 .searchbar{
-    width: 200px;
-    height: 20px;
-    margin-left: 200px;
-}
-.wrapper{
-    margin-left: 900px;
+    margin-top: 20px;
+    width: 100px;
 }
 </style>

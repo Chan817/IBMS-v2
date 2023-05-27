@@ -42,7 +42,7 @@
             <template v-slot:activator="{ props }">
                     <v-list-item
                         v-bind="props"
-                        prepend-icon="mdi-location-enter"
+                        prepend-icon="mdi-store-plus"
                         title="Storage"
                         link
                     ></v-list-item>

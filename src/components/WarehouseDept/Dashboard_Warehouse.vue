@@ -55,14 +55,30 @@
         </div>
       </section>
 
-      <section>
-        <router-view></router-view>
+      <section class="section">
+        <div class="chart">
+          <!-- 添加图表的功能的地方 -->
+          <!-- Sales Performance -->
+          <div class="piechart">
+            <canvas ref="pieChart"></canvas>
+          </div>
+
+          <!-- Platform Analytics -->
+          <div class="linechart">
+            <canvas ref="lineChart"></canvas>
+          </div>
+        </div>
       </section>
     </div>
     
   </template>
 
   <script>
+
+  import { Chart, registerables } from 'chart.js';
+
+  // Register the required chart types
+  Chart.register(...registerables);
 
   export default {
     data() {
@@ -71,7 +87,57 @@
         };
         
     },
-    
+    mounted() {
+    this.renderChart();
+  },
+  methods: {
+    renderChart() {
+      const pie = {
+        labels: ["Product A", "Product B", "Product C", "Product D"],
+        datasets: [
+          {
+            label: "Sales",
+            backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"],
+            data: [120, 150, 180, 90],
+          },
+        ],
+      };
+
+      const line = {
+        labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September","October", "November", "December"],
+        datasets: [
+          {
+            label: "Analytics",
+            borderColor: "#FF6384",
+            data: [100, 200, 150, 300, 250],
+          },
+        ],
+      };
+
+      this.renderPieChart(pie, "pieChart");
+      this.renderLineChart(line, "lineChart");
+    },
+    renderPieChart(data, element) {
+    this.$refs[element]._chart = new Chart(this.$refs[element].getContext('2d'), {
+        type: 'pie',
+        data,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+        },
+      });
+    },
+    renderLineChart(data, element) {
+      this.$refs[element]._chart = new Chart(this.$refs[element].getContext('2d'), {
+      type: 'line',
+      data,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+      },
+    });
+    },
+  },
 };
   </script>
   
@@ -82,6 +148,7 @@
 
   .section {
     margin-top: 20px;
+    margin-bottom: 50px;
   }
   
   .widget {
@@ -110,10 +177,22 @@
     font-weight: bold;
     flex-grow: 1;
   }
-  
+  .chart {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+  }
   .more-info {
     opacity: 0.6;
     cursor: pointer;
   }
+  .linechart{
+    width: 60%;
+    margin-right: 50px;
+  }
+  .piechart{
+    margin-left: 50px;
+  }
+  
   
   </style>

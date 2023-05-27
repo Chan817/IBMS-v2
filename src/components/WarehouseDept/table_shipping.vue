@@ -1,10 +1,8 @@
 <template>
     <div class="container">
-        <h2>Shipping Orders</h2>
-
-        <div class="container">
-            
-            <div class="wrapper">
+        <div class="container2">
+            <h2>Shipping Orders</h2>
+            <div >
                <v-text-field
                 class="searchbar"
                 :loading="loading"
@@ -75,6 +73,10 @@
     padding-left: 50px;
     padding-right: 50px;
 }
+.container2{
+    display: flex;
+    justify-content: space-between;
+}
 h2{
     margin-bottom: 30px;
     margin-top: 20px;
@@ -94,11 +96,8 @@ table th, table td {
     margin-left: 400px;
 }
 .searchbar{
-    width: 200px;
-    height: 20px;
-    margin-left: 200px;
+    margin-top: 20px;
+    width: 100px;
 }
-.wrapper{
-    margin-left: 900px;
-}
+
 </style>

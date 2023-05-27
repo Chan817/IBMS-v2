@@ -1,7 +1,23 @@
 <template>
     <div class="container">
-        <h2>Order List</h2>
         
+        <div class="container2">
+            <h2>Order List</h2>
+            <div>
+                <v-text-field
+                class="searchbar"
+                :loading="loading"
+                density="compact"
+                variant="solo"
+                label="Search"
+                append-inner-icon="mdi-magnify"
+                single-line
+                hide-details
+                @click:append-inner="onClick"
+            ></v-text-field> 
+            </div>
+            
+        </div>
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -58,6 +74,10 @@
 <style>
 .container{
     padding: 20px;
+}
+.container2{
+    display: flex;
+    justify-content: space-between;
 }
 h2{
     margin-bottom: 30px;

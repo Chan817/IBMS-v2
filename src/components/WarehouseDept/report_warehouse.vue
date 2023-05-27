@@ -1,26 +1,23 @@
 <template>
     <div class="container">
-        <div class="wrapper">
+        <section class="section">
+            <div class="container2">
             <h2>Report</h2>
-
-            <div>
                 <v-select
+                class="selectbar"
                 label="Select"
                 :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
                 variant="solo"
                 ></v-select>
-            </div>
 
-            <div>
                 <v-select
+                class="selectbar"
                 label="Select"
                 :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
                 variant="solo"
                 ></v-select>
-            </div>
-
-            <v-text-field
-                class="searchbar"
+            
+            <v-text-field 
                 :loading="loading"
                 density="compact"
                 variant="solo"
@@ -29,10 +26,13 @@
                 single-line
                 hide-details
                 @click:append-inner="onClick"
+                class="filterbar"
             ></v-text-field>
         </div>
-
-        <table class="table table-bordered">
+        </section>
+        
+        <section class="section">
+            <table class="table table-bordered">
             <thead>
             <tr>
                 <th>SKU Number</th>
@@ -54,6 +54,8 @@
               </tr>
             </tbody>
         </table>
+        </section>
+        
     </div>
 </template>
 
@@ -86,10 +88,12 @@
 .container{
     padding-left: 50px;
     padding-right: 50px;
+    
 }
 h2{
     margin-bottom: 30px;
     margin-top: 20px;
+    margin-right: 200px;
 }
 
 table {
@@ -102,15 +106,21 @@ table th, table td {
     text-align:center;
     border: 2px solid #6b6b6b;
   }
-.search{
-    margin-left: 400px;
+.container2{
+    display: flex;
 }
-.searchbar{
+.section{
+    margin-top: 20px;
+}
+.selectbar{
+    width: 100px;
+    margin-right: 40px;
+    height: 0px;
+    margin-top: 5px;
+}
+.filterbar{
     width: 200px;
-    height: 20px;
-    margin-left: 200px;
-}
-.wrapper{
-    margin-left: 900px;
+    height: 70px;
+    margin-top: 5px;
 }
 </style>
