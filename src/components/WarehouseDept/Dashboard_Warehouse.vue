@@ -3,18 +3,9 @@
   
       <!-- Top part -->
       <section class="section">
-        <div class="widget">
-          <div class="widget-header">Unpaid</div>
-          <div class="widget-content">
-            <div class="data">{{ Unpaid }}</div>
-            <div class="more-info" >
-                <router-link to="/unpaid">More Info -></router-link>
-            </div>
-          </div>
-        </div>
   
         <div class="widget">
-          <div class="widget-header">To Ship</div>
+          <div class="widget-header">Pending</div>
           <div class="widget-content">
             <div class="data">{{ ToShip }}</div>
             <div class="more-info" >

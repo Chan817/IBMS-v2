@@ -7,14 +7,16 @@
                 class="selectbar"
                 label="Select"
                 :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-                variant="solo"
+                variant="solo-filled"
+                density="compact"
                 ></v-select>
 
                 <v-select
                 class="selectbar"
                 label="Select"
                 :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-                variant="solo"
+                variant="solo-filled"
+                density="compact"
                 ></v-select>
             
             <v-text-field 
@@ -116,11 +118,11 @@ table th, table td {
     width: 100px;
     margin-right: 40px;
     height: 0px;
-    margin-top: 5px;
+    margin-top: 10px;
 }
 .filterbar{
     width: 200px;
-    height: 70px;
-    margin-top: 5px;
+    height: 50px;
+    margin-top: 10px;
 }
 </style>

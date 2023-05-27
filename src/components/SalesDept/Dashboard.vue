@@ -7,7 +7,7 @@
           <div class="widget-header">Total Sale</div>
           <div class="widget-content">
             <div class="data">{{ totalSale }}</div>
-            <div class="more-info">More Info -></div>
+            <router-link to="/report">More Info -></router-link>
           </div>
         </div>
   
@@ -15,7 +15,7 @@
           <div class="widget-header">Total Order</div>
           <div class="widget-content">
             <div class="data">{{ totalOrder }}</div>
-            <div class="more-info">More Info -></div>
+            <router-link to="/list">More Info -></router-link>
           </div>
         </div>
   
@@ -23,7 +23,7 @@
           <div class="widget-header">Total Customer</div>
           <div class="widget-content">
             <div class="data">{{ totalCustomer }}</div>
-            <div class="more-info">More Info -></div>
+            <router-link to="/report_customer">More Info -></router-link>
           </div>
         </div>
         
@@ -32,24 +32,41 @@
           <div class="widget-header">Total Prospects</div>
           <div class="widget-content">
             <div class="data">{{ totalProspects }}</div>
-            <div class="more-info">More Info -></div>
+            <router-link to="/report_prospect">More Info -></router-link>
           </div>
         </div>
       </section>
-      
+    
+
       <!-- Chart -->
       <section class="section">
         <div class="chart">
-          <!-- 添加图表的功能的地方 -->
-          <!-- Sales Performance -->
           <div class="sales-chart">
+            <h4>Platform Analysis</h4>
+            <div class="sales-chart">
             <canvas ref="salesChart"></canvas>
           </div>
+          </div>
+          
 
           <!-- Platform Analytics -->
           <div class="analytics-chart">
+            <div class="container">
+              <h4>Sales Performance</h4>
+              <v-select
+                class="year"
+                label="Select"
+                :items="['2023', '2024']"
+                variant="solo"
+                density="compact"
+                ></v-select>
+            </div>
+            
+            <div class="analytics-chart">
             <canvas ref="analyticsChart"></canvas>
           </div>
+          </div>
+          
         </div>
       </section>
   
@@ -231,13 +248,22 @@
     border-bottom: 1px solid #ddd;
   }
   .analytics-chart{
-    width:70%;
+    width:90%;
     height: 320px;
-    margin: 30px;
+    
   }
   .sales-chart{
-    margin: 30px;
-    width: 50%;
-    height: 50%;
+    margin-top: 20px;
+    width: 60%;
+    height: 60%;
+  }
+  .year{
+    width: 100px;
+    height: 20px;
+    margin-left: 300px;
+  }
+  .container{
+    display: flex;
+    justify-content: space-between;
   }
   </style>

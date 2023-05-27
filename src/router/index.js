@@ -14,7 +14,6 @@ import RawMaterialTableVue from '@/components/WarehouseDept/RawMaterialTable.vue
 import NeksomTableVue from '@/components/WarehouseDept/NeksomTable.vue'
 import AddNewVue from '@/components/WarehouseDept/AddNew.vue'
 import Dashboard_WarehouseVue from '@/components/WarehouseDept/Dashboard_Warehouse.vue'
-import table_unpaidVue from '@/components/WarehouseDept/table_unpaid.vue'
 import table_toshipVue from '@/components/WarehouseDept/table_toship.vue'
 import table_shippingVue from '@/components/WarehouseDept/table_shipping.vue'
 import table_completeVue from '@/components/WarehouseDept/table_complete.vue'
@@ -99,11 +98,7 @@ const routes = [
     name: 'add',
     component: AddNewVue
   },
-  {
-    path: '/unpaid',
-    name: 'unpaid',
-    component: table_unpaidVue
-  },
+  
   {
     path: '/toship',
     name: 'toship',
@@ -134,7 +129,6 @@ const routes = [
     name: 'reportWarehouse',
     component: report_warehouseVue
   }
-  
 ]
 
 const router = createRouter({
