@@ -37,7 +37,9 @@
               <tr v-for="list in lists" :key="list.sku">
                   <td>{{ list.sku }}</td>
                   <td>{{ list.barcode }}</td>
-                  <td>{{ list.image }}</td>
+                  <td>
+                    <img :src="list.image" alt="Product Image" width="50" height="50" />
+                  </td>
                   <td>{{ list.product }}</td>
                   <td>{{ list.stock }}</td>
                   <td>{{ list.desc }}</td>
