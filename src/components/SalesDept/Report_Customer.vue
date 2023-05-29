@@ -1,32 +1,24 @@
 <template>
     <div class="container">
-        <h2>Customer Report</h2>
-
-        <div class="container">
-            <label class="label" for="period">Period:</label>
-            <select class="select" v-model="selectedPeriod" id="period">
-                <option value="weekly">Weekly</option>
-                <option value="monthly">Monthly</option>
-                <option value="yearly">Yearly</option>
-                <option value="custom">Customize</option>
-            </select>
-            
+        <div class="container2">
+          <h2>Customer Report</h2>
+          <div class="text-right">
             <div class="search-wrapper">
-               <v-text-field
-                class="searchbar"
+            <v-text-field
+               class="searchbar"
                 :loading="loading"
-                density="compact"
+                density="comfortable"
                 variant="solo"
-                label="Search templates"
+                label="Search keyword"
                 append-inner-icon="mdi-magnify"
                 single-line
                 hide-details
+                v-model="searchKeyword"
                 @click:append-inner="onClick"
-            ></v-text-field> 
-            </div>
-            
-            
-            
+            ></v-text-field>
+          </div>
+          </div>
+
         </div>
         
         <table class="table table-bordered" id="customer-table">
@@ -49,7 +41,7 @@
               </tr>
             </tbody>
         </table>
-        <v-btn @click="downloadReport">Download Report</v-btn>
+        <v-btn class="el-button" @click="downloadReport">Download Report</v-btn>
     </div>
 </template>
 
@@ -65,6 +57,7 @@ export default {
     customerList: [],
     loaded: false,
     loading: false,
+    searchKeyword:'',
   }),
   mounted() {
     this.fetchCustomers();
@@ -86,8 +79,14 @@ export default {
       setTimeout(() => {
         this.loading = false;
         this.loaded = true;
-        this.downloadReport(); // Call the method to generate and download the report
-      }, 2000);
+        if (this.searchKeyword) {
+          this.customerList = this.customerList;
+      }
+      }, 1000);
+    },
+    resetFilter() {
+      this.searchKeyword = ''; // Clear the search keyword
+      this.fetchCustomers(); // Fetch customers again to get the original list
     },
     downloadReport() {
       const doc = new jsPDF();
@@ -95,24 +94,49 @@ export default {
       doc.save('NeksomCustomer_Report.pdf');
     },
   },
+  computed: {
+  customerList() {
+    if (!this.searchKeyword) {
+      return this.customerList;
+    } else {
+      const keyword = this.searchKeyword.toLowerCase();
+      return this.customerList.filter((customer) => {
+        return (
+          (customer.customer_name && customer.customer_name.toLowerCase().includes(keyword)) ||
+          (customer.customer_email && customer.customer_email.toLowerCase().includes(keyword)) ||
+          (customer.customer_address && customer.customer_address.toLowerCase().includes(keyword)) ||
+          (customer.customer_contact && customer.customer_contact.toLowerCase().includes(keyword))
+        );
+      });
+    }
+  },
+},
+
 };
 </script>
 
 <style>
 .container{
-    padding-left: 50px;
-    padding-right: 50px;
+    padding: 20px;
 
+}
+.container2{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; /* Allow elements to wrap on smaller screens */
+}
+.text-right{
+  display: flex;
+  flex-wrap: wrap; /* Allow elements to wrap on smaller screens */
+  justify-content: flex-end;
+}
+.search-wrapper {
+  margin-right: 10px; /* Add some spacing between search field and button */
+  flex-grow: 1; /* Allow the search field to expand and fill available space */
+  max-width: 400px; /* Limit the maximum width of the search field */
 }
 h2{
     margin-bottom: 10px;
-}
-.select{
-    border: 2px solid #6b6b6b;
-    border-radius: 5px;
-    width: 100px;
-   
-    margin-bottom: 20px;
 }
 .label{
     margin-right: 10px;
@@ -127,16 +151,14 @@ table th, table td {
     text-align: left;
     border: 2px solid #6b6b6b;
   }
-.search{
-    margin-left: 400px;
+  .searchbar{
+    width: 100%;
 }
-.searchbar{
-    width: 200px;
-    height: 20px;
-    margin-left: 200px;
+.el-button {
+  margin-top: 20px;
+  background-color: #4C4D6C;
+  color: #ffffff;
 }
-.search-wrapper {
-    display: inline-block;
-    margin-left: 700px;
-}
+
+
 </style>
