@@ -45,9 +45,12 @@ module.exports = class InventoryItemController {
 
   // Create an inventory item
   static async createInventoryItem(req, res) {
+    console.log("Print Req Body" );
+    console.log(req.body);
     const inventoryItem = req.body;
     const imageName = req.file ? req.file.filename : null;
-    inventoryItem.image = imageName;
+    inventoryItem.InvImg = imageName;
+    console.log(imageName)
     console.log('in console')
     try {
       await InventoryItem.create(inventoryItem);

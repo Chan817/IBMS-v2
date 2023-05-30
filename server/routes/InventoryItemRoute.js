@@ -15,7 +15,12 @@ let storage = multer.diskStorage({
 
 let upload = multer({
     storage: storage
-}).single("image");
+}).single("InvImg");
+
+function printReqRes(req,res,next){
+    console.log(req.body);
+    next();
+}
 
 router.get("/", inventoryItemCtrl.fetchAllInventoryItems);
 router.get("/raw", inventoryItemCtrl.fetchAllRaw);
