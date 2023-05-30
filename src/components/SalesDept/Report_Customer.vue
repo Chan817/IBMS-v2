@@ -1,13 +1,14 @@
 <template>
     <div class="container">
+
         <div class="container2">
-          <h2>Customer Report</h2>
-          <div class="text-right">
-            <div class="search-wrapper">
+          <div class="title">Customer Report</div>
+          <!-- <h2>Customer Report</h2> -->
+
+          <div class="search-bar">
             <v-text-field
-               class="searchbar"
                 :loading="loading"
-                density="comfortable"
+                density="compact"
                 variant="solo"
                 label="Search keyword"
                 append-inner-icon="mdi-magnify"
@@ -17,11 +18,10 @@
                 @click:append-inner="onClick"
             ></v-text-field>
           </div>
-          </div>
-
         </div>
-        
-        <table class="table table-bordered" id="customer-table">
+
+        <div class="table-wrapper">
+          <table class="table table-bordered" id="customer-table">
             <thead>
             <tr>
                 <th>Customer Name</th>
@@ -41,7 +41,12 @@
               </tr>
             </tbody>
         </table>
-        <v-btn class="el-button" @click="downloadReport">Download Report</v-btn>
+        </div>
+        
+        <div>
+          <v-btn class="el-button" @click="downloadReport">Download Report</v-btn>
+        </div>
+        
     </div>
 </template>
 
@@ -115,32 +120,25 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .container{
-    padding: 20px;
+    padding: 30px;
 
 }
 .container2{
+    flex: 1;
     display: flex;
+    margin-bottom: 20px;
     justify-content: space-between;
     flex-wrap: wrap; /* Allow elements to wrap on smaller screens */
 }
-.text-right{
-  display: flex;
-  flex-wrap: wrap; /* Allow elements to wrap on smaller screens */
-  justify-content: flex-end;
+
+.title {
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
-.search-wrapper {
-  margin-right: 10px; /* Add some spacing between search field and button */
-  flex-grow: 1; /* Allow the search field to expand and fill available space */
-  max-width: 400px; /* Limit the maximum width of the search field */
-}
-h2{
-    margin-bottom: 10px;
-}
-.label{
-    margin-right: 10px;
-}
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -151,14 +149,19 @@ table th, table td {
     text-align: left;
     border: 2px solid #6b6b6b;
   }
-  .searchbar{
-    width: 100%;
-}
+ 
 .el-button {
   margin-top: 20px;
   background-color: #4C4D6C;
   color: #ffffff;
 }
+.search-bar {
+  width: 300px; /* Adjust the width as desired */
+  margin-bottom: 20px;
+}
 
+.table-wrapper {
+  overflow-y: auto;
+}
 
 </style>
