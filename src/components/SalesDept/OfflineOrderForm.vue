@@ -1,44 +1,44 @@
 <template>
   <div id="app">
-    <div class="content">
-
-      <div class="order-details">
-        <div class="title">Order Details</div>
-
+    <div class="container">
+      <div class="title">Offline Order Details</div>
         <div class="form">
 
-          <div class="form-item">
+          <div class="form-group">
             <label for="order-id">Order ID: <span class="required-field">*</span></label>
             <input id="order-id" v-model="order.orderId" required />
           </div>
 
-          <div class="form-item">
+          <div class="form-group">
             <label for="customer-name">Customer Name: <span class="required-field">*</span></label>
             <input id="customer-name" v-model="customer.customerName" required />
           </div>
 
-          <div class="form-item">
+          <div class="form-group">
             <label for="customer-address">Customer Address:</label>
             <input id="customer-address" v-model="customer.customerAddress"  />
           </div>
 
-          <div class="form-item">
+          <div class="form-group">
             <label for="customer-email">Customer Email:</label>
             <input id="customer-email" v-model="customer.customerEmail"  />
           </div>
 
-          <div class="form-item">
+          <div class="form-group">
             <label for="customerContact">Customer Contact: <span class="required-field">*</span></label>
             <input id="customerContact" v-model="customer.customerContact" required />
           </div>
 
-          <div class="form-item">
+          <div class="form-group">
             <label for="business-type">Business Type: <span class="required-field">*</span></label>
             <select id="business-type" v-model="order.businessType">
               <option value="B2B">B2B</option>
               <option value="B2C">B2C</option>
             </select>
-            <label class="space-left" for="order-status">Order Status: <span class="required-field">*</span></label>
+          </div>
+
+          <div class="form-group">
+            <label for="order-status">Order Status: <span class="required-field">*</span></label>
             <select id="order-status" v-model="order.orderStatus">
               <option value="Pending">Pending</option>
               <option value="Completed">Completed</option>
@@ -47,29 +47,46 @@
           </div>
 
           <div class="form-itemproduct" v-for="(item, index) in orderedproducts" :key="index">
-            <label for="order-product">Order Product:</label>
-            <select id="order-product" v-model="item.Inventory_ID">
-              <option v-for="product in products" :key="product.id" :value="product.name">
-                {{ product.name }}
-              </option>
-            </select>
-            <label class="space-left" for="quantity">Quantity:</label>
-            <input id="quantity" v-model="item.Op_Qty" @input="calculateTotalPrice" />
-            <label class="space-left" for="unit-price">Unit Price:</label>
-            <input id="unit-price" v-model="item.Op_UnitPrice" @input="calculateTotalPrice" />
-            <label class="space-left" for="amount">Amount:</label>
-            <input id="amount" :value="calculateAmount(item)" readonly />
-            <v-btn class="add-item" @click="addItem">Add Item</v-btn>
+            
+            <div class="form-group">
+              <label for="order-product">Order Product:</label>
+              <select id="order-product" v-model="item.Inventory_ID">
+                <option v-for="product in products" :key="product.id" :value="product.name">
+                  {{ product.name }}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="quantity">Quantity:</label>
+              <input id="quantity" v-model="item.Op_Qty" @input="calculateTotalPrice" />
+            </div>
+              
+            <div class="form-group">
+              <label for="unit-price">Unit Price:</label>
+              <input id="unit-price" v-model="item.Op_UnitPrice" @input="calculateTotalPrice" />
+            </div>
+              
+            
+            <div class="form-group">
+              <label for="amount">Amount:</label>
+              <input id="amount" :value="calculateAmount(item)" readonly />
+            </div>
+              
+            <div class="container2">
+              <v-btn class="el-button1" @click="addItem">Add Item</v-btn>
+            </div>
+            
           </div>
 
-          <div class="form-item">
+          <div class="form-group">
             <label for="total-price">Total Price:</label>
-            <input id="total-price" v-model="totalPrice" required />
+            <input type="number" id="total-price" v-model="totalPrice" required />
           </div>
 
-          <div class="form-item">
+          <div class="form-group">
             <label for="remark">Remark:</label>
-            <input id="remark" v-model="order.remark" />
+            <textarea id="remark" v-model="order.remark"></textarea>
           </div>
 
           <div class="actions">
@@ -78,7 +95,7 @@
           </div>
 
         </div>
-      </div>
+      
     </div>
 
   </div>
@@ -242,73 +259,56 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .required-field {
   color: red;
 }
-
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-}
-
-.order-details {
-  margin-right: 50px;
-  margin-left: 50px;
-  margin-top: 20px;
-}
-
 .title {
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 20px;
 }
+.container {
+  padding: 30px;
+}
 
-.form-item {
-  display: flex;
-  align-items: center;
+.form-group {
   margin-bottom: 20px;
 }
 
-.form-item label {
-  width: 160px;
+.form-group label {
   font-weight: bold;
 }
 
-.form-item input,
-.form-item select {
-  flex: 1;
-  padding: 5px 10px;
+.form-group input,
+.form-group select,
+textarea {
+  width: 100%;
+  padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 4px;
 }
 
 .form-itemproduct {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
   margin-bottom: 20px;
+  justify-content: space-between;
 }
 
 .form-itemproduct label {
-  width: 100px;
   font-weight: bold;
 }
 
 .form-itemproduct input,
 .form-itemproduct select {
-  flex: 1;
-  padding: 5px 10px;
+  flex:1;
+  width: 100%;
+  padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 4px;
 }
 
-.add-item {
-  margin-left: 10px;
-  background-color: #4C4D6C;
-  color: #ffffff;
-}
 
 .actions {
   display: flex;
@@ -317,13 +317,28 @@ export default {
 }
 
 .el-button {
+  padding: 10px 20px;
   margin-left: 10px;
   background-color: #4C4D6C;
   color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.el-button1 {
+  
+  background-color: #4C4D6C;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  
+  
+}
+.container2{
+  justify-content: center;
+  align-items: center;
 }
 
-.space-left {
-  margin-left: 50px;
-}
 </style>
   
