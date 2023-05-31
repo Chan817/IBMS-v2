@@ -28,6 +28,7 @@ app.use("/api/customer", require("./routes/CustomerRoute"));
 app.use("/api/inventoryitem", require("./routes/InventoryItemRoute"));
 app.use("/api/orderedproduct", require("./routes/OrderedProductRoute"));
 app.use("/api/prospect", require("./routes/ProspectRoute"));
+app.use("/api/notification", require("./routes/LowInStockRoute"));
 // app.use("/api/customer", require("./routes/CustomerReportRoute"));
 
 // start server

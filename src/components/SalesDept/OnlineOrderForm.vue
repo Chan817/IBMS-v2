@@ -37,7 +37,7 @@
             <select id="orderPlatform" v-model="order.orderPlatform">
               <option value="Lazada">Lazada</option>
               <option value="Shopee">Shopee</option>
-              <option value="Shopee">Instagram</option>
+              <option value="Instagram">Instagram</option>
               <option value="Facebook">Facebook</option>
               <option value="Tiktok">Tiktok</option>
             </select>

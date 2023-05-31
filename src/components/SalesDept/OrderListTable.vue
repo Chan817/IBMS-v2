@@ -53,14 +53,23 @@
 </template>
 
 <script>
-
+  import axios from 'axios';
     export default {
-        name: 'list',
-        components: {
-            
-        },
-        props: ['list'],
+        name: 'orderList',
+        components: {},
+        props: ['orderList'],
+        data: () => ({
+      loaded: false,
+      loading: false,
+      orderList: []
+    }),
+    mounted() {
+      this.fetchOrders();
+    },
         methods: {
+            fetchOrders(){
+               
+            },
             deleteOrder(orderId) {
                
             },

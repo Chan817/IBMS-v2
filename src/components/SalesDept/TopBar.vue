@@ -9,10 +9,8 @@
             </v-text-field>
             <v-btn style="display:flex; justify-content: center; align-items: center; margin-top: 10px;">
                 <v-icon size="large" color="white" icon="mdi-email">
-                    <!-- <v-badge color="red" overlap :content="emailNotification ? ' ' : null" small></v-badge> -->
-                    <v-badge color="red" overlap small>{{ emailBadgeContent }}</v-badge>
-
                 </v-icon>
+                <div v-if="notification" class="notification-dot"></div>
             </v-btn>
             <div>
                 <p style="color:white; margin-top: 15px;">|</p>
@@ -57,35 +55,28 @@ import axios from 'axios';
 
 export default {
     data: () => ({
-        emailNotification: true,
         menu: false,
-        products: []
+        products: [],
+        notification: false, // Add this property
     }),
-    mounted() {
-        this.fetchEmailNotification();
+    async created() {
+        await this.fetchEmailNotification();
     },
-    computed: {
-  emailBadgeContent() {
-    return this.emailNotification ? ' ' : null;
-  },
-},
-
     methods: {
         async fetchEmailNotification() {
             try {
-                const response = await axios.get('/api/inventoryitem');
-                this.products = response.data;
-                console.log(this.products);
-                this.emailNotification = this.checkInventory();
-            } catch (error) {
-                console.error('Error fetching products:', error);
-            }
+      // Perform the logic to fetch email notifications
+      const response = await axios.get('/api/notification');
+      const notifications = response.data;
+console.log(notifications);
+      // Update the notification property based on the number of notifications
+      this.notification = notifications.length > 0;
+    } catch (error) {
+      console.error('Error fetching email notifications:', error);
+    }
         },
         checkInventory() {
-            const lowInventoryProducts = this.products.filter(
-                (product) => product.Inv_StockLevel < 10
-            );
-            return lowInventoryProducts.length > 0;
+           
         },
         
         toggleSubMenu() {
@@ -112,6 +103,16 @@ export default {
 .image {
     margin-top: 5px;
     margin-bottom: 10px;
+}
+
+.notification-dot {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 8px;
+  height: 8px;
+  background-color: red;
+  border-radius: 50%;
 }
 </style>
 
