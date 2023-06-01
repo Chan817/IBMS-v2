@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const InventoryItemSchema = mongoose.Schema({
+    _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        auto: true, // Automatically generate ObjectId
+      },
     Inv_Name: {
         type: String,
         required: true

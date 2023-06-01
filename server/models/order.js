@@ -21,7 +21,7 @@ const OrderSchema = mongoose.Schema({
     order_platform: String,
     order_trackingNum: String,
     customer_ID: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: "Customer"
     },

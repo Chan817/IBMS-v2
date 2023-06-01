@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const OrderedProductSchema = mongoose.Schema({
     Inventory_ID: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
         index: true,
         ref: "InventoryItem"

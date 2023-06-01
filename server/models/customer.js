@@ -10,7 +10,6 @@ const CustomerSchema = mongoose.Schema({
     customer_email: {
         type: String,
         index: true,
-        unique: true
     },
     customer_contact: {
         type: String,

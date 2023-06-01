@@ -1,104 +1,126 @@
 <template>
     <div class="container">
-        
+
         <div class="container2">
             <h2>Order List</h2>
             <div>
-                <v-text-field
-                class="searchbar"
-                :loading="loading"
-                density="compact"
-                variant="solo"
-                label="Search"
-                append-inner-icon="mdi-magnify"
-                single-line
-                hide-details
-                @click:append-inner="onClick"
-            ></v-text-field> 
+                <v-text-field class="searchbar" :loading="loading" density="compact" variant="solo" label="Search"
+                    append-inner-icon="mdi-magnify" single-line hide-details @click:append-inner="onClick"></v-text-field>
             </div>
-            
+
         </div>
         <table class="table table-bordered">
             <thead>
-            <tr>
-                <th>Order Id</th>
-                <th>Category</th>
-                <th>Customer Name</th>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Total Price</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
+                <tr>
+                    <th>Order Id</th>
+                    <th>Category</th>
+                    <th>Customer Name</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
             </thead>
             <tbody>
-              <tr v-for="list in lists" :key="list.id">
-                  <td>{{ list.id }}</td>
-                  <td>{{ list.category }}</td>
-                  <td>{{ list.name }}</td>
-                  <td>{{ list.product }}</td>
-                  <td>{{ list.quantity }}</td>
-                  <td>{{ list.price }}</td>
-                  <td>{{ list.status }}</td>
-                  <td>
-                    <div class="row">
-                        <v-btn icon="mdi-vuetify" variant="plain" @click='editOrder(list.id)'></v-btn>
-                        <v-btn icon="mdi-vuetify" variant="plain" @click='deleteOrder(list.id)'></v-btn>
-                    </div>
-                  </td>
-              </tr>
+                <tr v-for="list in orderList" :key="list._id">
+                    <td>{{ list.order_ID }}</td>
+                    <td>{{ list.order_type }}</td>
+                    <td>{{ list.customer.customer_name }}</td>
+                    <td>
+                        <ul>
+                            <li v-for="product in list.orderedProducts" :key="product._id" v-if="product.Order_ID === '00001'">
+                                
+                                {{ product.Inventory_ID }}
+                            </li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            <li v-for="product in list.orderedProducts" :key="product._id">
+                                {{ product.Op_Qty }}
+                            </li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            <li v-for="product in list.orderedProducts" :key="product._id">
+                                {{ product.Op_UnitPrice }}
+                            </li>
+                        </ul>
+                    </td>
+                    <td>{{ list.order_status }}</td>
+                    <td>
+                        <div class="row">
+                            <v-btn icon="mdi-vuetify" variant="plain" @click='editOrder(list.id)'></v-btn>
+                            <v-btn icon="mdi-vuetify" variant="plain" @click='deleteOrder(list.id)'></v-btn>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
 </template>
 
 <script>
-  import axios from 'axios';
-    export default {
-        name: 'orderList',
-        components: {},
-        props: ['orderList'],
-        data: () => ({
-      loaded: false,
-      loading: false,
-      orderList: []
+import axios from 'axios';
+export default {
+    name: 'orderList',
+    data: () => ({
+        loaded: false,
+        loading: false,
+        orderList: []
     }),
+    components: {},
     mounted() {
-      this.fetchOrders();
+        this.fetchOrders();
     },
-        methods: {
-            fetchOrders(){
-               
-            },
-            deleteOrder(orderId) {
-               
-            },
-            editOrder(data) {
-                
-            }
+    methods: {
+        fetchOrders() {
+            console.log("in vue script");
+            axios
+                .get('/api/orderList') // Adjust the route path if necessary
+                .then((response) => {
+                    console.log(response.data);
+                    this.orderList = response.data;
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        },
+        deleteOrder(orderId) {
+
+        },
+        editOrder(data) {
+
         }
-     }
+    }
+}
 </script>
 
 <style>
-.container{
+.container {
     padding: 20px;
 }
-.container2{
+
+.container2 {
     display: flex;
     justify-content: space-between;
 }
-h2{
+
+h2 {
     margin-bottom: 30px;
 }
+
 table {
     width: 100%;
     border-collapse: collapse;
     border: 2px solid #6b6b6b;
 }
-table th, table td {
+
+table th,
+table td {
     padding: 8px;
     text-align: left;
     border: 2px solid #6b6b6b;
-  }
-</style>
+}</style>
