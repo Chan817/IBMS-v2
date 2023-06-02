@@ -29,34 +29,26 @@
                     <td>{{ list.order_type }}</td>
                     <td>{{ list.customer.customer_name }}</td>
                     <td>
-                        
-                            <p  v-for="product in list.orderedProducts" :key="product._id">
-                                
-                                {{ product.inventoryItemName }}
-                            </p>
-                        
+                        <p v-for="product in list.orderedProducts" :key="product._id">
+                            {{ product.inventoryItemName }}
+                        </p>
                     </td>
                     <td>
-                        
-                            <p v-for="product in list.orderedProducts" :key="product._id">
-                                {{ product.Op_Qty }}
-                            </p>
-                        
+                        <p v-for="product in list.orderedProducts" :key="product._id">
+                            {{ product.Op_Qty }}
+                        </p>
                     </td>
                     <td>
-                       
-                            <p v-for="product in list.orderedProducts" :key="product._id">
-                                {{ product.Op_UnitPrice }}
-                            </p>
-                        
+                        <p v-for="product in list.orderedProducts" :key="product._id">
+                            {{ product.Op_UnitPrice }}
+                        </p>
                     </td>
                     <td>
-                       
-                       <p v-for="product in list.orderedProducts" :key="product._id" v-show="false">
-                           {{ product.Op_UnitPrice * product.Op_Qty }}
-                       </p>
-                       <strong>{{ calculateTotalPrice(list.orderedProducts) }}</strong>
-               </td>
+                        <p v-for="product in list.orderedProducts" :key="product._id" v-show="false">
+                            {{ product.Op_UnitPrice * product.Op_Qty }}
+                        </p>
+                        <strong>{{ calculateTotalPrice(list.orderedProducts) }}</strong>
+                    </td>
                     <td>{{ list.order_status }}</td>
                     <td>
                         <div class="row">
@@ -86,11 +78,11 @@ export default {
     methods: {
         calculateTotalPrice(orderedProducts) {
             const total = orderedProducts.reduce(
-        (total, product) => total + product.Op_Qty * product.Op_UnitPrice,
-        0
-      );
-      return total.toFixed(2);
-    },
+                (total, product) => total + product.Op_Qty * product.Op_UnitPrice,
+                0
+            );
+            return total.toFixed(2);
+        },
         fetchOrders() {
             console.log("in vue script");
             axios
@@ -138,4 +130,5 @@ table td {
     padding: 8px;
     text-align: left;
     border: 2px solid #6b6b6b;
-}</style>
+}
+</style>
