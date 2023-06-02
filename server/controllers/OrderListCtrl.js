@@ -4,45 +4,57 @@ const OrderedProduct = require('../models/orderedproduct');
 const InventoryItem = require('../models/inventoryitem');
 
 module.exports = class API {
-    //fetch all order for OrderList
     static async fetchAllOrderList(req, res) {
-        // try {
-        //     const orders = await Order.find();
-        //     res.status(200).json(orders);
-        // } catch (err) {
-        //     res.status(404).json({ message: err.message });
-        // }
         try {
             const orders = await Order.find();
 
-        // Create an array to store the updated orders with customer information
-        const updatedOrders = [];
+            // Create an array to store the updated orders with customer information
+            const updatedOrders = [];
 
-        // Iterate through each order
-        for (const order of orders) {
-            // Retrieve the customerId from the order
-            const customerId = order.customer_ID;
+            // Iterate through each order
+            for (const order of orders) {
+                // Retrieve the customerId from the order
+                const customerId = order.customer_ID;
 
-            // Fetch the customer using the customerId
-            const customer = await Customer.findById(customerId);
+                // Fetch the customer using the customerId
+                const customer = await Customer.findById(customerId);
 
-            // Retrieve the ordered products using the order ID
-            const orderedProducts = await OrderedProduct.find({ order_ID: order.order_ID });
-            console.log("orderedProducts");
-            console.log(orderedProducts);
+                // Retrieve the ordered products using the order ID
+                const orderedProducts = await OrderedProduct.find({ Order_ID: order.order_ID });
 
-            // Add the customer information to the order object
-            const orderWithCustomer = {
-                ...order.toObject(),
-                customer: customer,
-                orderedProducts: orderedProducts,
-            };
+                // Create an array to store the filtered ordered products with the specific order ID
+                const filteredOrderedProducts = [];
 
-            // Add the updated order to the updatedOrders array
-            updatedOrders.push(orderWithCustomer);
-            console.log(updatedOrders);
-        }
-        res.status(200).json(updatedOrders);
+                // Iterate through each ordered product
+                for (const orderedProduct of orderedProducts) {
+                    // Retrieve the inventory ID from the ordered product
+                    const inventoryId = orderedProduct.Inventory_ID;
+
+                    // Fetch the inventory item using the inventory ID
+                    const inventoryItem = await InventoryItem.findById(inventoryId);
+
+                    // Create an object with the required information
+                    const orderedProductWithInventory = {
+                        ...orderedProduct.toObject(),
+                        inventoryItemName: inventoryItem.Inv_Name,
+                    };
+
+                    // Add the updated ordered product to the filteredOrderedProducts array
+                    filteredOrderedProducts.push(orderedProductWithInventory);
+                }
+
+                // Add the customer information to the order object
+                const orderWithCustomer = {
+                    ...order.toObject(),
+                    customer: customer,
+                    orderedProducts: filteredOrderedProducts,
+                };
+
+                // Add the updated order to the updatedOrders array
+                updatedOrders.push(orderWithCustomer);
+            }
+
+            res.status(200).json(updatedOrders);
         } catch (err) {
             res.status(404).json({ message: err.message });
         }
