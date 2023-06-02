@@ -7,15 +7,49 @@
             <v-text-field :loading="loading" density="compact" variant="solo" label="Search" append-inner-icon="mdi-magnify"
                 single-line hide-details @click:append-inner="onClick" class="searchB">
             </v-text-field>
-            <v-btn style="display:flex; justify-content: center; align-items: center; margin-top: 10px;">
-                <v-icon size="large" color="white" icon="mdi-email">
-                </v-icon>
-                <div v-if="notification" class="notification-dot"></div>
-            </v-btn>
+            
+            <v-menu
+            v-model="emailmenu"
+            :close-on-content-click="false"
+            
+            >
+                <template v-slot:activator="{ props }">
+                    <v-btn v-bind="props" style="display:flex; justify-content: center; align-items: center; margin-top: 10px;">
+                        <v-icon size="large" color="white" icon="mdi-email"></v-icon>
+                        <div v-if="notification" class="notification-dot"></div>
+                    </v-btn>
+                </template>
+
+                <v-card min-width="300">
+                    <v-list>
+                        <v-list-item
+                            title="Notification"
+                        >
+                        </v-list-item>
+                    </v-list>
+
+                    <v-divider></v-divider>
+
+                    <div class="container">
+                        <div class="text-left">
+                            Low in Stock
+                        </div>
+                        <div class="text-left">
+                            2
+                            <!-- {{ count_low }} -->
+                        </div>
+                          <v-btn icon="mdi-arrow-right" variant="text" to="/low_neksom"></v-btn>
+                    </div>
+                </v-card>
+                
+            </v-menu>
+            
+
             <div>
                 <p style="color:white; margin-top: 15px;">|</p>
             </div>
-            <v-menu v-model="menu" :close-on-content-click="false" location="end">
+
+            <v-menu v-model="accmenu" :close-on-content-click="false" location="end">
                 <template v-slot:activator="{ props }">
                     <v-btn style="color: white; margin-top: 10px; margin-right: 10px;" v-bind="props"
                         prepend-icon="mdi-account-circle">
@@ -55,9 +89,11 @@ import axios from 'axios';
 
 export default {
     data: () => ({
-        menu: false,
+        emailmenu: false,
+        accmenu: false,
         products: [],
         notification: false, // Add this property
+    
     }),
     async created() {
         await this.fetchEmailNotification();
@@ -85,12 +121,26 @@ console.log(notifications);
     }
 }
 </script>
-<style>
+<style scoped>
 .appBar {
     background-color: #4C4D6C;
     display: flex;
     width: 100%;
     height: 100%;
+}
+.container {
+    
+    display: flex;
+    margin-bottom: 20px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .text-left {
+    margin-top: 10px;
+  font-size: 15px;
+  justify-content: left;
+  align-items: left;
+  
 }
 
 .searchB {

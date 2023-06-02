@@ -11,13 +11,26 @@
                 density="compact"
                 ></v-select>
 
-                <v-select
-                class="selectbar"
-                label="Select"
-                :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-                variant="solo-filled"
-                density="compact"
-                ></v-select>
+                <v-menu>
+                    <template v-slot:activator="{ props }">
+                        <v-btn
+                        color="primary"
+                        v-bind="props"
+                        >
+                        Period
+                        </v-btn>
+                    </template>
+                    <v-list>
+                        <v-list-item
+                        v-for="(item, index) in items"
+                        :key="index"
+                        :value="index"
+                        :to="item.routePath"
+                        >
+                        <v-list-item-title>{{ item.title }}</v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
             
             <v-text-field 
                 :loading="loading"
@@ -72,6 +85,13 @@
         data: () => ({
             loaded: false,
             loading: false,
+            items: [
+            { title: 'Daily'},
+            { title: 'Weekly' },
+            { title: 'Monthly' },
+            { title: 'Yearly' },
+            { title: 'Customizable' }
+      ],
         }),
         methods: {
             onClick () {

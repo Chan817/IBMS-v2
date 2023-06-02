@@ -217,8 +217,8 @@ h2 {
   margin-bottom: 20px;
 }
 
-input[type="text"],
-input[type="number"],
+.form-group input,
+.form-group select,
 textarea {
   width: 100%;
   padding: 10px;

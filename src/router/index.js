@@ -20,6 +20,8 @@ import table_cancelVue from '@/components/WarehouseDept/table_cancel.vue'
 import table_allOrdersVue from '@/components/WarehouseDept/table_allOrders'
 import report_warehouseVue from '@/components/WarehouseDept/report_warehouse.vue'
 import BarcodeScanner from '@/components/WarehouseDept/BarcodeScanner.vue'
+import lowstock_notiVue from '@/components/lowstock_noti.vue'
+import raw_lowstock_notiVue from '@/components/raw_lowstock_noti.vue'
 
 const routes = [
   {
@@ -127,6 +129,16 @@ const routes = [
     path: '/scan',
     name: 'scan',
     component: BarcodeScanner
+  },
+  {
+    path: '/low_neksom',
+    name: 'low_neksom',
+    component: lowstock_notiVue
+  },
+  {
+    path: '/low_raw',
+    name: 'low_raw',
+    component: raw_lowstock_notiVue
   }
 ]
 
