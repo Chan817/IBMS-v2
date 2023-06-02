@@ -92,33 +92,28 @@ export default {
       formData.append('Inv_Name', this.form.productName);
       formData.append('Inv_Catg', this.form.category);
       formData.append('Inv_MinStockLevel', this.form.minstock);
-      formData.append('Inv_StockLevel', this.form.currentstock);      
-        formData.append('Inv_CostPrice', this.form.price);
-        formData.append('InvImg', this.form.image);
-//  formData = {
-      //   Inv_Name: this.form.productName,
-      //   Inv_Catg: this.form.category,
-      //   Inv_MinStockLevel: this.form.minstock,
-      //   Inv_StockLevel: this.form.currentstock,
-      //   Inv_CostPrice: this.form.price,
-      // };
+      formData.append('Inv_StockLevel', this.form.currentstock);
+      formData.append('Inv_CostPrice', this.form.price);
+      formData.append('InvImg', this.form.image);
+
       // Include optional fields only if they have a value
       if (this.form.sku) {
-        formData.Inv_SKU_Num = this.form.sku;
+        formData.append('Inv_SKU_Num', this.form.sku);
       }
       if (this.form.barcode) {
-        formData.Inv_BarcodeNum = this.form.barcode;
+        formData.append('Inv_BarcodeNum', this.form.barcode);
       }
-      if (this.form.image) {
-        console.log(this.form.image);
-        formData.InvImg = this.form.image;
-  
+      // if (this.form.image) {
+      //   console.log(this.form.image);
+      //   formData.InvImg = this.form.image;
 
-        //formData.append('image', imageBlob, 'image.jpg');
-      }
+
+      //   //formData.append('image', imageBlob, 'image.jpg');
+      // }
       if (this.form.description) {
-        formData.Inv_Desc = this.form.description;
+        formData.append('Inv_Desc', this.form.description);
       }
+      console.log("request");
       console.log(formData);
       axios.post('http://localhost:5000/api/inventoryitem', formData, {
         headers: {
@@ -126,6 +121,7 @@ export default {
         }
       })
         .then(res => {
+          console.log("response");
           console.log(res);
           this.resetForm();
         })
@@ -172,9 +168,9 @@ export default {
       reader.readAsDataURL(file);
       console.log(file);
     },
-    selectFile(event){
+    selectFile(event) {
       console.log(event.target.files)
-      this.form.image= event.target.files[0];
+      this.form.image = event.target.files[0];
     }
   },
   computed: {

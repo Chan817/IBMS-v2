@@ -36,14 +36,16 @@
             <tr>
                 <th>Product</th>
                 <th>Current Quantity</th>
+                <th>Minimum Quantity Set</th>
                 <th>Status</th>
                 
             </tr>
             </thead>
             <tbody>
               <tr v-for="low in lowlist" :key="low.product">
-                  <td>{{ low.product }}</td>
-                  <td>{{ low.qty }}</td>
+                  <td>{{ low.Inv_Name }}</td>
+                  <td>{{ low.Inv_StockLevel }}</td>
+                  <td>{{ low.Inv_MinStockLevel }}</td>
                   <td>{{ low.status }}</td>
               </tr>
             </tbody>
@@ -67,6 +69,7 @@ export default {
         { title: 'Neksom Product', routePath: '/low_neksom'},
         { title: 'Raw Material' , routePath: '/low_raw' },
       ],
+      lowlist: [],
   }),
   mounted() {
     this.fetchLow();
@@ -74,10 +77,10 @@ export default {
   methods: {
     fetchLow() {
       axios
-        .get('/api/low') // Adjust the route path if necessary
+        .get('/api/notification/raw/') // Adjust the route path if necessary
         .then((response) => {
           console.log(response.data);
-          this.customerList = response.data;
+          this.lowlist = response.data;
         })
         .catch((error) => {
           console.error(error);

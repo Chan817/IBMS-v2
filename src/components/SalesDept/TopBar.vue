@@ -35,7 +35,7 @@
                             Low in Stock
                         </div>
                         <div class="text-left">
-                            2
+                            {{number}}
                             <!-- {{ count_low }} -->
                         </div>
                           <v-btn icon="mdi-arrow-right" variant="text" to="/low_neksom"></v-btn>
@@ -91,7 +91,7 @@ export default {
     data: () => ({
         emailmenu: false,
         accmenu: false,
-        products: [],
+        number: 0,
         notification: false, // Add this property
     
     }),
@@ -106,6 +106,7 @@ export default {
       const notifications = response.data;
 console.log(notifications);
       // Update the notification property based on the number of notifications
+      this.number = notifications.length; // Set the number property to the length of notifications array
       this.notification = notifications.length > 0;
     } catch (error) {
       console.error('Error fetching email notifications:', error);

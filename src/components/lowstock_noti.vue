@@ -37,15 +37,17 @@
                 <th>SKU Number</th>
                 <th>Product</th>
                 <th>Current Quantity</th>
+                <th>Minimum Quantity Set</th>
                 <th>Status</th>
                 
             </tr>
             </thead>
             <tbody>
-              <tr v-for="low in lowlist" :key="low.sku">
-                  <td>{{ low.sku }}</td>
-                  <td>{{ low.product }}</td>
-                  <td>{{ low.qty }}</td>
+              <tr v-for="low in lowlist" :key="low._id">
+                  <td>{{ low.Inv_SKU_Num }}</td>
+                  <td>{{ low.Inv_Name }}</td>
+                  <td>{{ low.Inv_StockLevel }}</td>
+                  <td>{{ low.Inv_MinStockLevel }}</td>
                   <td>{{ low.status }}</td>
               </tr>
             </tbody>
@@ -62,13 +64,13 @@ export default {
   name: 'lowinstock',
   data: () => ({
     selectedPeriod: '',
-    customerList: [],
     loaded: false,
     loading: false,
     items: [
         { title: 'Neksom Product', routePath: '/low_neksom'},
         { title: 'Raw Material' ,routePath: '/low_raw' },
       ],
+      lowlist: [],
   }),
   mounted() {
     this.fetchLow();
@@ -76,10 +78,10 @@ export default {
   methods: {
     fetchLow() {
       axios
-        .get('/api/low') // Adjust the route path if necessary
+        .get('/api/notification/product/') // Adjust the route path if necessary
         .then((response) => {
           console.log(response.data);
-          this.customerList = response.data;
+          this.lowlist = response.data;
         })
         .catch((error) => {
           console.error(error);
