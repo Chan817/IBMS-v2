@@ -59,4 +59,13 @@ module.exports = class API {
             res.status(404).json({ message: err.message });
         }
     }
+    static async fetchAllPendingProduct(req, res) {
+        try {
+          const inventoryItems = await InventoryItem.find({ order_status: "Pending" });
+          res.status(200).json(inventoryItems);
+        } catch (err) {
+          res.status(404).json({ message: err.message });
+        }
+      }
+
 }

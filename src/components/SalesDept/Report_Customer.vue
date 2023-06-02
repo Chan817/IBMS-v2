@@ -89,10 +89,7 @@ export default {
       }
       }, 1000);
     },
-    resetFilter() {
-      this.searchKeyword = ''; // Clear the search keyword
-      this.fetchCustomers(); // Fetch customers again to get the original list
-    },
+    
     downloadReport() {
       const doc = new jsPDF();
       doc.autoTable({ html: '#customer-table' });

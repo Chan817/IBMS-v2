@@ -1,7 +1,10 @@
 <template>
-    <div class="report">
-      <h1>Sales Report</h1>
-      <div class="controls">
+    <div class="container">
+      
+      <div class="container2">
+
+        <div class="title">Sales Report</div>
+        
         <div class="period-select">
           <label for="period">Period:</label>
           <select v-model="selectedPeriod" @change="loadData" id="period">
