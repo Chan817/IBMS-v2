@@ -9,7 +9,6 @@ import OrderListTableVue from '@/components/SalesDept/OrderListTable.vue'
 import Report_CustomerVue from '@/components/SalesDept/Report_Customer.vue'
 import Report_ProspectVue from '@/components/SalesDept/Report_Prospect.vue'
 import Report_PlatformVue from '@/components/SalesDept/Report_Platform.vue'
-import testCardVue from '@/components/testCard.vue'
 import RawMaterialTableVue from '@/components/WarehouseDept/RawMaterialTable.vue'
 import NeksomTableVue from '@/components/WarehouseDept/NeksomTable.vue'
 import AddNewVue from '@/components/WarehouseDept/AddNew.vue'
@@ -20,7 +19,7 @@ import table_completeVue from '@/components/WarehouseDept/table_complete.vue'
 import table_cancelVue from '@/components/WarehouseDept/table_cancel.vue'
 import table_allOrdersVue from '@/components/WarehouseDept/table_allOrders'
 import report_warehouseVue from '@/components/WarehouseDept/report_warehouse.vue'
-
+import BarcodeScanner from '@/components/WarehouseDept/BarcodeScanner.vue'
 
 const routes = [
   {
@@ -32,11 +31,6 @@ const routes = [
     path: '/offline',
     name: 'offline',
     component: OfflineOrderFormVue
-  },
-  {
-    path: '/test',
-    name: 'test',
-    component: testCardVue
   },
   {
     path: '/online',
@@ -128,6 +122,11 @@ const routes = [
     path: '/reportWarehouse',
     name: 'reportWarehouse',
     component: report_warehouseVue
+  },
+  {
+    path: '/scan',
+    name: 'scan',
+    component: BarcodeScanner
   }
 ]
 

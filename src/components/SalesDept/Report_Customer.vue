@@ -142,7 +142,7 @@ export default {
 table {
     width: 100%;
     border-collapse: collapse;
-    border: 2px solid #6b6b6b;
+    border: 2px solid #6b6b6b;  
 }
 table th, table td {
     padding: 8px;

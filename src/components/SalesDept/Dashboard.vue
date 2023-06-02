@@ -1,77 +1,98 @@
 <template>
     <div class="dashboard">
-  
+      
+      <div class="title">Dashboard</div>
       <!-- Top part -->
-      <section class="section">
-        <div class="widget">
-          <div class="widget-header">Total Sale</div>
-          <div class="widget-content">
+      <div class="container-widger">
+        <div class="card-total">
+          <v-card >
+          <div class="container-total">
+            <div class="title1">Total Sales</div>
             <div class="data">{{ totalSale }}</div>
-            <router-link to="/report">More Info -></router-link>
+            <div class="text-right">
+              <router-link to="/report">More Info -></router-link>
+            </div>
           </div>
+        </v-card>
         </div>
-  
-        <div class="widget">
-          <div class="widget-header">Total Order</div>
-          <div class="widget-content">
+        
+        <div class="card-total">
+          <v-card>
+          <div class="container-total">
+            <div class="title1">Total Orders</div>
             <div class="data">{{ totalOrder }}</div>
-            <router-link to="/list">More Info -></router-link>
+            <div class="text-right">
+              <router-link to="/list">More Info -></router-link>
+            </div>
           </div>
+        </v-card>
         </div>
-  
-        <div class="widget">
-          <div class="widget-header">Total Customer</div>
-          <div class="widget-content">
+        
+        <div class="card-total">
+          <v-card>
+          <div class="container-total">
+            <div class="title1">Total Customers</div>
             <div class="data">{{ totalCustomer }}</div>
-            <router-link to="/report_customer">More Info -></router-link>
+            <div class="text-right">
+              <router-link to="/report_customer">More Info -></router-link>
+            </div>
           </div>
+        </v-card>
+        </div>
+        
+        <div class="card-total">
+          <v-card>
+          <div class="container-total">
+            <div class="title1">Total Prospects</div>
+            <div class="data">{{ totalProspects }}</div>
+            <div class="text-right">
+              <router-link to="/report_prospect">More Info -></router-link>
+            </div>
+          </div>
+        </v-card>
         </div>
         
 
-        <div class="widget">
-          <div class="widget-header">Total Prospects</div>
-          <div class="widget-content">
-            <div class="data">{{ totalProspects }}</div>
-            <router-link to="/report_prospect">More Info -></router-link>
-          </div>
-        </div>
-      </section>
+      </div>
     
 
       <!-- Chart -->
-      <section class="section">
-        <div class="chart">
-          <div class="sales-chart">
-            <h4>Platform Analysis</h4>
-            <div class="sales-chart">
-            <canvas ref="salesChart"></canvas>
-          </div>
-          </div>
-          
+      <div class="container-chart">
 
-          <!-- Platform Analytics -->
-          <div class="analytics-chart">
-            <div class="container">
-              <h4>Sales Performance</h4>
-              <v-select
-                class="year"
-                label="Select"
-                :items="['2023', '2024']"
-                variant="solo"
-                density="compact"
-                ></v-select>
+        <!--Platform Analysis-->
+        <v-card class="card-platf">
+          <div class="platform-chart">
+            <div class="title1">Platform Analysis</div>
+            <div class="platform-chart">
+              <canvas ref="salesChart"></canvas>
             </div>
-            
-            <div class="analytics-chart">
-            <canvas ref="analyticsChart"></canvas>
           </div>
-          </div>
-          
-        </div>
-      </section>
+        </v-card>
+        
+          <!--Sales Performance-->
+          <v-card class="card-sales">
+            <div class="container-sales">
+              <div class="container2">
+                <div class="title1">Sales Performance</div>
+                <v-select
+                  class="year"
+                  label="Select"
+                  :items="['2023', '2024']"
+                  variant="solo"
+                  density="compact"
+                  ></v-select>
+              </div>
+              <div class="sales-chart">  
+                <canvas ref="analyticsChart"></canvas>
+              </div>
+            </div>
+              
+          </v-card>
+
+      </div>
   
       <!-- Recent Activities -->
-      <section class="section">
+      <div class="container1">
         <h2>Recent Activities</h2>
         <table class="activity-table">
           <thead>
@@ -93,7 +114,7 @@
             </tr>
           </tbody>
         </table>
-      </section>
+      </div>
     </div>
     
   </template>
@@ -191,24 +212,70 @@
   
   <style scoped>
   .dashboard {
-    margin: 50px;
+    padding: 50px;
+    background-color: #f8f8f8;
   }
-  
-  .section {
-    margin-top: 20px;
+  .title {
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.card-total{
+  flex: 1;
+  margin-bottom: 20px;
+  margin-right: 20px;
+  width: 100%;
+}
+.container-widger{
+    
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    justify-content: start;
   }
-  
+.container-total{
+  padding: 30px;
+}
+.title1 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  margin-right: 20px;
+}
+.container2 {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .container1 {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .container-chart {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+  }
+  .container-widget{
+    padding: 10px;
+  }
   .widget {
-    display: inline-block;
-    width: calc(25% - 10px);
-    margin-right: 10px;
-    padding: 20px;
+    width: 100%;
+    padding: 30px;
     background-color: #f1f1f1;
     border-radius: 4px;
     box-sizing: border-box;
+    margin: 20px;
   }
   
   .widget-header {
+    font-size: 20px;
     font-weight: bold;
   }
   
@@ -219,22 +286,23 @@
   }
   
   .data {
-    font-size: 32px;
+    font-size: 40px;
     font-weight: bold;
     flex-grow: 1;
+    text-align: center;
   }
-  
-  .more-info {
-    opacity: 0.6;
-    cursor: pointer;
+  .text-right{
+    margin-top: 10px;
   }
-  
-  .chart {
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
-  }
-  
+ .card-platf{
+  margin-right: 20px;
+  margin-bottom: 30px;
+ } 
+.card-sales{
+  padding: 20px;
+  width: 900px;
+  margin-bottom: 30px;
+}
   .activity-table {
     width: 100%;
     border-collapse: collapse;
@@ -247,23 +315,20 @@
     text-align: left;
     border-bottom: 1px solid #ddd;
   }
-  .analytics-chart{
-    width:90%;
-    height: 320px;
-    
-  }
-  .sales-chart{
-    margin-top: 20px;
-    width: 60%;
-    height: 60%;
-  }
+
   .year{
-    width: 100px;
-    height: 20px;
-    margin-left: 300px;
+    width: 200px;
   }
-  .container{
-    display: flex;
-    justify-content: space-between;
-  }
+.container-sales{
+  width: 100%;
+  
+}
+.sales-chart{
+  height: 300px;
+  width: 100%;
+}
+.platform-chart{
+  padding: 20px;
+  
+}
   </style>

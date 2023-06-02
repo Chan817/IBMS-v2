@@ -110,7 +110,7 @@ export default {
         ['Add New Product','', '/add'],
     ],
     storage:[
-        ['Scan', '','/'],
+        ['Scan', '','/scan'],
         ['Key In','', '/'],
     ],
     ship:[

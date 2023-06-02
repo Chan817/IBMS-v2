@@ -1,7 +1,7 @@
 <template>
     <div>
         
-      <div class="text-left">
+      <div class="container">
         <div class="title">Prospect Details</div>
         <div class="form">
             <div class="form-item">
@@ -24,7 +24,7 @@
                 <input id="contact" v-model="prospect.contact" required>
             </div>
 
-            <div class="text-right">
+            <div class="button-grp">
                 <v-btn class="button" type="submit" @click="submitForm" :disabled="isSaveDisabled">Submit</v-btn>
                 <v-btn class="button" type="button" @click="cancelForm">Cancel</v-btn>
             </div>
@@ -97,29 +97,45 @@
   };
   </script>
   
-  <style>
+  <style scoped>
  
-  .form-item input{
+ .container {
+  padding: 30px;
+} 
+.form-item {
+  margin-bottom: 20px;
+}
+
+.form-item label {
+  font-weight: bold;
+} 
+.form-item input{
+    width: 100%;
     flex: 1;
     padding: 5px 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
   }
+  .button-grp{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
   .button {
-    margin-left: 10px;
-    background-color: #4C4D6C; 
-    color: #ffffff; 
+  padding: 10px 20px;
+  margin-left: 10px;
+  background-color: #4C4D6C;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
   }
-  .text-left{
-    margin: 40px;
-  }
-  .form{
-    margin-top: 40px;
-  }
-  .title{
-    font-size:x-large;
-  }
- 
+  .title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
   </style>
   
 

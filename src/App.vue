@@ -4,8 +4,6 @@ import SideBar from './components/SalesDept/SideBar.vue';
 import TopBar from './components/SalesDept/TopBar.vue';
 import SideBar_Warehouse from './components/WarehouseDept/SideBar_Warehouse.vue';
 
-import TestCard from './components/testCard.vue';
-
 </script>
 
 <template>
@@ -15,8 +13,6 @@ import TestCard from './components/testCard.vue';
         <SideBar/>
         <!---->
         <SideBar_Warehouse/>
-        
-        
         <RouterView/>
       </v-main>
   </v-app>
