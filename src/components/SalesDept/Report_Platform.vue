@@ -85,7 +85,7 @@ import 'jspdf-autotable';
                   sales: data.filter(item => item.order_platform === 'Tiktok').length
                 }
               ];
-
+              console.log(platformList);
               this.platformList = platformList;
             })
             .catch(error => {
