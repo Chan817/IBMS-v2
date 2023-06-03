@@ -3,7 +3,7 @@
         
 
         <div class="container2">
-            <div class="title">Order List</div>
+            <div class="title">All Orders</div>
             
             <div class="container3">
                 <div>
@@ -59,21 +59,31 @@
                     <th>Customer Name</th>
                     <th>Customer Address</th>
                     <th>Product List</th>
+                    <th>Quantity</th>
                     <th>Order Date</th>
-                    <th>Shipped Date</th>
+                    <th>Shipped Date-later change</th>
                     <th>Status</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="order in orderList" :key="order.id">
-                    <td>{{ order.id }}</td>
-                    <td>{{ order.type }}</td>
-                    <td>{{ order.customer }}</td>
-                    <td>{{ order.address }}</td>
-                    <td>{{ order.product }}</td>
-                    <td>{{ order.orderdate }}</td>
-                    <td>{{ order.shippeddate }}</td>
-                    <td>{{ order.status }}</td>
+                <tr v-for="order in orderList" :key="order._id">
+                    <td>{{ order.order_ID }}</td>
+                    <td>{{ order.order_type }}</td>
+                    <td>{{ order.customer.customer_name }}</td>
+                    <td>{{ order.customer.customer_address }}</td>
+                    <td>
+                        <p v-for="product in order.orderedProducts" :key="product._id">
+                            {{ product.inventoryItemName }}
+                        </p>
+                    </td>
+                    <td>
+                        <p v-for="product in order.orderedProducts" :key="product._id">
+                            {{ product.Op_Qty }}
+                        </p>
+                    </td>
+                    <td>{{ order.order_Date }}</td>
+                    <td>{{ order.order_Date }}</td>
+                    <td>{{ order.order_status }}</td>
                 </tr>
                 </tbody>
             </table>
@@ -83,7 +93,7 @@
 </template>
 
 <script>
-
+import axios from 'axios';
     export default {
         name: 'Order',
         components: {
@@ -93,23 +103,70 @@
         data: () => ({
             loaded: false,
             loading: false,
+            orderList: [],
+            searchKeyword:'',
             items: [
                 { title: 'Pending', routePath: '/toship'},
-                { title: 'Shipped' ,routePath: '/shipping' },
-                { title: 'Completed' ,routePath: '/completed' },
-                { title: 'Cancelled' ,routePath: '/cancel' },
+                { title: 'Shipped' , routePath: '/shipping' },
+                { title: 'Completed' , routePath: '/completed' },
+                { title: 'Cancelled' , routePath: '/cancel' },
             ],
         }),
+        mounted() {
+            this.fetchOrders();
+        },
+        
         methods: {
-            onClick () {
-            this.loading = true
+            fetchOrders() {
+                console.log("in vue script");
+                axios
+                    .get('/api/orderList') // Adjust the route path if necessary
+                    .then((response) => {
+                        console.log(response.data);
+                        this.orderList = response.data;
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+            },
 
-            setTimeout(() => {
-            this.loading = false
-            this.loaded = true
-            }, 2000)
-      },
+            onClick () {
+                this.loading = true
+
+                setTimeout(() => {
+                this.loading = false
+                this.loaded = true
+                if (this.searchKeyword) {
+                    this.orderList = this.orderList;
+                }
+                }, 1000)
+            },
+        },
+        computed: {
+        orderList(){
+            if (!this.searchKeyword) {
+                return this.orderList;
+                } else {
+                const keyword = this.searchKeyword.toLowerCase();
+                return this.orderList.filter((order) => {
+                    
+                    const customerName = order.customer.customer_name.toLowerCase();
+                    const inventoryItems = order.orderedProducts.map(
+                    (product) => product.inventoryItemName.toLowerCase()
+                    );
+
+                    return (
+                    (order.order_ID && order.order_ID.toLowerCase().includes(keyword)) ||
+                    (order.order_type && order.order_type.toLowerCase().includes(keyword)) ||
+                    (order.order_status && order.order_status.toLowerCase().includes(keyword)) ||
+                    (order.customer.customer_name && order.customer.customer_name.toLowerCase().includes(keyword)) ||
+                    inventoryItems.some((item) => item.includes(keyword))
+                    
+                    );
+                });
+            }
         }
+    }
      }
 </script>
 
@@ -151,6 +208,7 @@ table th, table td {
 .searchbar{
     width: 300px; /* Adjust the width as desired */
     margin-bottom: 20px;
+    margin-right: 10px;
 }
 .table-wrapper {
   overflow-y: auto;
@@ -159,7 +217,9 @@ table th, table td {
     width: 300px;
     justify-content: center;
     align-items: center;
-    margin-top: 24px;
     margin-right: 10px;
+    margin-top: 24px;
+    background-color: #4C4D6C;
+    color: #ffffff;
 }
 </style>

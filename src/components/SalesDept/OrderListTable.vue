@@ -172,7 +172,7 @@ export default {
                     );
 
                     return (
-                    (order.order_IDorder_type && order.order_IDorder_type.toLowerCase().includes(keyword)) ||
+                    (order.order_ID && order.order_ID.toLowerCase().includes(keyword)) ||
                     (order.order_type && order.order_type.toLowerCase().includes(keyword)) ||
                     (order.order_status && order.order_status.toLowerCase().includes(keyword)) ||
                     (order.customer.customer_name && order.customer.customer_name.toLowerCase().includes(keyword)) ||
