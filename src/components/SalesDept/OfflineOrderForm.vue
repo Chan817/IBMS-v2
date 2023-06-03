@@ -91,7 +91,7 @@
 
           <div class="actions">
             <v-btn class="el-button" type="primary" @click="save" :disabled="isSaveDisabled">Save</v-btn>
-            <v-btn class="el-button" type="danger" @click="cancel">Cancel</v-btn>
+            <v-btn class="cancel-button" type="danger" @click="cancel">Cancel</v-btn>
           </div>
 
         </div>
@@ -332,13 +332,20 @@ textarea {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  
-  
 }
+
 .container2{
   justify-content: center;
   align-items: center;
 }
 
+.cancel-button {
+  margin-left: 10px;
+  background-color: #a60c1b;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
 </style>
   

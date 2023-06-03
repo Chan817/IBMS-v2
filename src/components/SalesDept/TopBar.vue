@@ -14,7 +14,7 @@
             
             >
                 <template v-slot:activator="{ props }">
-                    <v-btn v-bind="props" style="display:flex; justify-content: center; align-items: center; margin-top: 10px;">
+                    <v-btn variant="text" v-bind="props" style="display:flex; justify-content: center; align-items: center; margin-top: 10px;">
                         <v-icon size="large" color="white" icon="mdi-email"></v-icon>
                         <div v-if="notification" class="notification-dot"></div>
                     </v-btn>
@@ -159,7 +159,7 @@ console.log(notifications);
 .notification-dot {
   position: absolute;
   top: 2px;
-  right: 2px;
+  right: 3px;
   width: 8px;
   height: 8px;
   background-color: red;

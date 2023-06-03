@@ -49,13 +49,27 @@
               <td>{{ getItemStatus(item) }}</td>
               <td>
                 <div class="row">
-                  <v-btn icon="mdi-vuetify" variant="plain" @click="editItem(item._id)"></v-btn>
-                  <v-btn icon="mdi-vuetify" variant="plain" @click="deleteItem(item._id)"></v-btn>
+                  <v-btn icon="mdi-pencil" variant="plain" @click="editItem(item._id)"></v-btn>
+                  <v-btn icon="mdi-delete" variant="plain" @click="deleteItem(item._id)"></v-btn>
                 </div>
               </td>
             </tr>
           </tbody>
         </table>
+
+        <v-dialog v-model="showDeleteConfirmation" max-width="500px">
+          <v-card>
+            <v-card-title>Delete Item</v-card-title>
+            <v-card-text>
+              Are you sure you want to delete this item?
+            </v-card-text>
+            <v-card-actions>
+              <v-btn color="red" text @click="confirmDeleteItem">Delete</v-btn>
+              <v-btn text @click="showDeleteConfirmation = false">Cancel</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
       </div>
       
     </div>
@@ -72,6 +86,8 @@
         loaded: false,
         loading: false,
         searchKeyword:'',
+        showDeleteConfirmation: false,
+        deleteItemId: null,
       };
     },
     created() {
@@ -108,11 +124,27 @@
           });
       },
       editItem(itemId) {
-        // Handle edit item action
-      },
-      deleteItem(itemId) {
-        // Handle delete item action
-      },
+        this.$router.push({ name: 'edit', params: { id: itemId } });
+        },
+        deleteItem(itemId) {
+          this.showDeleteConfirmation = true;
+          this.deleteItemId = itemId;
+        },
+        confirmDeleteItem() {
+          this.showDeleteConfirmation = false;
+          const itemId = this.deleteItemId;
+          // Proceed with the deletion
+          axios.delete(`/api/inventoryitem/${itemId}`)
+            .then((response) => {
+              const index = this.inventoryItems.findIndex((item) => item._id === itemId);
+              if (index !== -1) {
+                this.inventoryItems.splice(index, 1);
+              }
+            })
+            .catch((error) => {
+              console.error('Error deleting item:', error);
+            });
+        },
     },
     computed: {
       inventoryItems() {
@@ -164,7 +196,7 @@
   table th,
   table td {
     padding: 8px;
-    text-align: left;
+    text-align: center;
     border: 2px solid #6b6b6b;
   }
   .search-bar {
@@ -174,6 +206,10 @@
 
 .table-wrapper {
   overflow-y: auto;
+}
+.row{
+  justify-content: center;
+  display: flex;
 }
   </style>
   

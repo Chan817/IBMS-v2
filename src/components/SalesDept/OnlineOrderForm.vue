@@ -41,6 +41,7 @@
               <option value="Facebook">Facebook</option>
               <option value="Tiktok">Tiktok</option>
             </select>
+          </div>
 
           <div class="form-group">
             <label for="orderStatus">Order Status: <span class="required-field">*</span></label>
@@ -50,7 +51,7 @@
               <option value="Cancelled">Cancelled</option>
             </select>
           </div> 
-          </div>
+          
 
           <div class="form-itemproduct" v-for="(item, index) in orderedproducts" :key="index">
             
@@ -102,7 +103,7 @@
 
         <div class="actions">
           <v-btn class="el-button" type="primary" @click="save" :disabled="isSaveDisabled">Save</v-btn>
-          <v-btn class="el-button" type="danger" @click="cancel">Cancel</v-btn>
+          <v-btn class="cancel-button" type="danger" @click="cancel">Cancel</v-btn>
         </div>
       
     </div>
@@ -276,6 +277,7 @@ export default {
 
 .container {
   padding: 30px;
+  
 }
 
 .title {
@@ -320,11 +322,6 @@ textarea {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-.add-item {
-  margin-left: 10px;
-  background-color: #4C4D6C;
-  color: #ffffff;
-}
 
 .actions {
   display: flex;
@@ -348,11 +345,17 @@ textarea {
   border: none;
   border-radius: 4px;
   cursor: pointer;
- 
-  
 }
 .container2{
   justify-content: center;
   align-items: center;
+}
+.cancel-button {
+  margin-left: 10px;
+  background-color: #a60c1b;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 </style>

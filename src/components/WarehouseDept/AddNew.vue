@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <h2>Add New Product</h2>
+    <div class="title">Add New Product</div>
+    <!-- <h2>Add New Product</h2> -->
     <form @submit.prevent="submitForm" enctype="multipart/form-data">
       <div class="form-group">
         <label for="category">Category:</label>
@@ -58,8 +59,8 @@
       </div>
 
       <div class="button-group">
-        <button type="submit" class="save-button" :disabled="isSaveDisabled">Save</button>
-        <button type="button" class="cancel-button" @click="cancelForm">Cancel</button>
+        <v-btn type="submit" class="save-button" :disabled="isSaveDisabled">Save</v-btn>
+        <v-btn type="button" class="cancel-button" @click="cancelForm">Cancel</v-btn>
       </div>
     </form>
   </div>
@@ -103,13 +104,6 @@ export default {
       if (this.form.barcode) {
         formData.append('Inv_BarcodeNum', this.form.barcode);
       }
-      // if (this.form.image) {
-      //   console.log(this.form.image);
-      //   formData.InvImg = this.form.image;
-
-
-      //   //formData.append('image', imageBlob, 'image.jpg');
-      // }
       if (this.form.description) {
         formData.append('Inv_Desc', this.form.description);
       }
@@ -128,6 +122,7 @@ export default {
         .catch(err => {
           console.log(err);
         });
+
     },
     resetForm() {
       this.form = {
@@ -192,10 +187,11 @@ export default {
   padding: 30px;
 }
 
-h2 {
-  margin-bottom: 30px;
+.title {
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
-
 .select {
   width: 100%;
   height: 40px;
@@ -221,7 +217,9 @@ textarea {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-
+.form-group label {
+  font-weight: bold;
+}
 .button-group {
   display: flex;
   justify-content: flex-end;
@@ -230,22 +228,15 @@ textarea {
 button {
   padding: 10px 20px;
   margin-left: 10px;
-  background-color: #007bff;
-  color: #fff;
+  background-color: #4C4D6C;
+  color: #ffffff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
 .cancel-button {
-  background-color: #dc3545;
+  background-color: #a60c1b;
 }
 
-button:hover {
-  background-color: #0056b3;
-}
-
-.cancel-button:hover {
-  background-color: #c82333;
-}
 </style>

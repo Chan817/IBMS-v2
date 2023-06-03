@@ -262,29 +262,6 @@
     flex-wrap: wrap;
     justify-content: start;
   }
-  .container-widget{
-    padding: 10px;
-  }
-  .widget {
-    width: 100%;
-    padding: 30px;
-    background-color: #f1f1f1;
-    border-radius: 4px;
-    box-sizing: border-box;
-    margin: 20px;
-  }
-  
-  .widget-header {
-    font-size: 20px;
-    font-weight: bold;
-  }
-  
-  .widget-content {
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-  }
-  
   .data {
     font-size: 40px;
     font-weight: bold;

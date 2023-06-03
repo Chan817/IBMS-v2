@@ -22,6 +22,8 @@ import report_warehouseVue from '@/components/WarehouseDept/report_warehouse.vue
 import BarcodeScanner from '@/components/WarehouseDept/BarcodeScanner.vue'
 import lowstock_notiVue from '@/components/lowstock_noti.vue'
 import raw_lowstock_notiVue from '@/components/raw_lowstock_noti.vue'
+import UpdateNeksomVue from '@/components/WarehouseDept/UpdateNeksom.vue'
+import Storage_keyin_formVue from '@/components/WarehouseDept/Storage_keyin_form.vue'
 
 const routes = [
   {
@@ -139,6 +141,16 @@ const routes = [
     path: '/low_raw',
     name: 'low_raw',
     component: raw_lowstock_notiVue
+  },
+  {
+    path: '/edit/:id',
+    name: 'edit',
+    component: UpdateNeksomVue
+  },
+  {
+    path: '/store_keyin',
+    name: 'store_keyin',
+    component: Storage_keyin_formVue
   }
 ]
 

@@ -39,6 +39,9 @@
               </tr>
             </tbody>
         </table>
+        <div>
+          <v-btn class="el-button" @click="backPrevious">Back</v-btn>
+        </div>
     </div>
 </template>
 
@@ -56,13 +59,16 @@
         }),
         methods: {
             onClick () {
-            this.loading = true
+                this.loading = true
 
-            setTimeout(() => {
-            this.loading = false
-            this.loaded = true
-            }, 2000)
-      },
+                setTimeout(() => {
+                this.loading = false
+                this.loaded = true
+                }, 2000)
+            },
+            backPrevious(){
+                this.$router.go(-1);
+            }
         }
      }
 </script>
@@ -98,5 +104,9 @@ table th, table td {
     margin-top: 20px;
     width: 100px;
 }
-
+.el-button {
+  margin-top: 20px;
+  background-color: #4C4D6C;
+  color: #ffffff;
+}
 </style>

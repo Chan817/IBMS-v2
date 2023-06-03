@@ -111,7 +111,7 @@ export default {
     ],
     storage:[
         ['Scan', '','/scan'],
-        ['Key In','', '/'],
+        ['Key In','', '/store_keyin'],
     ],
     ship:[
         ['Scan', '','/'],

@@ -26,7 +26,7 @@
 
             <div class="button-grp">
                 <v-btn class="button" type="submit" @click="submitForm" :disabled="isSaveDisabled">Submit</v-btn>
-                <v-btn class="button" type="button" @click="cancelForm">Cancel</v-btn>
+                <v-btn class="cancel-button" type="button" @click="cancelForm">Cancel</v-btn>
             </div>
         </div>
       </div>
@@ -135,7 +135,14 @@
   font-weight: bold;
   margin-bottom: 20px;
 }
-
+.cancel-button {
+  margin-left: 10px;
+  background-color: #a60c1b;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
   </style>
   
 

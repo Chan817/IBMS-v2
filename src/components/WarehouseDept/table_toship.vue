@@ -47,8 +47,7 @@
                         <td>{{ list.order_status }}</td>
                         <td>
                             <div class="row">
-                                <v-btn icon="mdi-vuetify" variant="plain" @click='editOrder(list.id)'></v-btn>
-                                <v-btn icon="mdi-vuetify" variant="plain" @click='deleteOrder(list.id)'></v-btn>
+                                <v-btn class="shipped-button" @click='editOrder(list.id)'>Shipped</v-btn>
                             </div>
                         </td>
                     </tr>
@@ -56,6 +55,10 @@
             </table>
         </div>
         
+        <div>
+          <v-btn class="el-button" @click="backPrevious">Back</v-btn>
+        </div>
+
     </div>
 </template>
 
@@ -102,6 +105,9 @@ export default {
                 }
             }, 1000);
         },
+        backPrevious(){
+            this.$router.go(-1);
+        }
     },
     computed: {
         orderList(){
@@ -160,7 +166,7 @@ table {
 table th,
 table td {
     padding: 8px;
-    text-align: left;
+    text-align: center;
     border: 2px solid #6b6b6b;
 }
 .search-bar {
@@ -170,5 +176,21 @@ table td {
 
 .table-wrapper {
   overflow-y: auto;
+}
+.row{
+  justify-content: center;
+  display: flex;
+}
+.shipped-button{
+  background-color: #4C4D6C;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.el-button {
+  margin-top: 20px;
+  background-color: #4C4D6C;
+  color: #ffffff;
 }
 </style>
