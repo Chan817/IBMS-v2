@@ -46,7 +46,7 @@
         axios
           .get('/api/inventoryitem/product') // Replace with your actual API endpoint
           .then((response) => {
-            this.inventoryItems = response.data;
+            this.inventoryData = response.data;
           })
           .catch((error) => {
             console.error('Error fetching inventory items:', error);

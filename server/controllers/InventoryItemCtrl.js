@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 const InventoryItem = require("../models/inventoryitem");
+const fs = require('fs');
+const OrderedProduct = require("../models/orderedproduct");
+const Order = require("../models/order");
 
 module.exports = class InventoryItemController {
   // Fetch all inventory items
@@ -65,7 +68,20 @@ module.exports = class InventoryItemController {
   // Update an inventory item
   static async updateInventoryItem(req, res) {
     const id = req.params.id;
+    let new_image = "";
+    if (req.file){
+      new_image = req.file.filename;
+      try {
+        fs.unlinkSync("./uploads/" + req.body.old_image);
+      } catch (error) {
+        console.log(error);
+      }
+    } else{
+      new_image = req.body.old_image;
+    }
+
     const newInventoryItem = req.body;
+    newInventoryItem.InvImg = new_image;
     try {
       const updatedInventoryItem = await InventoryItem.findByIdAndUpdate(
         id,
@@ -86,6 +102,26 @@ module.exports = class InventoryItemController {
     try {
       await InventoryItem.findByIdAndDelete(id);
       res.status(200).json({ message: "Inventory item deleted successfully!" });
+    } catch (err) {
+      res.status(404).json({ message: err.message });
+    }
+  }
+
+  // Fetch inventory items with total sale
+  static async fetchInventoryItemsWithTotalSale(req, res) {
+    try {
+      const inventoryItems = await InventoryItem.find().lean();
+  
+      for (let item of inventoryItems) {
+        const totalSale = await OrderedProduct.aggregate([
+          { $match: { Inventory_ID: mongoose.Types.ObjectId(item._id) } }, // Convert to ObjectId
+          { $group: { _id: "$Inventory_ID", totalSale: { $sum: "$Op_Qty" } } },
+        ]);
+  
+        item.totalSale = totalSale.length > 0 ? totalSale[0].totalSale : 0;
+      }
+  
+      res.status(200).json(inventoryItems);
     } catch (err) {
       res.status(404).json({ message: err.message });
     }

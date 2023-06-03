@@ -99,8 +99,8 @@
           price: null,
           currentstock: null,
           minstock: null,
-          showUpdateConfirmation: false,
-        }
+        },
+        showUpdateConfirmation: false,
       };
     },
     created() {
@@ -136,6 +136,24 @@
         // Handle the confirmed update
         const formData = new FormData();
         // Populate form data with the item details
+        formData.append('Inv_Catg', this.form.category);
+  // formData.append('sku', this.form.sku);
+  formData.append('InvImg', this.form.image);
+  formData.append('Inv_Name', this.form.productName);
+  formData.append('Inv_CostPrice', this.form.price);
+  formData.append('Inv_StockLevel', this.form.currentstock);
+  formData.append('Inv_MinStockLevel', this.form.minstock);
+
+  // Include optional fields only if they have a value
+  if (this.form.sku) {
+        formData.append('Inv_SKU_Num', this.form.sku);
+      }
+      if (this.form.barcode) {
+        formData.append('Inv_BarcodeNum', this.form.barcode);
+      }
+      if (this.form.description) {
+        formData.append('Inv_Desc', this.form.description);
+      }
 
       axios
         .patch(`/api/inventoryitem/${this.itemId}`, formData, {
