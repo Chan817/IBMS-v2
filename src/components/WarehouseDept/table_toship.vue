@@ -74,17 +74,10 @@ export default {
         this.fetchOrders();
     },
     methods: {
-        calculateTotalPrice(orderedProducts) {
-            const total = orderedProducts.reduce(
-                (total, product) => total + product.Op_Qty * product.Op_UnitPrice,
-                0
-            );
-            return total.toFixed(2);
-        },
         fetchOrders() {
             console.log("in vue script");
             axios
-                .get('/api/orderList') // Adjust the route path if necessary
+                .get('/api/orderList/pending') // Adjust the route path if necessary
                 .then((response) => {
                     console.log(response.data);
                     this.orderList = response.data;
