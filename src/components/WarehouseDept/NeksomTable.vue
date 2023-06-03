@@ -89,7 +89,7 @@
         }, 1000);
       },
       getItemStatus(item) {
-        if (item.Inv_StockLevel >= item.Inv_MinStockLevel) {
+        if (item.Inv_StockLevel > item.Inv_MinStockLevel) {
           return 'In stock';
         } else if (item.Inv_StockLevel > 0) {
           return 'Low in stock';
