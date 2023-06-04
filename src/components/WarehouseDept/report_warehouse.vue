@@ -1,148 +1,218 @@
 <template>
     <div class="container">
-        <section class="section">
-            <div class="container2">
-            <h2>Report</h2>
-                <v-select
-                class="selectbar"
-                label="Select"
-                :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-                variant="solo-filled"
-                density="compact"
-                ></v-select>
+        <div class="container2">
 
-                <v-menu>
-                    <template v-slot:activator="{ props }">
-                        <v-btn
-                        color="primary"
-                        v-bind="props"
-                        >
-                        Period
-                        </v-btn>
-                    </template>
-                    <v-list>
-                        <v-list-item
-                        v-for="(item, index) in items"
-                        :key="index"
-                        :value="index"
-                        :to="item.routePath"
-                        >
-                        <v-list-item-title>{{ item.title }}</v-list-item-title>
-                        </v-list-item>
-                    </v-list>
-                </v-menu>
-            
-            <v-text-field 
-                :loading="loading"
-                density="compact"
-                variant="solo"
-                label="Search"
-                append-inner-icon="mdi-magnify"
-                single-line
-                hide-details
-                @click:append-inner="onClick"
-                class="filterbar"
-            ></v-text-field>
+            <div class="title">Inventory Report</div>
+            <!-- <h2>Neksom Product</h2> -->
+
+            <div class="container3">
+                <div>
+                    <v-menu class="categoty-menu">
+                        <template v-slot:activator="{ props }">
+                            <v-btn class="categoty-button" v-bind="props">
+                                Categories
+                            </v-btn>
+                        </template>
+                        <v-list>
+                            <v-list-item v-for="(item, index) in items" :key="index" :value="index" :to="item.routePath">
+                                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
+                </div>
+
+                <div class="search-bar">
+                    <v-text-field :loading="loading" density="compact" variant="solo" label="Search keyword"
+                        append-inner-icon="mdi-magnify" single-line hide-details v-model="searchKeyword"
+                        @click:append-inner="onClick"></v-text-field>
+                </div>
+            </div>
+
         </div>
-        </section>
-        
-        <section class="section">
+
+        <div class="table-wrapper">
             <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th>SKU Number</th>
-                <th>Product</th>
-                <th>Inventory</th>
-                <th>In</th>
-                <th>Out</th>
-                <th>Total</th>
-            </tr>
-            </thead>
-            <tbody>
-              <tr v-for="report in reportList" :key="report.id">
-                  <td>{{ report.sku }}</td>
-                  <td>{{ report.product }}</td>
-                  <td>{{ report.inventory }}</td>
-                  <td>{{ report.in }}</td>
-                  <td>{{ report.out }}</td>
-                  <td>{{ report.total }}</td>
-              </tr>
-            </tbody>
-        </table>
-        </section>
-        
+                <thead>
+                    <tr>
+                        <th>SKU Number</th>
+                        <th>Category</th>
+                        <th>Product Name</th>
+                        <th>Stock Level</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in inventoryItems" :key="item._id">
+                        <td>{{ item.Inv_SKU_Num }}</td>
+                        <td>{{ item.Inv_Catg }}</td>
+                        <td>{{ item.Inv_Name }}</td>
+                        <td>{{ item.Inv_StockLevel }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <v-btn class="el-button" @click="downloadReport">Download Report</v-btn>
     </div>
 </template>
-
+    
 <script>
+import axios from 'axios';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
-    export default {
-        name: 'report',
-        components: {
-            
-        },
-        props: ['report'],
-        data: () => ({
+export default {
+    name: 'neksom',
+    data() {
+        return {
+            inventoryItems: [],
             loaded: false,
             loading: false,
+            searchKeyword: '',
             items: [
-            { title: 'Daily'},
-            { title: 'Weekly' },
-            { title: 'Monthly' },
-            { title: 'Yearly' },
-            { title: 'Customizable' }
-      ],
-        }),
-        methods: {
-            onClick () {
-            this.loading = true
-
+                { title: 'All', routePath: '/reportWarehouse'},
+                { title: 'Neksom Product', routePath: '/toship'},
+                { title: 'Raw Material' , routePath: '/shipping' },
+                
+            ],
+        };
+    },
+    created() {
+        this.fetchInventoryItems();
+    },
+    methods: {
+        onClick() {
+            this.loading = true;
             setTimeout(() => {
-            this.loading = false
-            this.loaded = true
-            }, 2000)
-      },
-        }
-     }
-</script>
+                this.loading = false;
+                this.loaded = true;
+                if (this.searchKeyword) {
+                    this.inventoryItems = this.inventoryItems;
+                }
+            }, 1000);
+        },
+        fetchInventoryItems() {
+            axios
+                .get('/api/inventoryitem/') // Replace with your actual API endpoint
+                .then((response) => {
+                    this.inventoryItems = response.data;
+                })
+                .catch((error) => {
+                    console.error('Error fetching inventory items:', error);
+                });
+        },
+        downloadReport() {
+            const doc = new jsPDF();
 
-<style>
-.container{
-    padding-left: 50px;
-    padding-right: 50px;
+            let data;
+            let title;
+
+            data = this.inventoryItems;
+            title = 'All data report';
+
+            const tableData = data.map(item => [item.Inv_SKU_Num, item.Inv_Catg, item.Inv_Name, item.Inv_StockLevel]);
+
+            doc.autoTable({
+                head: [['SKU Number', 'Product Name', 'Total']],
+                body: tableData,
+                theme: 'grid',
+                startY: 20
+            });
+
+            doc.text(title, 14, 10);
+
+            doc.save('Inventory_Report.pdf');
+        },
+    },
+    computed: {
+        inventoryItems() {
+            if (!this.searchKeyword) {
+                return this.inventoryItems;
+            } else {
+                const keyword = this.searchKeyword.toLowerCase();
+                return this.inventoryItems.filter((item) => {
+                    return (
+                        (item.Inv_SKU_Num && item.Inv_SKU_Num.toLowerCase().includes(keyword)) ||
+                        (item.Inv_Catg && item.Inv_Catg.toLowerCase().includes(keyword)) ||
+                        (item.Inv_Name && item.Inv_Name.toLowerCase().includes(keyword)) ||
+                        (item.Inv_StockLevel && item.Inv_StockLevel.toString().toLowerCase().includes(keyword))
+
+                    );
+                });
+            }
+        }
+    }
+};
+</script>
     
+<style scoped>
+.container {
+    padding: 30px;
 }
-h2{
-    margin-bottom: 30px;
-    margin-top: 20px;
-    margin-right: 200px;
+
+.container2 {
+    flex: 1;
+    display: flex;
+    margin-bottom: 20px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    /* Allow elements to wrap on smaller screens */
+}
+.container3{
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+.title {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    border: 2px solid #6b6b6b;
+    border: 1px solid #6b6b6b;
 }
-table th, table td {
+
+table th,
+table td {
     padding: 8px;
-    text-align:center;
-    border: 2px solid #6b6b6b;
-  }
-.container2{
-    display: flex;
+    text-align: center;
+    border: 1px solid #6b6b6b;
 }
-.section{
-    margin-top: 20px;
+
+th {
+    background-color: #4C4D6C;
+    font-weight: bold;
+    color: #ffffff;
 }
-.selectbar{
-    width: 100px;
-    margin-right: 40px;
-    height: 0px;
-    margin-top: 10px;
+
+tr:nth-child(even) {
+    background-color: #e4e4f3;
 }
-.filterbar{
+
+.search-bar {
+    width: 300px;
+    
+    margin-bottom: 20px;
+}
+
+.table-wrapper {
+    overflow-y: auto;
+}
+
+.categoty-button{
     width: 200px;
-    height: 50px;
-    margin-top: 10px;
+    margin-right: 10px;
+    background-color: #4C4D6C;
+    color: #ffffff;
+}
+.el-button {
+    margin-top: 20px;
+    background-color: #4C4D6C;
+    color: #ffffff;
 }
 </style>
+    

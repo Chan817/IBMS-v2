@@ -104,7 +104,7 @@ import axios from 'axios';
                 return this.cancelList.filter((order) => {
 
                     return (
-                    (order.order_IDorder_type && order.order_IDorder_type.toLowerCase().includes(keyword)) ||
+                    (order.order_ID && order.order_ID.toLowerCase().includes(keyword)) ||
                     (order.order_type && order.order_type.toLowerCase().includes(keyword)) ||
                     (order.order_status && order.order_status.toLowerCase().includes(keyword)) ||
                     (order.customer.customer_name && order.customer.customer_name.toLowerCase().includes(keyword)) ||
@@ -140,14 +140,23 @@ import axios from 'axios';
 table {
     width: 100%;
     border-collapse: collapse;
-    border: 2px solid #6b6b6b;
+    border: 1px solid #6b6b6b;
 }
 
 table th,
 table td {
     padding: 8px;
     text-align: center;
-    border: 2px solid #6b6b6b;
+    border: 1px solid #6b6b6b;
+}
+th {
+    background-color: #4C4D6C;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+tr:nth-child(even) {
+    background-color: #e4e4f3;
 }
 .search-bar {
   width: 300px; /* Adjust the width as desired */

@@ -281,7 +281,7 @@ export default {
 }
 
 .title {
-  font-size: 20px;
+  font-size: 30px;
   font-weight: bold;
   margin-bottom: 20px;
 }
@@ -337,6 +337,7 @@ textarea {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  
 }
 .el-button1 {
   padding: 10px 20px;
@@ -349,6 +350,7 @@ textarea {
 .container2{
   justify-content: center;
   align-items: center;
+  margin-top: 20px;
 }
 .cancel-button {
   margin-left: 10px;
@@ -357,5 +359,6 @@ textarea {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  margin-top: 20px;
 }
 </style>

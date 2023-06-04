@@ -131,7 +131,7 @@
   cursor: pointer;
   }
   .title {
-  font-size: 20px;
+  font-size: 30px;
   font-weight: bold;
   margin-bottom: 20px;
 }

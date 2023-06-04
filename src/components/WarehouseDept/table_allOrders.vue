@@ -11,7 +11,6 @@
                         <template v-slot:activator="{ props }">
                             <v-btn 
                             class="categoty-button"
-                            color="primary"
                             v-bind="props"
                             >
                             Categories
@@ -61,7 +60,7 @@
                     <th>Product List</th>
                     <th>Quantity</th>
                     <th>Order Date</th>
-                    <th>Shipped Date-later change</th>
+                    <th>Shipped Date</th>
                     <th>Status</th>
                 </tr>
                 </thead>
@@ -82,7 +81,7 @@
                         </p>
                     </td>
                     <td>{{ order.order_Date }}</td>
-                    <td>{{ order.order_Date }}</td>
+                    <td>{{ order.shipped_Date }}</td>
                     <td>{{ order.order_status }}</td>
                 </tr>
                 </tbody>
@@ -160,6 +159,9 @@ import axios from 'axios';
                     (order.order_type && order.order_type.toLowerCase().includes(keyword)) ||
                     (order.order_status && order.order_status.toLowerCase().includes(keyword)) ||
                     (order.customer.customer_name && order.customer.customer_name.toLowerCase().includes(keyword)) ||
+                    (order.customer.customer_address && order.customer.customer_address.toLowerCase().includes(keyword)) ||
+                    (order.order_Date && order.order_Date.toLowerCase().includes(keyword)) ||
+                    (order.shipped_Date && order.shipped_Date.toLowerCase().includes(keyword)) ||
                     inventoryItems.some((item) => item.includes(keyword))
                     
                     );
@@ -197,14 +199,22 @@ import axios from 'axios';
 table {
     width: 100%;
     border-collapse: collapse;
-    border: 2px solid #6b6b6b;
+    border: 1px solid #6b6b6b;
 }
 table th, table td {
     padding: 8px;
     text-align:center;
-    border: 2px solid #6b6b6b;
+    border: 1px solid #6b6b6b;
   }
+  th {
+    background-color: #4C4D6C;
+    font-weight: bold;
+    color: #ffffff;
+}
 
+tr:nth-child(even) {
+    background-color: #e4e4f3;
+}
 .searchbar{
     width: 300px; /* Adjust the width as desired */
     margin-bottom: 20px;
@@ -214,11 +224,11 @@ table th, table td {
   overflow-y: auto;
 }
 .categoty-button{
-    width: 300px;
+    width: 200px;
     justify-content: center;
     align-items: center;
     margin-right: 10px;
-    margin-top: 24px;
+    margin-top: 4px;
     background-color: #4C4D6C;
     color: #ffffff;
 }

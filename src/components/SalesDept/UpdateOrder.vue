@@ -1,8 +1,17 @@
 <template>
     <div id="app">
         <div class="container">
-            <div class="title">Offline Order Details</div>
+            <div class="title">Update This Order</div>
             <form @submit.prevent="updateForm" enctype="multipart/form-data">
+
+                <div class="form-group">
+                    <label for="order-type">Category:</label>
+                    <span class="required-field">*</span>
+                    <select class="select" id="order-type" v-model="order.orderType" required>
+                        <option value="online">Offline</option>
+                        <option value="offline">Online</option>
+                    </select>
+                </div>
 
                 <div class="form-group">
                     <label for="order-id">Order ID: <span class="required-field">*</span></label>
@@ -91,23 +100,23 @@
 
                 <div class="button-group">
                     <v-btn type="submit" class="save-button" :disabled="isSaveDisabled" @click="updateForm">Update</v-btn>
-                    <v-btn type="button" class="cancel-button" @click="cancelForm">Cancel</v-btn>
+                    <v-btn type="button" class="cancel-button" @click="backPrevious">Cancel</v-btn>
                 </div>
 
             </form>
-      <!-- Update confirmation dialog -->
-      <v-dialog v-model="showUpdateConfirmation" max-width="500px">
-        <v-card>
-            <v-card-title>Update Item</v-card-title>
-            <v-card-text>
-            Are you sure you want to update this item?
-            </v-card-text>
-            <v-card-actions>
-            <v-btn color="primary" text @click="confirmUpdateItem">Update</v-btn>
-            <v-btn text @click="showUpdateConfirmation = false">Cancel</v-btn>
-            </v-card-actions>
-        </v-card>
-        </v-dialog>
+            <!-- Update confirmation dialog -->
+            <v-dialog v-model="showUpdateConfirmation" max-width="500px">
+                <v-card>
+                    <v-card-title>Update Item</v-card-title>
+                    <v-card-text>
+                        Are you sure you want to update this item?
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-btn color="primary" text @click="confirmUpdateItem">Update</v-btn>
+                        <v-btn text @click="showUpdateConfirmation = false">Cancel</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
         </div>
 
     </div>
@@ -121,6 +130,7 @@ export default {
         return {
             order: {
                 orderId: "",
+                orderType:"",
                 businessType: "",
                 orderStatus: "",
                 remark: "",
@@ -169,6 +179,7 @@ export default {
                 .then((response) => {
                     const orderdetails = response.data;
                     this.order.orderId = orderdetails.order_ID;
+                    this.order.orderType = orderdetails.order_type;
                     this.order.businessType = orderdetails.business_type;
                     this.order.orderStatus = orderdetails.order_status;
                     this.order.remark = orderdetails.order_remark;
@@ -195,9 +206,9 @@ export default {
                 });
         },
         updateForm() {
-      // Show the update confirmation dialog
-        this.showUpdateConfirmation = true;
-        }, 
+            // Show the update confirmation dialog
+            this.showUpdateConfirmation = true;
+        },
         confirmUpdateItem() {
             const orderData = {
                 order_type: "Offline",
@@ -231,7 +242,7 @@ export default {
                         console.log(err)
                     }
                 )
-            this.resetForm();
+            this.$router.go(-1);
         },
 
         calculateAmount(item) {
@@ -252,9 +263,8 @@ export default {
             }
             this.totalPrice = totalPrice.toFixed(2);
         },
-        cancel() {
-            this.resetForm();
-
+        backPrevious() {
+            this.$router.go(-1);
         },
         addItem() {
             // Create a new item object with empty values
@@ -315,7 +325,7 @@ export default {
 }
 
 .title {
-    font-size: 20px;
+    font-size: 30px;
     font-weight: bold;
     margin-bottom: 20px;
 }
@@ -362,13 +372,13 @@ textarea {
 }
 
 
-.actions {
+.button-group {
     display: flex;
     justify-content: flex-end;
     margin-top: 20px;
 }
 
-.el-button {
+.save-button {
     padding: 10px 20px;
     margin-left: 10px;
     background-color: #4C4D6C;
@@ -390,6 +400,7 @@ textarea {
 .container2 {
     justify-content: center;
     align-items: center;
+    margin-top: 20px;
 }
 
 .cancel-button {

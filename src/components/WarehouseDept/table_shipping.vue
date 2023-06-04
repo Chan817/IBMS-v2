@@ -1,15 +1,17 @@
 <template>
     <div class="container">
         <div class="container2">
-            <h2>Shipping Orders</h2>
-            <div>
+            
+            <div class="title">Shipping Orders</div>
+            <div class="search-bar">
                 <v-text-field class="searchbar" :loading="loading" density="compact" variant="solo" label="Search"
-                    append-inner-icon="mdi-magnify" single-line hide-details @click:append-inner="onClick"></v-text-field>
+                    append-inner-icon="mdi-magnify" single-line hide-details v-model="searchKeyword" @click:append-inner="onClick"></v-text-field>
             </div>
 
         </div>
 
-        <table class="table table-bordered">
+        <div class="table-wrapper">
+            <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>Order Id</th>
@@ -31,6 +33,8 @@
                 </tr>
             </tbody>
         </table>
+        </div>
+        
 
         <div>
             <v-btn class="el-button" @click="backPrevious">Back</v-btn>
@@ -47,7 +51,8 @@ export default {
     data: () => ({
         loaded: false,
         loading: false,
-        orderList: []
+        orderList: [],
+        searchKeyword: '',
     }),
     mounted() {
         this.fetchOrders();
@@ -65,49 +70,96 @@ export default {
                     console.error(error);
                 });
         },
+        onClick() {
+            this.loading = true;
+            setTimeout(() => {
+                this.loading = false;
+                this.loaded = true;
+                if (this.searchKeyword) {
+                    this.orderList = this.orderList;
+                }
+            }, 1000);
+        },
         backPrevious() {
             this.$router.go(-1);
+        }
+    },
+    computed: {
+        orderList() {
+            if (!this.searchKeyword) {
+                return this.orderList;
+            } else {
+                const keyword = this.searchKeyword.toLowerCase();
+                return this.orderList.filter((order) => {
+                    return (
+                        (order.order_ID && order.order_ID.toLowerCase().includes(keyword)) ||
+                        (order.order_type && order.order_type.toLowerCase().includes(keyword)) ||
+                        (order.order_status && order.order_status.toLowerCase().includes(keyword)) ||
+                        (order.customer.customer_name && order.customer.customer_name.toLowerCase().includes(keyword)) ||
+                        (order.order_Date && order.order_Date.toLowerCase().includes(keyword)) ||
+                        (order.shipped_Date && order.shipped_Date.toLowerCase().includes(keyword)) ||
+                        (order.order_trackingNum && order.order_trackingNum.toLowerCase().includes(keyword)) 
+
+                    );
+                });
+            }
         }
     }
 }
 </script>
 
-<style>
+<style scoped>
 .container {
-    padding-left: 50px;
-    padding-right: 50px;
+    padding: 30px;
 }
 
 .container2 {
+    flex: 1;
     display: flex;
+    margin-bottom: 20px;
     justify-content: space-between;
+    flex-wrap: wrap;
+    /* Allow elements to wrap on smaller screens */
 }
 
-h2 {
-    margin-bottom: 30px;
-    margin-top: 20px;
+.title {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
 }
+
 
 table {
     width: 100%;
     border-collapse: collapse;
-    border: 2px solid #6b6b6b;
+    border: 1px solid #6b6b6b;
 }
 
 table th,
 table td {
     padding: 8px;
     text-align: center;
-    border: 2px solid #6b6b6b;
+    border: 1px solid #6b6b6b;
 }
 
-.search {
-    margin-left: 400px;
+th {
+    background-color: #4C4D6C;
+    font-weight: bold;
+    color: #ffffff;
 }
 
-.searchbar {
-    margin-top: 20px;
-    width: 100px;
+tr:nth-child(even) {
+    background-color: #e4e4f3;
+}
+
+.search-bar {
+    width: 300px;
+    /* Adjust the width as desired */
+    margin-bottom: 20px;
+}
+
+.table-wrapper {
+    overflow-y: auto;
 }
 
 .el-button {

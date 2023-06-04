@@ -2,7 +2,7 @@
     <div class="container">
 
         <div class="container2">
-            <div class="title">Order List</div>
+            <div class="title">Pending Order</div>
 
             <div class="search-bar">
                 <v-text-field :loading="loading" density="compact" variant="solo" label="Search keyword"
@@ -51,6 +51,17 @@
             <v-btn class="el-button" @click="backPrevious">Back</v-btn>
         </div>
 
+        <v-dialog v-model="showUpdateConfirmation" max-width="500px">
+            <v-card>
+                <v-card-title>Please update the tracking number.</v-card-title>
+                <v-text-field class="textfield-trackNum" label="Tracking Number" variant="outlined"></v-text-field>
+                <v-card-actions>
+                    <v-btn color="red" text @click="confirmUpdateItem">Update</v-btn>
+                    <v-btn text @click="showUpdateConfirmation = false">Cancel</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
     </div>
 </template>
 
@@ -65,6 +76,7 @@ export default {
         loading: false,
         orderList: [],
         searchKeyword: '',
+        showUpdateConfirmation: false,
     }),
     components: {},
     mounted() {
@@ -84,6 +96,14 @@ export default {
                 });
         },
         shipOrder(orderId) {
+
+            this.showUpdateConfirmation = true;
+            const shippedOrderId = this.orderId;
+
+        },
+        confirmUpdateItem() {
+            this.showUpdateConfirmation = false;
+            this.orderId = this.shippedOrderId;
             const malaysiaTimeZone = 'Asia/Kuala_Lumpur';
             const shippedDate = moment().tz(malaysiaTimeZone).format('YYYY-MM-DD HH:mm:ss');
             const orderIndex = this.orderList.findIndex((order) => order._id === orderId);
@@ -133,7 +153,7 @@ export default {
                     );
 
                     return (
-                        (order.order_IDorder_type && order.order_IDorder_type.toLowerCase().includes(keyword)) ||
+                        (order.order_ID && order.order_ID.toLowerCase().includes(keyword)) ||
                         (order.order_type && order.order_type.toLowerCase().includes(keyword)) ||
                         (order.order_status && order.order_status.toLowerCase().includes(keyword)) ||
                         (order.customer.customer_name && order.customer.customer_name.toLowerCase().includes(keyword)) ||
@@ -171,14 +191,24 @@ export default {
 table {
     width: 100%;
     border-collapse: collapse;
-    border: 2px solid #6b6b6b;
+    border: 1px solid #6b6b6b;
 }
 
 table th,
 table td {
     padding: 8px;
     text-align: center;
-    border: 2px solid #6b6b6b;
+    border: 1px solid #6b6b6b;
+}
+
+th {
+    background-color: #4C4D6C;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+tr:nth-child(even) {
+    background-color: #e4e4f3;
 }
 
 .search-bar {
@@ -209,4 +239,7 @@ table td {
     background-color: #4C4D6C;
     color: #ffffff;
 }
-</style>
+
+.textfield-trackNum {
+    padding: 20px;
+}</style>

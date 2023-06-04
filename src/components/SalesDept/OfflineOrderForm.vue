@@ -264,7 +264,7 @@ export default {
   color: red;
 }
 .title {
-  font-size: 20px;
+  font-size: 30px;
   font-weight: bold;
   margin-bottom: 20px;
 }
@@ -337,6 +337,7 @@ textarea {
 .container2{
   justify-content: center;
   align-items: center;
+  margin-top: 20px;
 }
 
 .cancel-button {
@@ -346,6 +347,7 @@ textarea {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  margin-top: 20px;
 }
 </style>
   

@@ -140,14 +140,22 @@ import 'jspdf-autotable';
 table {
     width: 100%;
     border-collapse: collapse;
-    border: 2px solid #6b6b6b;
+    border: 1px solid #9d9d9d;
 }
 table th, table td {
     padding: 8px;
-    text-align: left;
+    text-align: center;
     border: 2px solid #6b6b6b;
   }
+  th {
+    background-color: #4C4D6C;
+    font-weight: bold;
+    color: #ffffff;
+  }
 
+  tr:nth-child(even) {
+    background-color: #e4e4f3;
+  }
 .el-button {
   margin-top: 20px;
   background-color: #4C4D6C;

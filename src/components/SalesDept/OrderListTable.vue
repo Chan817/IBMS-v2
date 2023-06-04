@@ -225,7 +225,7 @@ export default {
 table {
     width: 100%;
     border-collapse: collapse;
-    border: 2px solid #6b6b6b;
+    border: 1px solid #9d9d9d;
 }
 
 table th,
@@ -234,7 +234,15 @@ table td {
     text-align: center;
     border: 2px solid #6b6b6b;
 }
+th {
+    background-color: #4C4D6C;
+    font-weight: bold;
+    color: #ffffff;
+  }
 
+  tr:nth-child(even) {
+    background-color: #e4e4f3;
+  }
 .search-bar {
     width: 300px;
     /* Adjust the width as desired */

@@ -153,13 +153,15 @@
         } else {
           const keyword = this.searchKeyword.toLowerCase();
           return this.inventoryItems.filter((item) => {
+            const itemStatus = this.getItemStatus(item).toLowerCase();
             return (
               (item.Inv_SKU_Num && item.Inv_SKU_Num.toLowerCase().includes(keyword)) ||
               (item.Inv_BarcodeNum && item.Inv_BarcodeNum.toString().toLowerCase().includes(keyword)) ||
               (item.Inv_Name && item.Inv_Name.toLowerCase().includes(keyword)) ||
               (item.Inv_StockLevel && item.Inv_StockLevel.toString().toLowerCase().includes(keyword)) ||
               (item.Inv_CostPrice && item.Inv_CostPrice.toString().toLowerCase().includes(keyword)) ||
-              (item.Inv_Desc && item.Inv_Desc.toLowerCase().includes(keyword))
+              (item.Inv_Desc && item.Inv_Desc.toLowerCase().includes(keyword)) ||
+              (itemStatus && itemStatus.includes(keyword))
             );
           });
         }
@@ -190,15 +192,24 @@
   table {
     width: 100%;
     border-collapse: collapse;
-    border: 2px solid #6b6b6b;
+    border: 1px solid #6b6b6b;
   }
   
   table th,
   table td {
     padding: 8px;
     text-align: center;
-    border: 2px solid #6b6b6b;
+    border: 1px solid #6b6b6b;
   }
+  th {
+    background-color: #4C4D6C;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+tr:nth-child(even) {
+    background-color: #e4e4f3;
+}
   .search-bar {
   width: 300px; /* Adjust the width as desired */
   margin-bottom: 20px;
