@@ -4,6 +4,7 @@ const order = require('../controllers/OrderCtrl');
 
 router.get("/", order.fetchAllOrder);
 router.get("/:id", order.fetchOrderByID);
+router.get("/orderdetail/:id", order.fetchOrderDetailsByID);
 router.post("/", order.createOrder);
 router.patch("/:id", order.updateOrder);
 router.delete("/:id", order.deleteOrder);

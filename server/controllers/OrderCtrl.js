@@ -89,18 +89,67 @@ module.exports = class API {
         const id = req.params.id;
         try {
             // Find the order by ID
-        const order = await Order.findById(id);
-        if (!order) {
-            return res.status(404).json({ message: "Order not found!" });
+            const order = await Order.findById(id);
+            if (!order) {
+                return res.status(404).json({ message: "Order not found!" });
+            }
+
+            // Delete the order
+            await order.remove();
+
+            // Delete the associated ordered products
+            await OrderedProduct.deleteMany({ Order_ID: order.order_ID });
+
+            res.status(200).json({ message: "Order and associated ordered products deleted successfully!" });
+        } catch (err) {
+            res.status(404).json({ message: err.message });
         }
+    }
 
-        // Delete the order
-        await order.remove();
+    //fetch OrderDetails by ID
+    static async fetchOrderDetailsByID(req, res) {
+        const id = req.params.id;
+        try {
+            const order = await Order.findById(id);
 
-        // Delete the associated ordered products
-        await OrderedProduct.deleteMany({ Order_ID: order.order_ID });
+            // Retrieve the customerId from the order
+            const customerId = order.customer_ID;
 
-        res.status(200).json({ message: "Order and associated ordered products deleted successfully!" });
+            // Fetch the customer using the customerId
+            const customer = await Customer.findById(customerId);
+
+            // Retrieve the ordered products using the order ID
+            const orderedProducts = await OrderedProduct.find({ Order_ID: order.order_ID });
+
+            // Create an array to store the filtered ordered products with the specific order ID
+            const filteredOrderedProducts = [];
+
+            // Iterate through each ordered product
+            for (const orderedProduct of orderedProducts) {
+                // Retrieve the inventory ID from the ordered product
+                const inventoryId = orderedProduct.Inventory_ID;
+
+                // Fetch the inventory item using the inventory ID
+                const inventoryItem = await InventoryItem.findById(inventoryId);
+
+                // Create an object with the required information
+                const orderedProductWithInventory = {
+                    ...orderedProduct.toObject(),
+                    inventoryItemName: inventoryItem.Inv_Name,
+                };
+
+                // Add the updated ordered product to the filteredOrderedProducts array
+                filteredOrderedProducts.push(orderedProductWithInventory);
+            }
+
+            // Add the customer information and ordered products to the order object
+            const orderWithDetails = {
+                ...order.toObject(),
+                customer: customer,
+                orderedProducts: filteredOrderedProducts,
+            };
+
+            res.status(200).json(orderWithDetails);
         } catch (err) {
             res.status(404).json({ message: err.message });
         }

@@ -3,20 +3,12 @@
 
         <div class="container2">
             <div class="title">Order List</div>
-            
+
             <div class="search-bar">
-            <v-text-field
-                :loading="loading"
-                density="compact"
-                variant="solo"
-                label="Search keyword"
-                append-inner-icon="mdi-magnify"
-                single-line
-                hide-details
-                v-model="searchKeyword"
-                @click:append-inner="onClick"
-            ></v-text-field>
-          </div>
+                <v-text-field :loading="loading" density="compact" variant="solo" label="Search keyword"
+                    append-inner-icon="mdi-magnify" single-line hide-details v-model="searchKeyword"
+                    @click:append-inner="onClick"></v-text-field>
+            </div>
 
         </div>
 
@@ -73,19 +65,19 @@
             </table>
 
             <v-dialog v-model="showDeleteConfirmation" max-width="500px">
-            <v-card>
-                <v-card-title>Delete Item</v-card-title>
-                <v-card-text>
-                Are you sure you want to delete this item?
-                </v-card-text>
-                <v-card-actions>
-                <v-btn color="red" text @click="confirmDeleteItem">Delete</v-btn>
-                <v-btn text @click="showDeleteConfirmation = false">Cancel</v-btn>
-                </v-card-actions>
-            </v-card>
+                <v-card>
+                    <v-card-title>Delete Item</v-card-title>
+                    <v-card-text>
+                        Are you sure you want to delete this item?
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-btn color="red" text @click="confirmDeleteItem">Delete</v-btn>
+                        <v-btn text @click="showDeleteConfirmation = false">Cancel</v-btn>
+                    </v-card-actions>
+                </v-card>
             </v-dialog>
         </div>
-        
+
     </div>
 </template>
 
@@ -97,7 +89,7 @@ export default {
         loaded: false,
         loading: false,
         orderList: [],
-        searchKeyword:'',
+        searchKeyword: '',
         showDeleteConfirmation: false,
         deleteOrderId: null,
     }),
@@ -106,6 +98,22 @@ export default {
         this.fetchOrders();
     },
     methods: {
+        fetchOrderDetails(orderId) {
+            return new Promise((resolve, reject) => {
+                axios
+                    .get(`/api/order/${orderId}`)
+                    .then(response => {
+                        const data = response.data;
+                        console.log("In fetchOrderDetails");
+                        console.log(data);
+                        resolve(data);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching order details', error);
+                        reject(error);
+                    });
+            });
+        },
         calculateTotalPrice(orderedProducts) {
             const total = orderedProducts.reduce(
                 (total, product) => total + product.Op_Qty * product.Op_UnitPrice,
@@ -126,26 +134,33 @@ export default {
                 });
         },
         deleteOrder(orderId) {
-          this.showDeleteConfirmation = true;
-          this.deleteOrderId = orderId;
+            this.showDeleteConfirmation = true;
+            this.deleteOrderId = orderId;
         },
         confirmDeleteItem() {
-          this.showDeleteConfirmation = false;
-          const orderId = this.deleteOrderId;
-          // Proceed with the deletion
-          axios.delete(`/api/order/${orderId}`)
-            .then((response) => {
-              const index = this.orderList.findIndex((list) => list._id === orderId);
-              if (index !== -1) {
-                this.orderList.splice(index, 1);
-              }
-            })
-            .catch((error) => {
-              console.error('Error deleting item:', error);
-            });
+            this.showDeleteConfirmation = false;
+            const orderId = this.deleteOrderId;
+            // Proceed with the deletion
+            axios.delete(`/api/order/${orderId}`)
+                .then((response) => {
+                    const index = this.orderList.findIndex((list) => list._id === orderId);
+                    if (index !== -1) {
+                        this.orderList.splice(index, 1);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error deleting item:', error);
+                });
         },
-        editOrder(data) {
-
+        editOrder(orderId) {
+            this.fetchOrderDetails(orderId)
+                .then(order => {
+                    this.$router.push({ name: 'editOrder', params: { id: orderId } });
+                })
+                .catch(error => {
+                    // Handle any errors that occur during fetching order details
+                    console.error('Error fetching order details', error);
+                });
         },
         onClick() {
             this.loading = true;
@@ -159,25 +174,25 @@ export default {
         },
     },
     computed: {
-        orderList(){
+        orderList() {
             if (!this.searchKeyword) {
                 return this.orderList;
-                } else {
+            } else {
                 const keyword = this.searchKeyword.toLowerCase();
                 return this.orderList.filter((order) => {
-                    
+
                     const customerName = order.customer.customer_name.toLowerCase();
                     const inventoryItems = order.orderedProducts.map(
-                    (product) => product.inventoryItemName.toLowerCase()
+                        (product) => product.inventoryItemName.toLowerCase()
                     );
 
                     return (
-                    (order.order_ID && order.order_ID.toLowerCase().includes(keyword)) ||
-                    (order.order_type && order.order_type.toLowerCase().includes(keyword)) ||
-                    (order.order_status && order.order_status.toLowerCase().includes(keyword)) ||
-                    (order.customer.customer_name && order.customer.customer_name.toLowerCase().includes(keyword)) ||
-                    inventoryItems.some((item) => item.includes(keyword))
-                    
+                        (order.order_ID && order.order_ID.toLowerCase().includes(keyword)) ||
+                        (order.order_type && order.order_type.toLowerCase().includes(keyword)) ||
+                        (order.order_status && order.order_status.toLowerCase().includes(keyword)) ||
+                        (order.customer.customer_name && order.customer.customer_name.toLowerCase().includes(keyword)) ||
+                        inventoryItems.some((item) => item.includes(keyword))
+
                     );
                 });
             }
@@ -191,18 +206,19 @@ export default {
     padding: 30px;
 }
 
-.container2{
+.container2 {
     flex: 1;
     display: flex;
     margin-bottom: 20px;
     justify-content: space-between;
-    flex-wrap: wrap; /* Allow elements to wrap on smaller screens */
+    flex-wrap: wrap;
+    /* Allow elements to wrap on smaller screens */
 }
 
 .title {
-  font-size: 30px;
-  font-weight: bold;
-  margin-bottom: 20px;
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
 }
 
 
@@ -218,16 +234,19 @@ table td {
     text-align: center;
     border: 2px solid #6b6b6b;
 }
+
 .search-bar {
-  width: 300px; /* Adjust the width as desired */
-  margin-bottom: 20px;
+    width: 300px;
+    /* Adjust the width as desired */
+    margin-bottom: 20px;
 }
 
 .table-wrapper {
-  overflow-y: auto;
+    overflow-y: auto;
 }
-.row{
-  justify-content: center;
-  display: flex;
+
+.row {
+    justify-content: center;
+    display: flex;
 }
 </style>
