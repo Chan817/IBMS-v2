@@ -48,7 +48,7 @@ module.exports = class InventoryItemController {
 
   // Create an inventory item
   static async createInventoryItem(req, res) {
-    console.log("Print Req Body" );
+    console.log("Print Req Body");
     console.log(req.body);
     const inventoryItem = req.body;
     const imageName = req.file ? req.file.filename : null;
@@ -69,14 +69,14 @@ module.exports = class InventoryItemController {
   static async updateInventoryItem(req, res) {
     const id = req.params.id;
     let new_image = "";
-    if (req.file){
+    if (req.file) {
       new_image = req.file.filename;
       try {
         fs.unlinkSync("./uploads/" + req.body.old_image);
       } catch (error) {
         console.log(error);
       }
-    } else{
+    } else {
       new_image = req.body.old_image;
     }
 
@@ -111,16 +111,190 @@ module.exports = class InventoryItemController {
   static async fetchInventoryItemsWithTotalSale(req, res) {
     try {
       const inventoryItems = await InventoryItem.find().lean();
-  
+
       for (let item of inventoryItems) {
         const totalSale = await OrderedProduct.aggregate([
           { $match: { Inventory_ID: mongoose.Types.ObjectId(item._id) } }, // Convert to ObjectId
           { $group: { _id: "$Inventory_ID", totalSale: { $sum: "$Op_Qty" } } },
         ]);
-  
+
         item.totalSale = totalSale.length > 0 ? totalSale[0].totalSale : 0;
       }
-  
+
+      res.status(200).json(inventoryItems);
+    } catch (err) {
+      res.status(404).json({ message: err.message });
+    }
+  }
+
+
+  // Fetch inventory items with total sale for the last week
+  static async fetchWeeklyData(req, res) {
+    try {
+      const oneWeekAgo = new Date();
+      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+      const inventoryItems = await InventoryItem.aggregate([
+        {
+          $lookup: {
+            from: "orderedproducts",
+            localField: "_id",
+            foreignField: "Inventory_ID",
+            as: "orderedProducts"
+          }
+        },
+        {
+          $unwind: "$orderedProducts"
+        },
+        {
+          $lookup: {
+            from: "orders",
+            localField: "orderedProducts.Order_ID",
+            foreignField: "order_ID",
+            as: "order"
+          }
+        },
+        {
+          $unwind: "$order"
+        },
+        {
+          $match: {
+            "order.order_Date": { $gte: oneWeekAgo }
+          }
+        },
+        {
+          $group: {
+            _id: "$_id",
+            Inv_SKU_Num: { $first: "$Inv_SKU_Num" },
+            Inv_Name: { $first: "$Inv_Name" },
+            totalSale: { $sum: "$orderedProducts.Op_Qty" }
+          }
+        },
+        {
+          $project: {
+            _id: 1,
+            Inv_SKU_Num: 1,
+            Inv_Name: 1,
+            totalSale: 1
+          }
+        }
+      ]);
+
+      res.status(200).json(inventoryItems);
+    } catch (err) {
+      res.status(404).json({ message: err.message });
+    }
+  }
+
+  // Fetch inventory items with total sale for the last month
+  static async fetchMonthlyData(req, res) {
+    try {
+      const oneMonthAgo = new Date();
+      oneMonthAgo.setDate(oneMonthAgo.getDate() - 30);
+
+      const inventoryItems = await InventoryItem.aggregate([
+        {
+          $lookup: {
+            from: "orderedproducts",
+            localField: "_id",
+            foreignField: "Inventory_ID",
+            as: "orderedProducts"
+          }
+        },
+        {
+          $unwind: "$orderedProducts"
+        },
+        {
+          $lookup: {
+            from: "orders",
+            localField: "orderedProducts.Order_ID",
+            foreignField: "order_ID",
+            as: "order"
+          }
+        },
+        {
+          $unwind: "$order"
+        },
+        {
+          $match: {
+            "order.order_Date": { $gte: oneMonthAgo }
+          }
+        },
+        {
+          $group: {
+            _id: "$_id",
+            Inv_SKU_Num: { $first: "$Inv_SKU_Num" },
+            Inv_Name: { $first: "$Inv_Name" },
+            totalSale: { $sum: "$orderedProducts.Op_Qty" }
+          }
+        },
+        {
+          $project: {
+            _id: 1,
+            Inv_SKU_Num: 1,
+            Inv_Name: 1,
+            totalSale: 1
+          }
+        }
+      ]);
+
+      res.status(200).json(inventoryItems);
+    } catch (err) {
+      res.status(404).json({ message: err.message });
+    }
+  }
+  // Fetch inventory items with total sale for the last year
+  static async fetchYearlyData(req, res) {
+    try {
+      const oneYearAgo = new Date();
+      oneYearAgo.setDate(oneYearAgo.getDate() - 365);
+
+      const inventoryItems = await InventoryItem.aggregate([
+        {
+          $lookup: {
+            from: "orderedproducts",
+            localField: "_id",
+            foreignField: "Inventory_ID",
+            as: "orderedProducts"
+          }
+        },
+        {
+          $unwind: "$orderedProducts"
+        },
+        {
+          $lookup: {
+            from: "orders",
+            localField: "orderedProducts.Order_ID",
+            foreignField: "order_ID",
+            as: "order"
+          }
+        },
+        {
+          $unwind: "$order"
+        },
+        {
+          $match: {
+            "order.order_Date": { $gte: oneYearAgo }
+          }
+        },
+        {
+          $group: {
+            _id: "$_id",
+            Inv_SKU_Num: { $first: "$Inv_SKU_Num" },
+            Inv_Name: { $first: "$Inv_Name" },
+            totalSale: { $sum: "$orderedProducts.Op_Qty" }
+          }
+        },
+        {
+          $project: {
+            _id: 1,
+            Inv_SKU_Num: 1,
+            Inv_Name: 1,
+            totalSale: 1
+          }
+        }
+      ]);
+
       res.status(200).json(inventoryItems);
     } catch (err) {
       res.status(404).json({ message: err.message });

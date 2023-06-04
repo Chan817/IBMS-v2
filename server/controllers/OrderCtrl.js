@@ -88,8 +88,19 @@ module.exports = class API {
     static async deleteOrder(req, res) {
         const id = req.params.id;
         try {
-            await Order.findByIdAndDelete(id);
-            res.status(200).json({ message: "Order deleted successfully!" });
+            // Find the order by ID
+        const order = await Order.findById(id);
+        if (!order) {
+            return res.status(404).json({ message: "Order not found!" });
+        }
+
+        // Delete the order
+        await order.remove();
+
+        // Delete the associated ordered products
+        await OrderedProduct.deleteMany({ Order_ID: order.order_ID });
+
+        res.status(200).json({ message: "Order and associated ordered products deleted successfully!" });
         } catch (err) {
             res.status(404).json({ message: err.message });
         }
