@@ -24,7 +24,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="Completed in CompletedList" :key="Completed._id">
+                    <tr v-for="Completed in orderList" :key="Completed._id">
                         <td>{{ Completed.order_ID }}</td>
                         <td>{{ Completed.order_type }}</td>
                         <td>{{ Completed.customer.customer_name }}</td>
@@ -53,17 +53,20 @@ export default {
     data: () => ({
         loaded: false,
         loading: false,
-        CompletedList: [],
+        orderList: [],
         searchKeyword: '',
     }),
+    mounted() {
+        this.fetchOrders();
+    },
     methods: {
         fetchOrders() {
-            console.log("in vue script");
+            console.log("in vue script completed");
             axios
                 .get('/api/orderList/complete') // Adjust the route path if necessary
                 .then((response) => {
                     console.log(response.data);
-                    this.CompletedList = response.data;
+                    this.orderList = response.data;
                 })
                 .catch((error) => {
                     console.error(error);
@@ -76,7 +79,7 @@ export default {
                 this.loading = false
                 this.loaded = true
                 if (this.searchKeyword) {
-                    this.CompletedList = this.CompletedList;
+                    this.orderList = this.orderList;
                 }
             }, 1000);
         },
@@ -84,12 +87,13 @@ export default {
             this.$router.go(-1);
         }
     },
-    CompletedList() {
+    computed: {
+        orderList() {
         if (!this.searchKeyword) {
-            return this.CompletedList;
+            return this.orderList;
         } else {
             const keyword = this.searchKeyword.toLowerCase();
-            return this.CompletedList.filter((order) => {
+            return this.orderList.filter((order) => {
 
                 return (
                     (order.order_ID && order.order_ID.toLowerCase().includes(keyword)) ||
@@ -101,6 +105,7 @@ export default {
                 );
             });
         }
+    }
     }
 }
 </script>
