@@ -121,7 +121,7 @@
 
                 <div class="button-group">
                     <v-btn type="submit" class="save-button" :disabled="isSaveDisabled" @click="updateForm">Update</v-btn>
-                    <v-btn type="button" class="cancel-button" @click="backPrevious">Cancel</v-btn>
+                    <v-btn type="button" to="/list" class="cancel-button">Cancel</v-btn>
                 </div>
 
             </form>
@@ -132,10 +132,13 @@
                     <v-card-text>
                         Are you sure you want to update this item?
                     </v-card-text>
-                    <v-card-actions>
-                        <v-btn color="primary" text @click="confirmUpdateItem">Update</v-btn>
-                        <v-btn text @click="showUpdateConfirmation = false">Cancel</v-btn>
-                    </v-card-actions>
+                    <div class="button-grp">
+                        <v-card-actions>
+                            <v-btn text class="el-button1" @click="confirmUpdateItem">Update</v-btn>
+                            <v-btn text class="el-button1" @click="showUpdateConfirmation = false">Cancel</v-btn>
+                        </v-card-actions>
+                    </div>
+
                 </v-card>
             </v-dialog>
         </div>
@@ -255,11 +258,11 @@ export default {
 
                 const response = await axios.patch(`/api/order/${this.$route.params.id}`, orderData);
                 console.log("response.data", response.data); // Handle the response data
-                //this.$router.go(-3);
+                this.$router.go(-2);
             } catch (error) {
                 console.error(error); // Handle any errors
             }
-            
+            this.$router.go(-1);
         },
 
         calculateAmount(item) {
@@ -280,9 +283,7 @@ export default {
             }
             this.totalPrice = totalPrice.toFixed(2);
         },
-        backPrevious() {
-            this.$router.go(-1);
-        },
+
         addItem() {
             // Create a new item object with empty values
             const newItem = {
@@ -298,32 +299,7 @@ export default {
             this.orderedproducts.splice(index, 1); // Remove the item at the specified index
             this.calculateTotalPrice(); // Recalculate the total price
         },
-        resetForm() {
-            this.order = {
-                orderId: "",
-                businessType: "",
-                orderStatus: "",
-                remark: "",
-            };
-            this.customer = {
-                customerName: "",
-                customerAddress: "",
-                customerEmail: "",
-                customerContact: "",
-            };
 
-            this.orderedproducts = [{
-                Inventory_ID: "",
-                Op_UnitPrice: "",
-                Op_Qty: "",
-                amount: 0,
-                totalPrice: 0,
-            }],
-                this.selectedProduct = "";
-            this.Op_UnitPrice = "";
-            this.Op_Qty = "";
-            this.totalPrice = 0;
-        },
 
 
     },
@@ -396,6 +372,7 @@ textarea {
     display: flex;
     justify-content: flex-end;
     margin-top: 20px;
+
 }
 
 .save-button {
@@ -439,6 +416,9 @@ textarea {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+}
+.button-grp {
+    padding: 10px;
 }
 </style>
     

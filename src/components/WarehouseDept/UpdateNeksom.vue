@@ -163,14 +163,14 @@ export default {
         })
         .then((res) => {
           console.log('Item updated:', res.data);
-          
-          this.$router.go(-1); // Redirect to the previous page
+          this.$router.go(-1);
+          // Redirect to the previous page
         })
         .catch((err) => {
           console.error('Error updating item:', err);
         });
 
-        this.$router.go(-2);
+        this.$router.go(-1);
     },
     
     cancelForm() {

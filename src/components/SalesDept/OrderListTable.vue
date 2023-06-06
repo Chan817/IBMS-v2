@@ -70,10 +70,13 @@
                     <v-card-text>
                         Are you sure you want to delete this item?
                     </v-card-text>
-                    <v-card-actions>
-                        <v-btn color="red" text @click="confirmDeleteItem">Delete</v-btn>
-                        <v-btn text @click="showDeleteConfirmation = false">Cancel</v-btn>
-                    </v-card-actions>
+                    <div class="button-grp">
+                        <v-card-actions>
+                            <v-btn class="delete-button1" text @click="confirmDeleteItem">Delete</v-btn>
+                            <v-btn class="el-button1" text @click="showDeleteConfirmation = false">Cancel</v-btn>
+                        </v-card-actions>
+                    </div>
+
                 </v-card>
             </v-dialog>
         </div>
@@ -234,15 +237,17 @@ table td {
     text-align: center;
     border: 2px solid #6b6b6b;
 }
+
 th {
     background-color: #4C4D6C;
     font-weight: bold;
     color: #ffffff;
-  }
+}
 
-  tr:nth-child(even) {
+tr:nth-child(even) {
     background-color: #e4e4f3;
-  }
+}
+
 .search-bar {
     width: 300px;
     /* Adjust the width as desired */
@@ -256,5 +261,23 @@ th {
 .row {
     justify-content: center;
     display: flex;
+}
+
+.el-button1 {
+    background-color: #4C4D6C;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.delete-button1 {
+    background-color: #a60c1b;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.button-grp {
+    padding: 10px;
 }
 </style>
