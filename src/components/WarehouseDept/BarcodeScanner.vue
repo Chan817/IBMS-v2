@@ -100,7 +100,7 @@ export default {
     viewDetails() {
       // Make an HTTP request to fetch the item data
       const itemBar = this.text;
-      axios.get(`/api/inventoryitem/${itemBar}`)
+      axios.get(`/api/inventoryitem/barcode/${itemBar}`)
         .then(response => {
           const itemData = response.data; // Retrieved data from the API
           // this.$router.push({ name: 'view', params: { item: itemData } });
