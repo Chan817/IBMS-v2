@@ -25,6 +25,7 @@ import raw_lowstock_notiVue from '@/components/raw_lowstock_noti.vue'
 import UpdateNeksomVue from '@/components/WarehouseDept/UpdateNeksom.vue'
 import Storage_keyin_formVue from '@/components/WarehouseDept/Storage_keyin_form.vue'
 import UpdateOrderVue from '@/components/SalesDept/UpdateOrder.vue'
+import viewScannedItemVue from '@/components/WarehouseDept/viewScannedItem.vue'
 
 const routes = [
   {
@@ -153,11 +154,15 @@ const routes = [
     name: 'editOrder',
     component: UpdateOrderVue
   },
- 
   {
     path: '/store_keyin',
     name: 'store_keyin',
     component: Storage_keyin_formVue
+  },
+  {
+    path: '/view',
+    name: 'view',
+    component: viewScannedItemVue
   }
 ]
 

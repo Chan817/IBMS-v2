@@ -351,4 +351,9 @@
   .table-wrapper {
     overflow-y: auto;
   }
+  .el-button {
+  margin-top: 20px;
+  background-color: #4C4D6C;
+  color: #ffffff;
+}
   </style>

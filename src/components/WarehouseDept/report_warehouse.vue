@@ -208,6 +208,7 @@ tr:nth-child(even) {
     margin-right: 10px;
     background-color: #4C4D6C;
     color: #ffffff;
+    margin-bottom: 20px ;
 }
 .el-button {
     margin-top: 20px;

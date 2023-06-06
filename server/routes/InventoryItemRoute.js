@@ -30,6 +30,7 @@ router.get("/withWeeklyTotalSale", inventoryItemCtrl.fetchWeeklyData);
 router.get("/withMonthlyTotalSale", inventoryItemCtrl.fetchMonthlyData);
 router.get("/withYearlyTotalSale", inventoryItemCtrl.fetchYearlyData);
 router.get("/:id", inventoryItemCtrl.fetchInventoryItemByID);
+router.get("/barcode/:barcodeNum", inventoryItemCtrl.fetchProductByBarcodeNum); 
 router.post("/", upload, inventoryItemCtrl.createInventoryItem);
 router.patch("/:id", upload, inventoryItemCtrl.updateInventoryItem);
 router.delete("/:id", inventoryItemCtrl.deleteInventoryItem);
