@@ -73,12 +73,77 @@ module.exports = class API {
     //update a Order
     static async updateOrder(req, res) {
         const id = req.params.id;
+        console.log('req.body', req.body);
         const newOrder = req.body;
         try {
-            console.log('Before update:', newOrder);
+            const order = await Order.findById(id);
+
+            // Fetch and delete all ordered products with matching Order_ID
+            await OrderedProduct.deleteMany({ Order_ID: order.order_ID });
+            console.log("delete all ordered products successfully");
+
+            // // Create the latest ordered product
+            // const orderedProduct = new OrderedProduct({
+            //     Order_ID: newOrder.order_ID,
+            //     Inventory_ID: newOrder.items.Inventory_ID,
+            //     Op_Qty: newOrder.items.Op_Qty,
+            //     Op_UnitPrice: newOrder.items.Op_UnitPrice
+            // });
+            // await orderedProduct.save();
+            // Create the ordered products
+            const orderedProducts = await Promise.all(
+                newOrder.items.map(async (product) => {
+                const invID = await InventoryItem.findOne({ 
+                    Inv_Name: product.inventoryItemName 
+                });
+                if (invID) {
+                    const orderedProduct = new OrderedProduct({
+                      Inventory_ID: invID._id,
+                      Order_ID: newOrder.order_ID,
+                      Op_Qty: product.Op_Qty,
+                      Op_UnitPrice: product.Op_UnitPrice
+                    });
+              
+                    await orderedProduct.save();
+                    console.log("Ordered product created", orderedProduct);
+                    return orderedProduct;
+                  } else {
+                    console.log(`Inventory item '${product.inventoryItemName}' not found`);
+                    return null;
+                  }
+            }));
+
+            // Update the order
             const updatedOrder = await Order.findByIdAndUpdate(id, newOrder);
-            console.log('After update:', updatedOrder);
+            console.log("order updated successfully");
+
+            const customer_ID = updatedOrder.customer_ID;
+            await Customer.findByIdAndUpdate(customer_ID, newOrder);
+            console.log("customer updated successfully");
+
+            // // Fetch and update the customer
+            // const customer = await Customer.findById(order.customer_ID);
+            // customer.customer_name = newOrder.customer_name; 
+            // customer.customer_address = newOrder.customer_address; 
+            // customer.customer_contact = newOrder.customer_contact; 
+            // customer.customer_email = newOrder.customer_email; 
+            // await customer.save();
+
             res.status(200).json({ message: 'Order updated successfully!' });
+            // console.log('Before update:', newOrder);
+            // const updatedOrder = await Order.findByIdAndUpdate(id, newOrder);
+            // const customer_ID = updatedOrder.customer_ID;
+            // const updatedCustomer = await Customer.findByIdAndUpdate(customer_ID, newOrder);
+
+            // // Update the orderedProducts
+            // const { items } = newOrder;
+            // const orderedProducts = items.map(item => item.inventoryItemName); // Extract the ordered product names from the items
+
+            // // Find and update each orderedProduct by its name
+            // for (const productName of orderedProducts) {
+            //     await OrderedProduct.findOneAndUpdate({ inventoryItemName: productName }, { $set: newOrder });
+            // }
+            // res.status(200).json({ message: 'Order updated successfully!' });
         } catch (err) {
             res.status(404).json({ message: err.message });
         }

@@ -8,8 +8,8 @@
                     <label for="order-type">Category:</label>
                     <span class="required-field">*</span>
                     <select class="select" id="order-type" v-model="order.orderType" required>
-                        <option value="online">Offline</option>
-                        <option value="offline">Online</option>
+                        <option value="Offline">Offline</option>
+                        <option value="Online">Online</option>
                     </select>
                 </div>
 
@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="business-type">Business Type: <span class="required-field">*</span></label>
+                    <label for="business-type">Business Type:</label>
                     <select id="business-type" v-model="order.businessType">
                         <option value="B2B">B2B</option>
                         <option value="B2C">B2C</option>
@@ -47,9 +47,21 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="order-status">Order Status: <span class="required-field">*</span></label>
+                    <label for="orderPlatform">Order Platform: </label>
+                    <select id="orderPlatform" v-model="order.orderPlatform">
+                        <option value="Lazada">Lazada</option>
+                        <option value="Shopee">Shopee</option>
+                        <option value="Instagram">Instagram</option>
+                        <option value="Facebook">Facebook</option>
+                        <option value="Tiktok">Tiktok</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="order-status">Order Status: </label>
                     <select id="order-status" v-model="order.orderStatus">
                         <option value="Pending">Pending</option>
+                        <option value="Shipped">Shipped</option>
                         <option value="Completed">Completed</option>
                         <option value="Cancelled">Cancelled</option>
                     </select>
@@ -86,11 +98,20 @@
                         <v-btn class="el-button1" @click="addItem">Add Item</v-btn>
                     </div>
 
+                    <div class="container2">
+                        <v-btn class="el-button2" @click="deleteItem(index)">Delete Item</v-btn>
+                    </div>
+
                 </div>
 
                 <div class="form-group">
                     <label for="total-price">Total Price:</label>
                     <input type="number" id="total-price" v-model="totalPrice" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="trackingNumber">Tracking Number: </label>
+                    <input id="trackingNumber" v-model="order.trackingNumber" />
                 </div>
 
                 <div class="form-group">
@@ -128,12 +149,15 @@ export default {
     name: 'EditOfflineOrder',
     data() {
         return {
+            _id: null,
             order: {
                 orderId: "",
-                orderType:"",
+                orderType: "",
                 businessType: "",
                 orderStatus: "",
                 remark: "",
+                orderPlatform: "",
+                trackingNumber: ""
             },
             customer: {
                 customerName: "",
@@ -156,9 +180,9 @@ export default {
     },
     created() {
         this.fetchAvailableProducts();
-        const orderId = this.$route.params.id;
-        this.orderId = orderId; // Assign itemId to component's data property
-        this.fetchItem(orderId);
+        const _id = this.$route.params.id;
+        this._id = _id; // Assign itemId to component's data property
+        this.fetchItem(_id);
     },
     methods: {
         async fetchAvailableProducts() {
@@ -173,9 +197,9 @@ export default {
                 console.error(error);
             }
         },
-        fetchItem(orderId) {
+        fetchItem(_id) {
             axios
-                .get(`/api/order/orderdetail/${orderId}`)
+                .get(`/api/order/orderdetail/${_id}`)
                 .then((response) => {
                     const orderdetails = response.data;
                     this.order.orderId = orderdetails.order_ID;
@@ -183,6 +207,8 @@ export default {
                     this.order.businessType = orderdetails.business_type;
                     this.order.orderStatus = orderdetails.order_status;
                     this.order.remark = orderdetails.order_remark;
+                    this.order.orderPlatform = orderdetails.order_platform;
+                    this.order.trackingNumber = orderdetails.order_trackingNum;
                     this.customer.customerName = orderdetails.customer.customer_name;
                     this.customer.customerAddress = orderdetails.customer.customer_address;
                     this.customer.customerEmail = orderdetails.customer.customer_email;
@@ -209,40 +235,31 @@ export default {
             // Show the update confirmation dialog
             this.showUpdateConfirmation = true;
         },
-        confirmUpdateItem() {
-            const orderData = {
-                order_type: "Offline",
-                customer_ID: "0",
-                order_ID: this.order.orderId,
-                customer_name: this.customer.customerName,
-                customer_contact: this.customer.customerContact,
-                business_type: this.order.businessType,
-                order_status: this.order.orderStatus,
-                items: this.orderedproducts,
-            };
-            if (this.customer.customerAddress) {
-                orderData.customer_address = this.customer.customerAddress;
-            }
-            if (this.customer.customerEmail) {
-                orderData.customer_email = this.customer.customerEmail;
-            }
-            if (this.order.order_remark) {
-                orderData.order_remark = this.order.order_remark;
-            }
-            console.log(orderData)
+        async confirmUpdateItem() {
+            try {
+                const orderData = {
+                    order_ID: this.order.orderId,
+                    order_type: this.order.orderType,
+                    order_status: this.order.orderStatus,
+                    customer_name: this.customer.customerName,
+                    customer_contact: this.customer.customerContact,
+                    items: this.orderedproducts,
+                    customer_name: this.customer.customerName,
+                    business_type: this.order.businessType,
+                    order_remark: this.order.remark,
+                    order_platform: this.order.orderPlatform,
+                    order_trackingNum: this.order.trackingNumber,
+                    customer_address: this.customer.customerAddress,
+                    customer_email: this.customer.customerEmail
+                };
 
-            axios.post('http://localhost:5000/api/order', orderData)
-                .then(
-                    console.log(orderData.data),
-                    res => {
-                        console.log(res)
-                    }
-                ).catch(
-                    err => {
-                        console.log(err)
-                    }
-                )
-            this.$router.go(-1);
+                const response = await axios.patch(`/api/order/${this.$route.params.id}`, orderData);
+                console.log("response.data", response.data); // Handle the response data
+                //this.$router.go(-3);
+            } catch (error) {
+                console.error(error); // Handle any errors
+            }
+            
         },
 
         calculateAmount(item) {
@@ -276,6 +293,10 @@ export default {
 
             // Push the new item to the products array
             this.orderedproducts.push(newItem);
+        },
+        deleteItem(index) {
+            this.orderedproducts.splice(index, 1); // Remove the item at the specified index
+            this.calculateTotalPrice(); // Recalculate the total price
         },
         resetForm() {
             this.order = {
@@ -312,7 +333,6 @@ export default {
                 !this.order.orderId ||
                 !this.customer.customerName ||
                 !this.customer.customerContact ||
-                !this.order.businessType ||
                 !this.order.orderStatus
             );
         },
@@ -391,6 +411,15 @@ textarea {
 .el-button1 {
 
     background-color: #4C4D6C;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.el-button2 {
+
+    background-color: #ff2929;
     color: #ffffff;
     border: none;
     border-radius: 4px;
