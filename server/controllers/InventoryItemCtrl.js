@@ -81,6 +81,7 @@ module.exports = class InventoryItemController {
     }
 
     const newInventoryItem = req.body;
+    console.log("req.body",req.body);
     newInventoryItem.InvImg = new_image;
     try {
       const updatedInventoryItem = await InventoryItem.findByIdAndUpdate(
