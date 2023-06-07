@@ -88,6 +88,16 @@ export default {
           this.text = "";
         }
       }, 5000);
+      // Make an HTTP request to fetch the item data
+      const itemBar = this.text;
+      axios.get(`/api/inventoryitem/barcode/${itemBar}`)
+        .then(response => {
+          this.itemData = response.data; // Assign retrieved data to itemData
+      // this.stopScanner(); // Stop the barcode scanner
+        })
+        .catch(error => {
+          console.error(error);
+        });
     },
 
     onLoaded() {
@@ -102,8 +112,8 @@ export default {
       const itemBar = this.text;
       axios.get(`/api/inventoryitem/barcode/${itemBar}`)
         .then(response => {
-          const itemData = response.data; // Retrieved data from the API
-          // this.$router.push({ name: 'view', params: { item: itemData } });
+          this.itemData = response.data; // Assign retrieved data to itemData
+      // this.stopScanner(); // Stop the barcode scanner
         })
         .catch(error => {
           console.error(error);
