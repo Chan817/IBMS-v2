@@ -11,13 +11,25 @@
         <VBtn class="view-barcode-details" prepend-icon="mdi-eye" @click="viewDetails">View</VBtn>
         <label>Input Value: {{ text || "Nothing" }}</label>
       </div>
-      
-      
-      <div v-if="itemData">
-        <h2>{{ itemData.Inv_Name }}</h2>
-        <p>{{ itemData.Inv_Desc }}</p>
-        <p>{{ itemData.Inv_BarcodeNum }}</p>
-      </div> 
+
+      <div class="table-wrapper">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>SKU Number</th>
+              <th>Barcode Number</th>
+              <th>Product Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in scannedItems" :key="item.Inv_BarcodeNum">
+              <td>{{ item.Inv_SKU_Num }}</td>
+              <td>{{ item.Inv_BarcodeNum }}</td>
+              <td>{{ item.Inv_Name }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
     </div>
   </div>
@@ -37,7 +49,7 @@ export default {
       id: null,
       isLoading: true,
       sound: null,
-      itemData: null, // To store the retrieved item data
+      scannedItems: [], // To store the retrieved item data
       codeReader: new BrowserMultiFormatReader(),
       isMediaStreamAPISupported:
         navigator &&
@@ -64,6 +76,10 @@ export default {
 
   beforeUnmount() {
     this.codeReader.reset();
+  },
+
+  created() {
+    this.viewDetails();
   },
 
   methods: {
@@ -133,7 +149,7 @@ label {
   margin-bottom: 20px;
   position: absolute;
   top: 90%;
-  left: 10%;
+  left: 10%;  
   z-index: 2;
   display: flex;
   justify-content: flex-start;
