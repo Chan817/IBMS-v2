@@ -19,8 +19,8 @@
       <div class="card-total">
         <v-card>
             <div class="container-total">
-              <div class="title1">Shipping</div>
-                <div class="data">{{ shipping }}</div>
+              <div class="title1">Shipped</div>
+                <div class="data">{{ shipped }}</div>
                 <div class="text-right" >
                     <router-link to="/shipping">More Info -></router-link>
                 </div>
@@ -44,7 +44,7 @@
         <v-card>
             <div class="container-total">
               <div class="title1">Cancellation</div>
-                <div class="data">{{ cancellation }}</div>
+                <div class="data">{{ cancelled }}</div>
                 <div class="text-right" >
                     <router-link to="/cancel">More Info -></router-link>
                 </div>
@@ -62,7 +62,7 @@
       <!--Platform Analysis-->
       <v-card class="card-platf">
         <div class="platform-chart">
-          <div class="title1">Platform Analysis</div>
+          <div class="title1">Order Status Analysis</div>
           <div class="platform-chart">
             <canvas ref="salesChart"></canvas>
           </div>
@@ -98,7 +98,7 @@
 
 <script>
 import { Chart, registerables } from 'chart.js';
-
+import axios from "axios";
 // Register the required chart types
 Chart.register(...registerables);
 
@@ -112,10 +112,10 @@ export default {
               avatar: "path_to_avatar",
           },
           insufficientStock: true,
-          totalSale: 0,
-          totalOrder: 0,
-          totalCustomer: 0,
-          totalProspects: 0,
+          toship: 0,
+          shipped: 0,
+          completed: 0,
+          cancelled: 0,
           recentActivities: [
               {
                   id: 1,
@@ -129,57 +129,196 @@ export default {
           ],
       };
   },
-
+  async created() {
+    await this.fetchTotalPending();
+    await this.fetchTotalShipping();
+    await this.fetchTotalCompleted();
+    await this.fetchTotalCancel();
+  },
   mounted() {
-  this.renderChart();
+    this.fetchPlatformSales();
 },
 methods: {
-  renderChart() {
-    const salesData = {
-      labels: ["Product A", "Product B", "Product C", "Product D"],
-      datasets: [
-        {
-          label: "Sales",
-          backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"],
-          data: [120, 150, 180, 90],
-        },
-      ],
-    };
 
-    const analyticsData = {
-      labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September","October", "November", "December"],
-      datasets: [
-        {
-          label: "Analytics",
-          borderColor: "#FF6384",
-          data: [100, 200, 150, 300, 250],
-        },
-      ],
-    };
-
-    this.renderPieChart(salesData, "salesChart");
-    this.renderLineChart(analyticsData, "analyticsChart");
-  },
-  renderPieChart(data, element) {
-  this.$refs[element]._chart = new Chart(this.$refs[element].getContext('2d'), {
-      type: 'pie',
-      data,
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-      },
-    });
-  },
-  renderLineChart(data, element) {
-    this.$refs[element]._chart = new Chart(this.$refs[element].getContext('2d'), {
-    type: 'line',
-    data,
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
+  async fetchTotalPending() {
+      try {
+        // Perform the logic to fetch email notifications
+        const response = await axios.get('/api/orderList/pending');
+        const pending = response.data;
+        console.log(pending);
+        // Update the notification property based on the number of notifications
+        this.toship = pending.length; // Set the number property to the length of notifications array
+        this.pending = pending.length > 0;
+      } catch (error) {
+        console.error('Error fetching total order which are pending:', error);
+      }
     },
-  });
-  },
+    async fetchTotalShipping() {
+      try {
+        // Perform the logic to fetch email notifications
+        const response = await axios.get('/api/orderList/shipped');
+        const shipped = response.data;
+        console.log(shipped);
+        // Update the notification property based on the number of notifications
+        this.shipped = shipped.length; // Set the number property to the length of notifications array
+        this.shipping = shipped.length > 0;
+      } catch (error) {
+        console.error('Error fetching total order shipped:', error);
+      }
+    },
+    async fetchTotalCompleted() {
+      try {
+        // Perform the logic to fetch email notifications
+        const response = await axios.get('/api/orderList/complete');
+        const complete = response.data;
+        console.log(complete);
+        // Update the notification property based on the number of notifications
+        this.completed = complete.length; // Set the number property to the length of notifications array
+        this.complete = complete.length > 0;
+      } catch (error) {
+        console.error('Error fetching total order completed:', error);
+      }
+    },
+    async fetchTotalCancel() {
+      try {
+        // Perform the logic to fetch email notifications
+        const response = await axios.get('/api/orderList/cancel');
+        const cancel = response.data;
+        console.log(cancel);
+        // Update the notification property based on the number of notifications
+        this.cancelled = cancel.length; // Set the number property to the length of notifications array
+        this.cancel = cancel.length > 0;
+      } catch (error) {
+        console.error('Error fetching total cancelled order:', error);
+      }
+    },
+
+    fetchPlatformSales() {
+      axios
+        .get('/api/order')
+        .then((response) => {
+          const data = response.data;
+          const platformList = [
+            {
+              name: 'Lazada',
+              sales: data.filter((item) => item.order_platform === 'Lazada').length
+            },
+            {
+              name: 'Shopee',
+              sales: data.filter((item) => item.order_platform === 'Shopee').length
+            },
+            {
+              name: 'Instagram',
+              sales: data.filter((item) => item.order_platform === 'Instagram').length
+            },
+            {
+              name: 'Facebook',
+              sales: data.filter((item) => item.order_platform === 'Facebook').length
+            },
+            {
+              name: 'Tiktok',
+              sales: data.filter((item) => item.order_platform === 'Tiktok').length
+            }
+          ];
+          this.platformList = platformList;
+          console.log(platformList)
+          var x = [];
+          var y = [];
+          for (var i = 0; i < platformList.length; i++) {
+            x.push("January",
+              "February",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+              "August",
+              "September",
+              "October",
+              "November",
+              "December");
+            y.push(platformList[i].sales);
+          }
+          const salesChart = new Chart(this.$refs.salesChart.getContext("2d"), {
+            type: "pie",
+            data: {
+              labels: ["Pending", "Shipped", "Completed", "Cancelled"],
+              datasets: [
+                {
+                  label: "Orders",
+                  backgroundColor: [
+                    "#FF6384",
+                    "#36A2EB",
+                    "#FFCE56",
+                    "#4BC0C0",
+                  ],
+                  data: [
+                    data.filter((item) => item.order_status === 'Pending').length,
+                    data.filter((item) => item.order_status === 'Shipped').length,
+                    data.filter((item) => item.order_status === 'Completed').length,
+                    data.filter((item) => item.order_status === 'Cancelled').length,
+                    
+                  ],
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+            },
+          });
+
+          const analyticsChart = new Chart(this.$refs.analyticsChart.getContext("2d"), {
+            type: 'line',
+            data: {
+              labels: x,
+              datasets: [{
+                label: 'Total order',
+                data: y,
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                lineTension: 0.1
+              }]
+            },
+            options: {
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true,
+                    fontColor: "black",
+                    fontSize: 15
+                  },
+                  gridLines: {
+                    lineWidth: 2,
+                  }
+                }],
+                xAxes: [{
+                  type: 'category',
+                  ticks: {
+                    fontColor: "#456ef4",
+                    fontSize: 12
+                  },
+                  gridLines: {
+                    lineWidth: 2,
+                  }
+                }]
+              },
+              legend: {
+                labels: {
+                  fontColor: 'blue',
+                  fontSize: 15
+                }
+              }
+            }
+          });
+
+
+        })
+        .catch((error) => {
+          console.error('Error fetching platform sales:', error);
+        });
+      }
+  
 },
   
 };

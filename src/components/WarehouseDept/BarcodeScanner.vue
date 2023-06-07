@@ -11,25 +11,13 @@
         <VBtn class="view-barcode-details" prepend-icon="mdi-eye" @click="viewDetails">View</VBtn>
         <label>Input Value: {{ text || "Nothing" }}</label>
       </div>
-
-      <div class="table-wrapper">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>SKU Number</th>
-              <th>Barcode Number</th>
-              <th>Product Name</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item in scannedItems" :key="item.Inv_BarcodeNum">
-              <td>{{ item.Inv_SKU_Num }}</td>
-              <td>{{ item.Inv_BarcodeNum }}</td>
-              <td>{{ item.Inv_Name }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      
+      
+      <div v-if="itemData">
+        <h2>{{ itemData.Inv_Name }}</h2>
+        <p>{{ itemData.Inv_Desc }}</p>
+        <p>{{ itemData.Inv_BarcodeNum }}</p>
+      </div> 
 
     </div>
   </div>
@@ -49,7 +37,7 @@ export default {
       id: null,
       isLoading: true,
       sound: null,
-      scannedItems: [], // To store the retrieved item data
+      itemData: null, // To store the retrieved item data
       codeReader: new BrowserMultiFormatReader(),
       isMediaStreamAPISupported:
         navigator &&
@@ -78,10 +66,6 @@ export default {
     this.codeReader.reset();
   },
 
-  created() {
-    this.viewDetails();
-  },
-
   methods: {
     start() {
       this.codeReader.decodeFromVideoDevice(
@@ -104,6 +88,16 @@ export default {
           this.text = "";
         }
       }, 5000);
+      // Make an HTTP request to fetch the item data
+      const itemBar = this.text;
+      axios.get(`/api/inventoryitem/barcode/${itemBar}`)
+        .then(response => {
+          this.itemData = response.data; // Assign retrieved data to itemData
+      // this.stopScanner(); // Stop the barcode scanner
+        })
+        .catch(error => {
+          console.error(error);
+        });
     },
 
     onLoaded() {
@@ -118,8 +112,8 @@ export default {
       const itemBar = this.text;
       axios.get(`/api/inventoryitem/barcode/${itemBar}`)
         .then(response => {
-          const itemData = response.data; // Retrieved data from the API
-          // this.$router.push({ name: 'view', params: { item: itemData } });
+          this.itemData = response.data; // Assign retrieved data to itemData
+      // this.stopScanner(); // Stop the barcode scanner
         })
         .catch(error => {
           console.error(error);
@@ -149,7 +143,7 @@ label {
   margin-bottom: 20px;
   position: absolute;
   top: 90%;
-  left: 10%;  
+  left: 10%;
   z-index: 2;
   display: flex;
   justify-content: flex-start;

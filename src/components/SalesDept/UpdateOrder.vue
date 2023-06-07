@@ -96,9 +96,6 @@
 
                     <div class="container2">
                         <v-btn class="el-button1" @click="addItem">Add Item</v-btn>
-                    </div>
-
-                    <div class="container2">
                         <v-btn class="el-button2" @click="deleteItem(index)">Delete Item</v-btn>
                     </div>
 
@@ -401,12 +398,15 @@ textarea {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    margin-left: 10px;
 }
 
 .container2 {
-    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
     align-items: center;
-    margin-top: 20px;
+        
 }
 
 .cancel-button {

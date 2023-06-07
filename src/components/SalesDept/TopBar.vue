@@ -1,20 +1,17 @@
 <template>
     <v-app-bar>
         <div class="appBar">
-
             <v-img class="image" src="@/assets/neksom.png" height="50" width="50"></v-img>
+
 
             <v-text-field :loading="loading" density="compact" variant="solo" label="Search" append-inner-icon="mdi-magnify"
                 single-line hide-details @click:append-inner="onClick" class="searchB">
             </v-text-field>
-            
-            <v-menu
-            v-model="emailmenu"
-            :close-on-content-click="false"
-            
-            >
+
+            <v-menu v-model="emailmenu" :close-on-content-click="false">
                 <template v-slot:activator="{ props }">
-                    <v-btn variant="text" v-bind="props" style="display:flex; justify-content: center; align-items: center; margin-top: 10px;">
+                    <v-btn variant="text" v-bind="props"
+                        style="display:flex; justify-content: center; align-items: center; margin-top: 10px;">
                         <v-icon size="large" color="white" icon="mdi-email"></v-icon>
                         <div v-if="notification" class="notification-dot"></div>
                     </v-btn>
@@ -22,9 +19,10 @@
 
                 <v-card min-width="300">
                     <v-list>
-                        <v-list-item
-                            title="Notification"
-                        >
+                        <v-list-item >
+                            <div class="title-noti">
+                                Notification
+                            </div>
                         </v-list-item>
                     </v-list>
 
@@ -34,16 +32,20 @@
                         <div class="text-left">
                             Low in Stock
                         </div>
-                        <div class="text-left">
-                            {{number}}
+                        <div class="text-left1">
+                            {{ number }}
                             <!-- {{ count_low }} -->
                         </div>
-                          <v-btn icon="mdi-arrow-right" variant="text" to="/low_neksom"></v-btn>
                     </div>
+                    <div class="container-arrow">
+                        <p>See More</p>
+                        <v-btn  icon="mdi-arrow-right" variant="text" to="/low_neksom"></v-btn>
+                    </div>
+                    
                 </v-card>
-                
+
             </v-menu>
-            
+
 
             <div>
                 <p style="color:white; margin-top: 15px;">|</p>
@@ -77,8 +79,6 @@
                             </v-btn>
                         </v-list-item>
                     </v-list>
-
-
                 </v-card>
             </v-menu>
         </div>
@@ -93,7 +93,7 @@ export default {
         accmenu: false,
         number: 0,
         notification: false, // Add this property
-    
+
     }),
     async created() {
         await this.fetchEmailNotification();
@@ -101,21 +101,21 @@ export default {
     methods: {
         async fetchEmailNotification() {
             try {
-      // Perform the logic to fetch email notifications
-      const response = await axios.get('/api/notification');
-      const notifications = response.data;
-console.log(notifications);
-      // Update the notification property based on the number of notifications
-      this.number = notifications.length; // Set the number property to the length of notifications array
-      this.notification = notifications.length > 0;
-    } catch (error) {
-      console.error('Error fetching email notifications:', error);
-    }
+                // Perform the logic to fetch email notifications
+                const response = await axios.get('/api/notification');
+                const notifications = response.data;
+                console.log(notifications);
+                // Update the notification property based on the number of notifications
+                this.number = notifications.length; // Set the number property to the length of notifications array
+                this.notification = notifications.length > 0;
+            } catch (error) {
+                console.error('Error fetching email notifications:', error);
+            }
         },
         checkInventory() {
-           
+
         },
-        
+
         toggleSubMenu() {
 
         }
@@ -127,43 +127,61 @@ console.log(notifications);
     background-color: #4C4D6C;
     display: flex;
     width: 100%;
-    height: 100%;
-}
-.container {
-    
-    display: flex;
-    margin-bottom: 20px;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
-  .text-left {
-    margin-top: 10px;
-  font-size: 15px;
-  justify-content: left;
-  align-items: left;
-  
 }
 
+.container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.title-noti{
+    font-size: 20px;
+    font-weight: bold;
+}
+.text-left {
+    margin-top: 10px;
+    font-size: 18px;
+    justify-content: left;
+    align-items: left;
+
+}
+.text-left1 {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    justify-content: left;
+    align-items: left;
+
+}
+p{
+    margin-top: 12px;
+}
+.container-arrow{
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    margin-right: 10px;
+}
 .searchB {
     height: 20px;
     margin-top: 10px;
-    margin-left: 400px;
-    margin-right: 400px;
+
 }
 
 .image {
     margin-top: 5px;
     margin-bottom: 10px;
+    
 }
 
 .notification-dot {
-  position: absolute;
-  top: 2px;
-  right: 3px;
-  width: 8px;
-  height: 8px;
-  background-color: red;
-  border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    right: 3px;
+    width: 8px;
+    height: 8px;
+    background-color: red;
+    border-radius: 50%;
 }
 </style>
 
