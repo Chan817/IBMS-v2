@@ -6,18 +6,38 @@
       </div>
       <div class="overlay-element"></div>
       <div class="laser"></div>
-      <div class="container-button">
-        <VBtn class="stop-button" prepend-icon="mdi-close" @click="stopScanner">Stop</VBtn>
-        <VBtn class="view-barcode-details" prepend-icon="mdi-eye" @click="viewDetails">View</VBtn>
-        <label>Input Value: {{ text || "Nothing" }}</label>
+
+      <div class="table-wrapper">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>SKU Number</th>
+              <th>Product Name</th>
+              <th>Image</th>
+              <th>Barcode Number</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr v-for="barcode in barcodeData" :key="barcode.Inv_BarcodeNum">
+              <td>{{ barcode.Inv_SKU_Num }}</td>
+              <td>{{ barcode.Inv_Name }}</td>
+              <td>
+              <img :src="barcode.InvImg" alt="Product Image" width="50" height="50" />
+            </td>
+              <td>{{ barcode.Inv_BarcodeNum }}</td>
+              <td>
+              <div class="row">
+                <v-btn class="el-button" @click="deleteItem(index)">Delete</v-btn>
+              </div>
+            </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      
-      
-      <div v-if="itemData">
-        <h2>{{ itemData.Inv_Name }}</h2>
-        <p>{{ itemData.Inv_Desc }}</p>
-        <p>{{ itemData.Inv_BarcodeNum }}</p>
-      </div> 
+
+      <v-btn class="el-button1" >Store</v-btn>
 
     </div>
   </div>
@@ -37,7 +57,7 @@ export default {
       id: null,
       isLoading: true,
       sound: null,
-      itemData: null, // To store the retrieved item data
+      barcodeData: [], // Array to store the scanned barcode data
       codeReader: new BrowserMultiFormatReader(),
       isMediaStreamAPISupported:
         navigator &&
@@ -93,7 +113,7 @@ export default {
       axios.get(`/api/inventoryitem/barcode/${itemBar}`)
         .then(response => {
           this.itemData = response.data; // Assign retrieved data to itemData
-      // this.stopScanner(); // Stop the barcode scanner
+          this.barcodeData.push(this.itemData); // Push the item data to the barcodeData array
         })
         .catch(error => {
           console.error(error);
@@ -107,18 +127,9 @@ export default {
     //   this.codeReader.reset(); // Stop the barcode scanner
     // },
 
-    viewDetails() {
-      // Make an HTTP request to fetch the item data
-      const itemBar = this.text;
-      axios.get(`/api/inventoryitem/barcode/${itemBar}`)
-        .then(response => {
-          this.itemData = response.data; // Assign retrieved data to itemData
-      // this.stopScanner(); // Stop the barcode scanner
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    },
+    deleteItem(index) {
+            this.barcodeData.splice(index, 1); // Remove the item at the specified index
+        },
   },
 };
 </script>
@@ -151,6 +162,54 @@ label {
 
 }
 
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #6b6b6b;
+}
+
+table th,
+table td {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #6b6b6b;
+}
+
+th {
+  background-color: #4C4D6C;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+tr:nth-child(even) {
+  background-color: #e4e4f3;
+}
+
+.table-wrapper {
+  overflow-y: auto;
+}
+.row {
+  justify-content: center;
+  display: flex;
+}
+.el-button {
+
+background-color: #ff2929;
+color: #ffffff;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+margin-left: 10px;
+}
+
+.el-button1 {
+background-color: #4C4D6C;
+color: #ffffff;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+margin-top: 10px;
+}
 .stop-button {
   margin: 20px;
   margin-bottom: 10px;
