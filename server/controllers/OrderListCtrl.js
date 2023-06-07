@@ -59,7 +59,7 @@ module.exports = class API {
             res.status(404).json({ message: err.message });
         }
     }
-    static async fetchAllPendingProduct(req, res) {
+    static async fetchAllPendingOrder(req, res) {
         try {
             const orders = await Order.find({ order_status: "Pending" });
             // Create an array to store the updated orders with customer information
@@ -114,7 +114,7 @@ module.exports = class API {
             res.status(404).json({ message: err.message });
         }
     }
-    static async fetchAllShippedProduct(req, res) {
+    static async fetchAllShippedOrder(req, res) {
         try {
             const orders = await Order.find({ order_status: "Shipped" });
             // Create an array to store the updated orders with customer information
@@ -169,7 +169,7 @@ module.exports = class API {
             res.status(404).json({ message: err.message });
         }
     }
-    static async fetchAllCancelledProduct(req, res) {
+    static async fetchAllCancelledOrder(req, res) {
         try {
             const orders = await Order.find({ order_status: "Cancelled" });
             // Create an array to store the updated orders with customer information
@@ -224,7 +224,7 @@ module.exports = class API {
             res.status(404).json({ message: err.message });
         }
     }
-    static async fetchAllCompletedProduct(req, res) {
+    static async fetchAllCompletedOrder(req, res) {
         try {
             const orders = await Order.find({ order_status: "Completed" });
             // Create an array to store the updated orders with customer information

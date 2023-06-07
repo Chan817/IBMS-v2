@@ -19,7 +19,7 @@
       <div class="card-total">
         <v-card>
           <div class="container-total">
-            <div class="title1">Total Orders</div>
+            <div class="title1">Total Completed Orders</div>
             <div class="data">{{ totalOrder }}</div>
             <div class="text-right">
               <router-link to="/list">More Info -></router-link>
@@ -146,21 +146,44 @@ export default {
     this.fetchPlatformSales();
   },
   async created() {
+    await this.fetchTotalSales();
     await this.fetchTotalOrder();
     await this.fetchTotalCustomer();
     await this.fetchTotalProspect();
   },
   methods: {
+    async fetchTotalSales() {
+      try {
+        // Perform the logic to fetch email notifications
+        const response = await axios.get('/api/orderList/complete');
+        const orderList = response.data;
+        console.log(orderList);
+
+        let totalSales = 0;
+
+        for (const order of orderList) {
+          for (const product of order.orderedProducts) {
+            const totalPrice = product.Op_UnitPrice * product.Op_Qty;
+            totalSales += totalPrice;
+          }
+        }
+        this.totalSale = totalSales;
+
+        console.log('Total Sales:', totalSales);
+      } catch (error) {
+        console.error('Error fetching total sales:', error);
+      }
+    },
 
     async fetchTotalOrder() {
       try {
         // Perform the logic to fetch email notifications
-        const response = await axios.get('/api/order');
-        const order = response.data;
-        console.log(order);
+        const response = await axios.get('/api/orderList/complete');
+        const orderList = response.data;
+        console.log(orderList);
         // Update the notification property based on the number of notifications
-        this.totalOrder = order.length; // Set the number property to the length of notifications array
-        this.order = order.length > 0;
+        this.totalOrder = orderList.length; // Set the number property to the length of notifications array
+        this.order = orderList.length > 0;
       } catch (error) {
         console.error('Error fetching total orders:', error);
       }
