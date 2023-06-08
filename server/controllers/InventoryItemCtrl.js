@@ -318,4 +318,24 @@ module.exports = class InventoryItemController {
       res.status(404).json({ message: err.message });
     }
   }
+
+  // Update stock level of inventory item
+  static async updateStockInventoryItem(req, res) {
+    const id = req.params.id;
+    const newInventoryItem = req.body;
+    console.log("req.body",req.body);
+
+    try {
+      const updatedInventoryItem = await InventoryItem.findByIdAndUpdate(
+        id,
+        newInventoryItem,
+        { new: true }
+      );
+      res
+        .status(200)
+        .json({ message: "Inventory item quantity updated successfully!" });
+    } catch (err) {
+      res.status(404).json({ message: err.message });
+    }
+  }
 };

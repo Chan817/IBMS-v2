@@ -15,6 +15,7 @@
               <th>Product Name</th>
               <th>Image</th>
               <th>Barcode Number</th>
+              <th>Store Quantity</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -24,20 +25,21 @@
               <td>{{ barcode.Inv_SKU_Num }}</td>
               <td>{{ barcode.Inv_Name }}</td>
               <td>
-              <img :src="barcode.InvImg" alt="Product Image" width="50" height="50" />
-            </td>
+                <img :src="barcode.InvImg" alt="Product Image" width="50" height="50" />
+              </td>
               <td>{{ barcode.Inv_BarcodeNum }}</td>
+              <td><input type="number" v-model="barcode.storeQuantity" /></td>
               <td>
-              <div class="row">
-                <v-btn class="el-button" @click="deleteItem(index)">Delete</v-btn>
-              </div>
-            </td>
+                <div class="row">
+                  <v-btn class="el-button" @click="deleteItem(index)">Delete</v-btn>
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <v-btn class="el-button1" >Store</v-btn>
+      <v-btn class="el-button1" @click="storeItem">Store</v-btn>
 
     </div>
   </div>
@@ -113,7 +115,9 @@ export default {
       axios.get(`/api/inventoryitem/barcode/${itemBar}`)
         .then(response => {
           this.itemData = response.data; // Assign retrieved data to itemData
+          this.itemData.storeQuantity = 1;
           this.barcodeData.push(this.itemData); // Push the item data to the barcodeData array
+
         })
         .catch(error => {
           console.error(error);
@@ -123,13 +127,29 @@ export default {
     onLoaded() {
       console.log("load");
     },
-    // stopScanner() {
-    //   this.codeReader.reset(); // Stop the barcode scanner
-    // },
 
     deleteItem(index) {
-            this.barcodeData.splice(index, 1); // Remove the item at the specified index
-        },
+      this.barcodeData.splice(index, 1); // Remove the item at the specified index
+    },
+
+    storeItem() {
+      const updateRequests = this.barcodeData.map(barcode => {
+        const updateData = {
+          Inv_StockLevel: barcode.Inv_StockLevel + barcode.storeQuantity
+        };
+        return axios.patch(`/api/inventoryitem/updateStock/${barcode._id}`, updateData);
+      });
+
+      axios.all(updateRequests)
+        .then(responses => {
+          console.log("Stock levels updated successfully");
+          // Clear barcodeData after successful update
+          this.barcodeData = [];
+        })
+        .catch(error => {
+          console.error("Failed to update stock levels:", error);
+        });
+    },
   },
 };
 </script>
@@ -188,28 +208,31 @@ tr:nth-child(even) {
 .table-wrapper {
   overflow-y: auto;
 }
+
 .row {
   justify-content: center;
   display: flex;
 }
+
 .el-button {
 
-background-color: #ff2929;
-color: #ffffff;
-border: none;
-border-radius: 4px;
-cursor: pointer;
-margin-left: 10px;
+  background-color: #ff2929;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
 }
 
 .el-button1 {
-background-color: #4C4D6C;
-color: #ffffff;
-border: none;
-border-radius: 4px;
-cursor: pointer;
-margin-top: 10px;
+  background-color: #4C4D6C;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
 }
+
 .stop-button {
   margin: 20px;
   margin-bottom: 10px;
