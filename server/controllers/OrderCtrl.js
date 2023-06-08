@@ -219,4 +219,22 @@ module.exports = class API {
             res.status(404).json({ message: err.message });
         }
     }
+
+    //update order status from pending to shipped, and also add tracking number
+    static async updatetoShippedOrder(req, res) {
+        const id = req.params.id;
+        console.log('req.body', req.body);
+        const newOrder = req.body;
+        try {
+            // Update the order
+            const updatedOrder = await Order.findByIdAndUpdate(id, newOrder);
+            console.log("Order status updated to shipped successfully!");
+
+            res.status(200).json({ message: 'Order status updated to shipped successfully!' });
+
+            
+        } catch (err) {
+            res.status(404).json({ message: err.message });
+        }
+    }
 }

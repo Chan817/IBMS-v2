@@ -54,7 +54,8 @@
         <v-dialog v-model="showUpdateConfirmation" max-width="500px">
             <v-card>
                 <v-card-title>Please update the tracking number.</v-card-title>
-                <v-text-field class="textfield-trackNum" label="Tracking Number" variant="outlined"></v-text-field>
+                <v-text-field class="textfield-trackNum" label="Tracking Number" variant="outlined"
+                    v-model="trackingNumber"></v-text-field>
                 <v-card-actions>
                     <v-btn color="red" text @click="confirmUpdateItem">Update</v-btn>
                     <v-btn text @click="showUpdateConfirmation = false">Cancel</v-btn>
@@ -77,6 +78,8 @@ export default {
         orderList: [],
         searchKeyword: '',
         showUpdateConfirmation: false,
+        orderId: null,
+        trackingNumber: null
     }),
     components: {},
     mounted() {
@@ -98,21 +101,25 @@ export default {
         shipOrder(orderId) {
 
             this.showUpdateConfirmation = true;
-            const shippedOrderId = this.orderId;
+            this.orderId = orderId;
 
         },
         confirmUpdateItem() {
             this.showUpdateConfirmation = false;
-            this.orderId = this.shippedOrderId;
             const malaysiaTimeZone = 'Asia/Kuala_Lumpur';
             const shippedDate = moment().tz(malaysiaTimeZone).format('YYYY-MM-DD HH:mm:ss');
-            const orderIndex = this.orderList.findIndex((order) => order._id === orderId);
+            const trackingNumber = this.trackingNumber;
+
+            // Find the index of the order in the orderList array
+            const orderIndex = this.orderList.findIndex(order => order._id === this.orderId);
+
 
             // Make API call or update the order status and shipped date locally
             axios
-                .patch(`/api/order/${orderId}`, {
+                .patch(`/api/order/shippedOrder/${this.orderId}`, {
                     order_status: 'Shipped',
                     shipped_Date: shippedDate,
+                    order_trackingNum: this.trackingNumber,
                 })
                 .then((response) => {
                     console.log('Order shipped successfully');
@@ -242,4 +249,5 @@ tr:nth-child(even) {
 
 .textfield-trackNum {
     padding: 20px;
-}</style>
+}
+</style>
